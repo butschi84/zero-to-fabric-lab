@@ -1,0 +1,23 @@
+# P6-02 · leaf1 · 2026-11-26T18:35:35Z
+leaf1# show lag lag1 lacp-state
+  Members       Oper state  Timeout  State                   System Id          Oper key  Partner Id
+  ------------  ----------  -------  ----------------------  -----------------  --------  -----------------
+  ethernet-1/1  up          SHORT    IN_SYNC/True/True/True  00:00:00:00:11:11  11        AA:C1:AB:6D:21:6F
+leaf2# show lag lag1 lacp-state
+  Members       Oper state  Timeout  State                   System Id          Oper key  Partner Id
+  ------------  ----------  -------  ----------------------  -----------------  --------  -----------------
+  ethernet-1/1  up          SHORT    IN_SYNC/True/True/True  00:00:00:00:11:11  11        AA:C1:AB:6D:21:6F
+
+srv-mh# grep ... /proc/net/bonding/bond0   (one bond, one partner: both leafs show the same system id)
+  Bonding Mode: IEEE 802.3ad Dynamic link aggregation
+  Transmit Hash Policy: layer3+4 (1)
+  MII Status: up
+  LACP rate: fast
+  Aggregator ID: 2
+  Partner Mac Address: 00:00:00:00:11:11
+  Slave Interface: eth1
+  MII Status: up
+  Aggregator ID: 2
+  Slave Interface: eth2
+  MII Status: up
+  Aggregator ID: 2

@@ -1,0 +1,7 @@
+path,icmp_payload,ip_packet,result
+tunnel,1300,1328,OK
+tunnel,1368,1396,OK
+tunnel,1369,1397,FAIL
+tunnel,1372,1400,FAIL
+tunnel,1400,1428,FAIL
+tunnel,1472,1500,FAIL

@@ -1,0 +1,160 @@
+set / system name host-name gw-a
+set / interface system0 admin-state enable
+set / interface system0 subinterface 0 ipv4 admin-state enable
+set / interface system0 subinterface 0 ipv4 address 10.255.0.21/32
+set / network-instance default type default
+set / network-instance default interface system0.0
+set / routing-policy prefix-set loopbacks prefix 10.255.0.0/16 mask-length-range 32..32
+set / routing-policy policy underlay statement 10 match prefix-set loopbacks
+set / routing-policy policy underlay statement 10 action policy-result accept
+set / network-instance default protocols bgp autonomous-system 65201
+set / network-instance default protocols bgp router-id 10.255.0.21
+set / network-instance default protocols bgp afi-safi ipv4-unicast admin-state enable
+set / network-instance default protocols bgp afi-safi ipv4-unicast multipath allow-multiple-as true
+set / network-instance default protocols bgp afi-safi ipv4-unicast multipath maximum-paths 8
+set / network-instance default protocols bgp group underlay export-policy [ underlay ]
+set / network-instance default protocols bgp group underlay import-policy [ underlay ]
+set / network-instance default protocols bgp group underlay failure-detection enable-bfd true
+set / network-instance default protocols bgp group underlay failure-detection fast-failover true
+set / interface ethernet-1/49 admin-state enable
+set / interface ethernet-1/49 description "to spine-a"
+set / interface ethernet-1/49 subinterface 0 ipv4 admin-state enable
+set / interface ethernet-1/49 subinterface 0 ipv4 address 10.254.1.13/31
+set / interface ethernet-1/49 subinterface 0 ip-mtu 9000
+set / network-instance default interface ethernet-1/49.0
+set / bfd subinterface ethernet-1/49.0 admin-state enable
+set / bfd subinterface ethernet-1/49.0 desired-minimum-transmit-interval 1000000
+set / bfd subinterface ethernet-1/49.0 required-minimum-receive 1000000
+set / bfd subinterface ethernet-1/49.0 detection-multiplier 3
+set / network-instance default protocols bgp neighbor 10.254.1.12 peer-group underlay
+set / network-instance default protocols bgp neighbor 10.254.1.12 peer-as 65000
+set / network-instance default protocols bgp neighbor 10.254.1.12 description "to spine-a"
+set / interface ethernet-1/1 admin-state enable
+set / interface ethernet-1/1 description "WAN (DCI)"
+set / interface ethernet-1/1 subinterface 0 ipv4 admin-state enable
+set / interface ethernet-1/1 subinterface 0 ipv4 address 10.253.0.1/29
+set / interface ethernet-1/1 subinterface 0 ip-mtu 9000
+set / network-instance default interface ethernet-1/1.0
+set / bfd subinterface ethernet-1/1.0 admin-state enable
+set / bfd subinterface ethernet-1/1.0 desired-minimum-transmit-interval 1000000
+set / bfd subinterface ethernet-1/1.0 required-minimum-receive 1000000
+set / bfd subinterface ethernet-1/1.0 detection-multiplier 3
+set / network-instance default protocols bgp neighbor 10.253.0.2 peer-group underlay
+set / network-instance default protocols bgp neighbor 10.253.0.2 peer-as 65211
+set / network-instance default protocols bgp neighbor 10.253.0.2 description "WAN to gw-b"
+set / network-instance default protocols bgp neighbor 10.253.0.4 peer-group underlay
+set / network-instance default protocols bgp neighbor 10.253.0.4 peer-as 65212
+set / network-instance default protocols bgp neighbor 10.253.0.4 description "WAN to gw-b2"
+set / interface ethernet-1/2 admin-state enable
+set / interface ethernet-1/2 description "to ipsec-a"
+set / interface ethernet-1/2 subinterface 0 ipv4 admin-state enable
+set / interface ethernet-1/2 subinterface 0 ipv4 address 10.254.1.21/31
+set / interface ethernet-1/2 subinterface 0 ip-mtu 9000
+set / network-instance default interface ethernet-1/2.0
+set / bfd subinterface ethernet-1/2.0 admin-state enable
+set / bfd subinterface ethernet-1/2.0 desired-minimum-transmit-interval 1000000
+set / bfd subinterface ethernet-1/2.0 required-minimum-receive 1000000
+set / bfd subinterface ethernet-1/2.0 detection-multiplier 3
+set / network-instance default protocols bgp neighbor 10.254.1.20 peer-group underlay
+set / network-instance default protocols bgp neighbor 10.254.1.20 peer-as 65321
+set / network-instance default protocols bgp neighbor 10.254.1.20 description "to ipsec-a"
+set / network-instance default protocols bgp group overlay peer-as 65500
+set / network-instance default protocols bgp group overlay local-as as-number 65500
+set / network-instance default protocols bgp group overlay local-as prepend-global-as false
+set / network-instance default protocols bgp group overlay afi-safi evpn admin-state enable
+set / network-instance default protocols bgp group overlay afi-safi ipv4-unicast admin-state disable
+set / network-instance default protocols bgp group overlay transport local-address 10.255.0.21
+set / network-instance default protocols bgp neighbor 10.255.0.1 peer-group overlay
+set / network-instance default protocols bgp group dci local-as as-number 65500
+set / network-instance default protocols bgp group dci local-as prepend-global-as false
+set / network-instance default protocols bgp group dci afi-safi evpn admin-state enable
+set / network-instance default protocols bgp group dci afi-safi ipv4-unicast admin-state disable
+set / network-instance default protocols bgp group dci transport local-address 10.255.0.21
+set / network-instance default protocols bgp group dci multihop admin-state enable
+set / network-instance default protocols bgp group dci multihop maximum-hops 6
+set / network-instance default protocols bgp group dci next-hop-self false
+set / routing-policy policy accept-all default-action policy-result accept
+set / network-instance default protocols bgp group dci export-policy [ accept-all ]
+set / network-instance default protocols bgp group dci import-policy [ accept-all ]
+set / network-instance default protocols bgp neighbor 10.255.1.21 peer-group dci
+set / network-instance default protocols bgp neighbor 10.255.1.21 peer-as 65510
+set / network-instance default protocols bgp neighbor 10.255.1.21 description "dci to gw-b"
+set / network-instance default protocols bgp neighbor 10.255.1.22 peer-group dci
+set / network-instance default protocols bgp neighbor 10.255.1.22 peer-as 65510
+set / network-instance default protocols bgp neighbor 10.255.1.22 description "dci to gw-b2"
+set / network-instance default protocols bgp group branch local-as as-number 65500
+set / network-instance default protocols bgp group branch local-as prepend-global-as false
+set / network-instance default protocols bgp group branch afi-safi evpn admin-state enable
+set / network-instance default protocols bgp group branch afi-safi ipv4-unicast admin-state disable
+set / network-instance default protocols bgp group branch transport local-address 10.255.0.21
+set / network-instance default protocols bgp group branch multihop admin-state enable
+set / network-instance default protocols bgp group branch multihop maximum-hops 6
+set / network-instance default protocols bgp group branch next-hop-self false
+set / routing-policy policy accept-all default-action policy-result accept
+set / network-instance default protocols bgp group branch export-policy [ accept-all ]
+set / network-instance default protocols bgp group branch import-policy [ accept-all ]
+set / network-instance default protocols bgp neighbor 10.255.2.11 peer-group branch
+set / network-instance default protocols bgp neighbor 10.255.2.11 peer-as 65520
+set / network-instance default protocols bgp neighbor 10.255.2.11 description "branch to br1"
+set / network-instance default protocols bgp afi-safi evpn evpn keep-all-routes true
+set / tunnel-interface vxlan1 vxlan-interface 101 type bridged
+set / tunnel-interface vxlan1 vxlan-interface 101 ingress vni 10101
+set / tunnel-interface vxlan1 vxlan-interface 101 egress source-ip use-system-ipv4-address
+set / network-instance mac-vrf-101 type mac-vrf
+set / network-instance mac-vrf-101 admin-state enable
+set / network-instance mac-vrf-101 vxlan-interface vxlan1.101
+set / network-instance mac-vrf-101 bridge-table proxy-arp admin-state enable
+set / network-instance mac-vrf-101 bridge-table proxy-arp dynamic-learning admin-state enable
+set / network-instance mac-vrf-101 protocols bgp-evpn bgp-instance 1 admin-state enable
+set / network-instance mac-vrf-101 protocols bgp-evpn bgp-instance 1 vxlan-interface vxlan1.101
+set / network-instance mac-vrf-101 protocols bgp-evpn bgp-instance 1 evi 101
+set / network-instance mac-vrf-101 protocols bgp-vpn bgp-instance 1 route-target export-rt target:65000:10101
+set / network-instance mac-vrf-101 protocols bgp-vpn bgp-instance 1 route-target import-rt target:65000:10101
+set / tunnel-interface vxlan1 vxlan-interface 50001 type routed
+set / tunnel-interface vxlan1 vxlan-interface 50001 ingress vni 50001
+set / interface lo1 admin-state enable
+set / interface lo1 subinterface 1 admin-state enable
+set / interface lo1 subinterface 1 ipv4 admin-state enable
+set / interface lo1 subinterface 1 ipv4 address 10.1.255.21/32
+set / network-instance corp type ip-vrf
+set / network-instance corp admin-state enable
+set / network-instance corp description "tenant corp, L3VNI 50001"
+set / network-instance corp interface lo1.1
+set / network-instance corp vxlan-interface vxlan1.50001
+set / network-instance corp protocols bgp-evpn bgp-instance 1 admin-state enable
+set / network-instance corp protocols bgp-evpn bgp-instance 1 vxlan-interface vxlan1.50001
+set / network-instance corp protocols bgp-evpn bgp-instance 1 evi 1
+set / network-instance corp protocols bgp-evpn bgp-instance 1 ecmp 8
+set / network-instance corp protocols bgp-vpn bgp-instance 1 route-target export-rt target:65000:50001
+set / network-instance corp protocols bgp-vpn bgp-instance 1 route-target import-rt target:65000:50001
+set / tunnel-interface vxlan1 vxlan-interface 50002 type routed
+set / tunnel-interface vxlan1 vxlan-interface 50002 ingress vni 50002
+set / interface lo1 admin-state enable
+set / interface lo1 subinterface 2 admin-state enable
+set / interface lo1 subinterface 2 ipv4 admin-state enable
+set / interface lo1 subinterface 2 ipv4 address 10.2.255.21/32
+set / network-instance guest type ip-vrf
+set / network-instance guest admin-state enable
+set / network-instance guest description "tenant guest, L3VNI 50002"
+set / network-instance guest interface lo1.2
+set / network-instance guest vxlan-interface vxlan1.50002
+set / network-instance guest protocols bgp-evpn bgp-instance 1 admin-state enable
+set / network-instance guest protocols bgp-evpn bgp-instance 1 vxlan-interface vxlan1.50002
+set / network-instance guest protocols bgp-evpn bgp-instance 1 evi 2
+set / network-instance guest protocols bgp-evpn bgp-instance 1 ecmp 8
+set / network-instance guest protocols bgp-vpn bgp-instance 1 route-target export-rt target:65000:50002
+set / network-instance guest protocols bgp-vpn bgp-instance 1 route-target import-rt target:65000:50002
+set / system grpc-server eda-discovery admin-state disable
+set / system logging network-instance mgmt
+set / system logging remote-server 172.30.30.201 transport udp
+set / system logging remote-server 172.30.30.201 remote-port 5514
+set / system logging remote-server 172.30.30.201 facility local6 priority match-above informational
+set / system sflow admin-state enable
+set / system sflow sample-rate 1000
+set / system sflow collector 1 collector-address 172.30.30.201
+set / system sflow collector 1 network-instance mgmt
+set / system sflow collector 1 source-address 172.30.30.31
+set / system sflow collector 1 port 6343
+set / interface ethernet-1/1 sflow admin-state enable
+set / interface ethernet-1/2 sflow admin-state enable
+set / interface ethernet-1/49 sflow admin-state enable

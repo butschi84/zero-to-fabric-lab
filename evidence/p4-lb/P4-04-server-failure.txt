@@ -1,0 +1,21 @@
+# P4-04 · srv2 · 2026-11-27T09:19:44Z
+method: corp1 opens a new HTTP connection to the VIP every 50 ms (timeout 0.5 s); event at t=3 s on srv2
+
+A) srv2: 'neighbor 10.9.1.1 shutdown' (route withdrawn on purpose), 15 s:
+  requests=295 ok=295 failed=0 largest_gap_s=0.10 first_fail_s=0.00 last_fail_s=0.00
+  before event: srv1=13 srv2=25 srv3=22
+  after event:  srv1=130 srv2=2 srv3=103
+  last 3 s:     srv1=42 srv3=17
+  leaf3 shared VIP next hops afterwards:
+    10.9.100.10/32  bgp         bgp_mgr       10.9.1.0/24 (indirect/local)
+    10.9.100.10/32  bgp-evpn    bgp_evpn_mgr  10.255.0.12/32 (indirect/vxlan)
+
+B) docker pause srv2 (hangs; link up, no BGP message; hold time 9 s), 20 s:
+  requests=324 ok=316 failed=8 largest_gap_s=1.07 first_fail_s=-0.05 last_fail_s=5.09
+  before event: srv1=38 srv2=10 srv3=10
+  after event:  srv1=160 srv3=98
+  last 3 s:     srv1=35 srv3=25
+
+srv2# vtysh -c 'show bgp neighbors 10.9.1.1' | grep -i hold
+  Hold time is 9 seconds, keepalive interval is 3 seconds
+  Configured hold time is 9 seconds, keepalive interval is 3 seconds

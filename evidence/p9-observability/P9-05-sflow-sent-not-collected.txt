@@ -1,0 +1,16 @@
+# P9-05 · leaf-a1 · 2026-11-27T10:38:42Z
+leaf-a1# tshark -r P9-05-sflow.pcap (sample types; first datagram excerpt)
+3000 pings a-c1 -> b-c1 across leaf-a1 during a 15 s capture, sampling 1:1000 on every fabric port
+datagrams: 10
+     12 Counters sample
+    Interface index: 15
+    Datagram version: 5
+    Agent address: 172.30.30.21
+            Interface index: 16382
+            Interface Speed: 25600
+            Input Octets: 2451182313
+
+-> virtual SR Linux sends sFlow v5 COUNTER samples only, no flow samples (no packet sampling in its datapath).
+
+LinkMesh 1.501.1, POST /api/v1/sources receiverType netflow (the collector's sFlow receiver):
+  unknown_receiver_type - receiverType "netflow" cannot be rendered on every supported collector runtime, and a component a runtime does not have makes it reject the ENTIRE served config — the collector would lose every source

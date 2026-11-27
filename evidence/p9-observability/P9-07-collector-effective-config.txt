@@ -1,0 +1,7 @@
+# P9-07 · collector-a · 2026-11-27T10:38:44Z
+collector-a# cat /var/lib/otelcol-supervisor/effective.yaml   (summary; full file in linkmesh/)
+receivers: hostmetrics/self, otlp/input_src_86321820, prometheus/input_src_992a97c5, syslog/input_src_9808bc5c
+exporter otlphttp/output_dst_9fe305b5 http://172.30.30.210:9090/api/v1/otlp queue storage: file_storage/output_dst_9fe305b5 queue size: -
+exporter otlphttp/output_dst_21bfb2d6 http://172.30.30.212:3100/otlp queue storage: file_storage/output_dst_21bfb2d6 queue size: -
+exporter otlphttp/self http://172.30.30.200:8080 queue storage: - queue size: -
+pipelines: 12   extensions: opamp, file_storage/output_dst_9fe305b5, file_storage/output_dst_21bfb2d6

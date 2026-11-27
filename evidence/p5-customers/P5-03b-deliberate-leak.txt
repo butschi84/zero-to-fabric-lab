@@ -1,0 +1,18 @@
+# P5-03b · b-vm1 · 2026-11-26T19:07:34Z
+fault: leaf1 imports cust-a's 192.168.10.0/24 (CE-A) into VRF cust-b (inter-instance policy)
+
+leaf1# show network-instance cust-b route-table ipv4-unicast summary   (leaked, owner cust-a)
+Prefix           Route Type  Route Owner   Next-hop (Type)
+---------------  ----------  ------------  -------------------------------
+192.168.10.0/24  bgp-evpn    bgp_evpn_mgr  10.255.0.12/32 (indirect/vxlan)
+
+b-vm1# ping -c 3 192.168.10.1 -> 3 packets transmitted, 0 received, 100% packet loss, time 608ms
+
+ce-a# tcpdump icmp   (B's requests reach customer A's router; it answers 10.0.0.10 in cust-a)
+  3   10.0.0.10 -> 192.168.10.1  echo request
+  3   192.168.10.1 -> 10.0.0.10  echo reply
+
+a-vm1# tcpdump icmp   (the replies land at customer A's own 10.0.0.10, which never asked)
+  3   192.168.10.1 -> 10.0.0.10  echo reply
+
+leak removed: b-vm1# ping 192.168.10.1 -> FAIL

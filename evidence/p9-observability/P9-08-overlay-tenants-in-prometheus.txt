@@ -1,0 +1,21 @@
+# P9-08 · host · 2026-11-27T10:38:45Z
+host# PromQL against the metrics gnmic -> collector -> Prometheus delivered
+EVPN routes in use per type (leaf-a1, leaf-b1):
+  Type-2 source=leaf-a1 = 8.0
+  Type-2 source=leaf-b1 = 8.0
+  Type-3 source=leaf-a1 = 5.0
+  Type-3 source=leaf-b1 = 5.0
+  Type-5 source=leaf-a1 = 19.0
+  Type-5 source=leaf-b1 = 13.0
+remote VTEPs per leaf:
+  source=leaf-a1 = 6.0
+  source=leaf-b1 = 6.0
+MAC table size (active entries) per MAC-VRF on the leafs:
+  source=leaf-a1  network_instance_name=mac-vrf-101 = 9.0
+  source=leaf-a1  network_instance_name=mac-vrf-102 = 4.0
+  source=leaf-a1  network_instance_name=mac-vrf-201 = 3.0
+  source=leaf-b1  network_instance_name=mac-vrf-101 = 9.0
+  source=leaf-b1  network_instance_name=mac-vrf-103 = 4.0
+IPv4 routes per tenant VRF (leaf-a1):
+  network_instance_name=corp = 22.0
+  network_instance_name=guest = 11.0

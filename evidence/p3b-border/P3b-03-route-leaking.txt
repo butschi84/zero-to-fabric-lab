@@ -1,0 +1,20 @@
+# P3b-03 · leaf1 · 2026-11-26T17:33:59Z
+leaf1# info routing-policy policy leak-shared-to-corp ; inter-instance-policies
+  prefix 10.9.1.0/24 mask-length-range 24..32 {
+  network-instance shared: export-policy leak-shared-to-corp
+  network-instance corp: import-policy leak-shared-to-corp
+
+leaf1# show network-instance corp route-table ipv4-unicast summary   (10.9.x leaked from VRF shared)
+Prefix          Route Type  Route Owner   Next-hop (Type)
+--------------  ----------  ------------  -------------------------------
+10.9.1.0/24     bgp-evpn    bgp_evpn_mgr  10.255.0.13/32 (indirect/vxlan)
+10.9.1.53/32    bgp-evpn    bgp_evpn_mgr  10.255.0.13/32 (indirect/vxlan)
+
+leaf3# show network-instance shared route-table ipv4-unicast summary   (corp prefixes leaked back)
+Prefix          Route Type  Route Owner   Next-hop (Type)
+--------------  ----------  ------------  -------------------------------
+10.1.1.0/24     bgp-evpn    bgp_evpn_mgr  10.255.0.11/32 (indirect/vxlan)
+10.1.1.11/32    bgp-evpn    bgp_evpn_mgr  10.255.0.11/32 (indirect/vxlan)
+
+border1# show network-instance shared route-table ipv4-unicast summary | grep 10.1.  (leaked routes stay local)
+  0 entries

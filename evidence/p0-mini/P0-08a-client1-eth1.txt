@@ -1,0 +1,10 @@
+# P0-08a · client1 eth1 · 2026-11-26T22:13:14Z
+host# tshark -r P0-08a-client1-eth1.pcap -n   (client side)
+ 0.000  aa:c1:ab:15:3b:8c > 1a:bb:02:ff:00:01  ARP who has 10.10.1.1? tell 10.10.1.10
+ 0.002  1a:bb:02:ff:00:01 > aa:c1:ab:15:3b:8c  ARP reply: 10.10.1.1 is here
+ 2.156  aa:c1:ab:15:3b:8c > ff:ff:ff:ff:ff:ff  ARP who has 10.10.1.1? tell 10.10.1.10
+ 2.157  1a:bb:02:ff:00:01 > aa:c1:ab:15:3b:8c  ARP reply: 10.10.1.1 is here
+ 2.157  aa:c1:ab:15:3b:8c > 1a:bb:02:ff:00:01  ICMP echo request 10.10.1.10 > 10.10.2.10 ttl 64
+ 2.203  1a:bb:02:ff:00:01 > aa:c1:ab:15:3b:8c  ICMP echo reply   10.10.2.10 > 10.10.1.10 ttl 61
+
+MAC names: client1 aa:c1:ab:15:3b:8c, leaf1-e1-1 1a:bb:02:ff:00:01

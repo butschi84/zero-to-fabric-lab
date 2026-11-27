@@ -1,0 +1,5 @@
+test,sent,received,lost,loss_ms_at_10ms_interval,largest_reply_gap_ms,method
+wan1-fails-mrai-5s,1324,516,808,8080,9181,"netem loss 100% on both ports of wan1 (ISP 1); br-c1 pings a-c2 every 10 ms; BFD 3 x 300 ms on the tunnels"
+wan1-restored-mrai-5s,1340,1340,0,0,20,"netem loss 100% on both ports of wan1 (ISP 1); br-c1 pings a-c2 every 10 ms; BFD 3 x 300 ms on the tunnels"
+wan1-fails-mrai-1s,1331,1078,253,2530,2895,"netem loss 100% on both ports of wan1 (ISP 1); br-c1 pings a-c2 every 10 ms; BFD 3 x 300 ms on the tunnels"
+wan1-restored-mrai-1s,1332,1331,1,10,22,"netem loss 100% on both ports of wan1 (ISP 1); br-c1 pings a-c2 every 10 ms; BFD 3 x 300 ms on the tunnels"

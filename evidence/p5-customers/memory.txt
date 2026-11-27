@@ -1,0 +1,14 @@
+node                      mem_MiB    cpu_%
+a-vm1                           5     0.00
+a-vm2                           7     0.00
+b-vm1                           8     0.00
+b-vm2                           8     0.00
+border1                      1530     0.00
+c-vm1                           8     0.00
+ce-a                           25     0.02
+fw                             19     0.00
+leaf1                        1515     0.00
+leaf2                        1512     0.00
+spine1                       1522     0.00
+spine2                       1517     0.00
+svc-dns                         5     0.00

@@ -1,0 +1,28 @@
+# P0-08 · host · 2026-11-26T22:13:16Z
+host# tshark on client1 eth1, leaf1 e1-49, spine1 e1-2, client2 eth1
+ping -c 1 10.10.2.10 from client1; the same echo request seen at four points
+
+client1 eth1   MAC aa:c1:ab:15:3b:8c (client1) -> 1a:bb:02:ff:00:01 (leaf1-e1-1)
+               ICMP echo request 10.10.1.10 > 10.10.2.10 ttl 64
+leaf1 e1-49    MAC 1a:bb:02:ff:00:31 (leaf1-e1-49) -> 1a:02:04:ff:00:01 (spine1-e1-1)
+               ICMP echo request 10.10.1.10 > 10.10.2.10 ttl 63
+spine1 e1-2    MAC 1a:02:04:ff:00:02 (spine1-e1-2) -> 1a:fd:03:ff:00:31 (leaf2-e1-49)
+               ICMP echo request 10.10.1.10 > 10.10.2.10 ttl 62
+client2 eth1   MAC 1a:fd:03:ff:00:01 (leaf2-e1-1) -> aa:c1:ab:70:c9:b3 (client2)
+               ICMP echo request 10.10.1.10 > 10.10.2.10 ttl 61
+
+MAC addresses: new pair on every link.  IP addresses: 10.10.1.10 -> 10.10.2.10 end to end.
+TTL: 64 at the client, minus one per router (leaf1, spine1, leaf2).
+
+interface MACs on the path:
+  client1      aa:c1:ab:15:3b:8c
+  leaf1-e1-1   1a:bb:02:ff:00:01
+  leaf1-e1-49  1a:bb:02:ff:00:31
+  spine1-e1-1  1a:02:04:ff:00:01
+  spine1-e1-2  1a:02:04:ff:00:02
+  leaf2-e1-49  1a:fd:03:ff:00:31
+  leaf2-e1-1   1a:fd:03:ff:00:01
+  client2      aa:c1:ab:70:c9:b3
+
+  64 bytes from 10.10.2.10: icmp_seq=1 ttl=61 time=47.6 ms
+  1 packets transmitted, 1 received, 0% packet loss, time 0ms

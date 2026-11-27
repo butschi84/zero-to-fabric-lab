@@ -1,0 +1,3 @@
+variant,method,summary
+A,"srv2 BGP neighbor shutdown (maintenance)","requests=295 ok=295 failed=0 largest_gap_s=0.10 first_fail_s=0.00 last_fail_s=0.00"
+B,"docker pause srv2 (server hangs, link stays up; BGP hold time)","requests=324 ok=316 failed=8 largest_gap_s=1.07 first_fail_s=-0.05 last_fail_s=5.09"

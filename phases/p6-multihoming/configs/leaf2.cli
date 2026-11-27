@@ -1,0 +1,120 @@
+set / system name host-name leaf2
+set / interface system0 admin-state enable
+set / interface system0 subinterface 0 ipv4 admin-state enable
+set / interface system0 subinterface 0 ipv4 address 10.255.0.12/32
+set / network-instance default type default
+set / network-instance default interface system0.0
+set / interface ethernet-1/49 admin-state enable
+set / interface ethernet-1/49 description "to spine1 e1-2"
+set / interface ethernet-1/49 subinterface 0 ipv4 admin-state enable
+set / interface ethernet-1/49 subinterface 0 ipv4 address 10.254.1.3/31
+set / interface ethernet-1/49 subinterface 0 ip-mtu 9000
+set / network-instance default interface ethernet-1/49.0
+set / bfd subinterface ethernet-1/49.0 admin-state enable
+set / bfd subinterface ethernet-1/49.0 desired-minimum-transmit-interval 1000000
+set / bfd subinterface ethernet-1/49.0 required-minimum-receive 1000000
+set / bfd subinterface ethernet-1/49.0 detection-multiplier 3
+set / interface ethernet-1/50 admin-state enable
+set / interface ethernet-1/50 description "to spine2 e1-2"
+set / interface ethernet-1/50 subinterface 0 ipv4 admin-state enable
+set / interface ethernet-1/50 subinterface 0 ipv4 address 10.254.2.3/31
+set / interface ethernet-1/50 subinterface 0 ip-mtu 9000
+set / network-instance default interface ethernet-1/50.0
+set / bfd subinterface ethernet-1/50.0 admin-state enable
+set / bfd subinterface ethernet-1/50.0 desired-minimum-transmit-interval 1000000
+set / bfd subinterface ethernet-1/50.0 required-minimum-receive 1000000
+set / bfd subinterface ethernet-1/50.0 detection-multiplier 3
+set / interface lag1 admin-state enable
+set / interface lag1 description "to srv-mh"
+set / interface lag1 subinterface 0 type bridged
+set / interface lag1 subinterface 0 admin-state enable
+set / network-instance mac-vrf-101 interface lag1.0
+set / tunnel-interface vxlan1 vxlan-interface 101 type bridged
+set / tunnel-interface vxlan1 vxlan-interface 101 ingress vni 10101
+set / interface irb0 admin-state enable
+set / interface irb0 subinterface 101 admin-state enable
+set / interface irb0 subinterface 101 ipv4 admin-state enable
+set / interface irb0 subinterface 101 ipv4 address 10.1.1.1/24 anycast-gw true
+set / interface irb0 subinterface 101 ipv4 address 10.1.1.1/24 primary
+set / interface irb0 subinterface 101 anycast-gw virtual-router-id 1
+set / interface irb0 subinterface 101 ipv4 arp learn-unsolicited true
+set / interface irb0 subinterface 101 ipv4 arp host-route populate dynamic
+set / interface irb0 subinterface 101 ipv4 arp evpn advertise dynamic
+set / network-instance mac-vrf-101 type mac-vrf
+set / network-instance mac-vrf-101 admin-state enable
+set / network-instance mac-vrf-101 interface irb0.101
+set / network-instance mac-vrf-101 vxlan-interface vxlan1.101
+set / network-instance mac-vrf-101 protocols bgp-evpn bgp-instance 1 admin-state enable
+set / network-instance mac-vrf-101 protocols bgp-evpn bgp-instance 1 vxlan-interface vxlan1.101
+set / network-instance mac-vrf-101 protocols bgp-evpn bgp-instance 1 evi 101
+set / network-instance mac-vrf-101 protocols bgp-vpn bgp-instance 1 route-target export-rt target:65000:10101
+set / network-instance mac-vrf-101 protocols bgp-vpn bgp-instance 1 route-target import-rt target:65000:10101
+set / tunnel-interface vxlan1 vxlan-interface 50001 type routed
+set / tunnel-interface vxlan1 vxlan-interface 50001 ingress vni 50001
+set / interface lo1 admin-state enable
+set / interface lo1 subinterface 1 admin-state enable
+set / interface lo1 subinterface 1 ipv4 admin-state enable
+set / interface lo1 subinterface 1 ipv4 address 10.1.255.12/32
+set / network-instance corp type ip-vrf
+set / network-instance corp admin-state enable
+set / network-instance corp description "tenant corp, L3VNI 50001"
+set / network-instance corp interface lo1.1
+set / network-instance corp interface irb0.101
+set / network-instance corp vxlan-interface vxlan1.50001
+set / network-instance corp protocols bgp-evpn bgp-instance 1 admin-state enable
+set / network-instance corp protocols bgp-evpn bgp-instance 1 vxlan-interface vxlan1.50001
+set / network-instance corp protocols bgp-evpn bgp-instance 1 evi 1
+set / network-instance corp protocols bgp-evpn bgp-instance 1 ecmp 8
+set / network-instance corp protocols bgp-vpn bgp-instance 1 route-target export-rt target:65000:50001
+set / network-instance corp protocols bgp-vpn bgp-instance 1 route-target import-rt target:65000:50001
+set / interface lag1 admin-state enable
+set / interface lag1 lag lag-type lacp
+set / interface lag1 lag lacp interval FAST
+set / interface lag1 lag lacp lacp-mode ACTIVE
+set / interface lag1 lag lacp admin-key 11
+set / interface lag1 lag lacp system-id-mac 00:00:00:00:11:11
+set / interface lag1 lag lacp system-priority 1
+set / interface ethernet-1/1 admin-state enable
+set / interface ethernet-1/1 description "to srv-mh (LAG member)"
+set / interface ethernet-1/1 ethernet aggregate-id lag1
+set / system network-instance protocols evpn ethernet-segments bgp-instance 1 ethernet-segment es1 admin-state enable
+set / system network-instance protocols evpn ethernet-segments bgp-instance 1 ethernet-segment es1 esi 00:11:22:33:44:55:66:77:88:01
+set / system network-instance protocols evpn ethernet-segments bgp-instance 1 ethernet-segment es1 multi-homing-mode all-active
+set / system network-instance protocols evpn ethernet-segments bgp-instance 1 ethernet-segment es1 interface lag1
+set / system network-instance protocols bgp-vpn bgp-instance 1
+set / network-instance mac-vrf-101 protocols bgp-evpn bgp-instance 1 ecmp 2
+set / routing-policy prefix-set loopbacks prefix 10.255.0.0/24 mask-length-range 32..32
+set / routing-policy prefix-set client-nets prefix 10.10.0.0/16 mask-length-range 24..24
+set / routing-policy policy underlay statement 10 match prefix-set loopbacks
+set / routing-policy policy underlay statement 10 action policy-result accept
+set / routing-policy policy underlay statement 20 match prefix-set client-nets
+set / routing-policy policy underlay statement 20 action policy-result accept
+set / routing-policy community-set origin member [ 65102:1 ]
+set / routing-policy policy underlay-out statement 10 match prefix-set loopbacks
+set / routing-policy policy underlay-out statement 10 action policy-result accept
+set / routing-policy policy underlay-out statement 10 action bgp communities add origin
+set / routing-policy policy underlay-out statement 20 match prefix-set client-nets
+set / routing-policy policy underlay-out statement 20 action policy-result accept
+set / routing-policy policy underlay-out statement 20 action bgp communities add origin
+set / network-instance default protocols bgp autonomous-system 65102
+set / network-instance default protocols bgp router-id 10.255.0.12
+set / network-instance default protocols bgp afi-safi ipv4-unicast admin-state enable
+set / network-instance default protocols bgp afi-safi ipv4-unicast multipath allow-multiple-as true
+set / network-instance default protocols bgp afi-safi ipv4-unicast multipath maximum-paths 8
+set / network-instance default protocols bgp group underlay export-policy [ underlay-out ]
+set / network-instance default protocols bgp group underlay import-policy [ underlay ]
+set / network-instance default protocols bgp group underlay failure-detection enable-bfd true
+set / network-instance default protocols bgp group underlay failure-detection fast-failover true
+set / network-instance default protocols bgp group underlay peer-as 65000
+set / network-instance default protocols bgp neighbor 10.254.1.2 peer-group underlay
+set / network-instance default protocols bgp neighbor 10.254.1.2 description "spine1"
+set / network-instance default protocols bgp neighbor 10.254.2.2 peer-group underlay
+set / network-instance default protocols bgp neighbor 10.254.2.2 description "spine2"
+set / network-instance default protocols bgp group overlay peer-as 65500
+set / network-instance default protocols bgp group overlay local-as as-number 65500
+set / network-instance default protocols bgp group overlay local-as prepend-global-as false
+set / network-instance default protocols bgp group overlay afi-safi evpn admin-state enable
+set / network-instance default protocols bgp group overlay afi-safi ipv4-unicast admin-state disable
+set / network-instance default protocols bgp group overlay transport local-address 10.255.0.12
+set / network-instance default protocols bgp neighbor 10.255.0.1 peer-group overlay
+set / network-instance default protocols bgp neighbor 10.255.0.2 peer-group overlay

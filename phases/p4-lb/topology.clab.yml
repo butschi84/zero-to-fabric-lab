@@ -1,0 +1,83 @@
+# Phase 4 - load balancing. Service rack = VRF shared, VLAN 901 (10.9.1.0/24)
+# stretched over leaf2 and leaf3. srv1-3 (FRR + busybox httpd) announce the
+# anycast VIP 10.9.100.10/32 by eBGP to their leaf; the fabric spreads clients
+# over them with ECMP. lb1/lb2 run HAProxy + keepalived (VRRP VIP 10.9.1.100)
+# in front of the same servers. Clients in corp on leaf1; shared is leaked
+# into corp on leaf1 and corp into shared on leaf2/leaf3 (as in phase 3b).
+name: ztf-p4
+
+mgmt:
+  network: ztf-mgmt
+  ipv4-subnet: 172.30.30.0/24
+
+topology:
+  kinds:
+    nokia_srlinux:
+      image: ghcr.io/nokia/srlinux:24.10.7
+      type: ixr-d2l
+    linux:
+      image: ztf-tools:1
+  nodes:
+    spine1: {kind: nokia_srlinux, startup-config: configs/spine1.cli, mgmt-ipv4: 172.30.30.11, labels: {graph-level: 1, graph-icon: switch}}
+    spine2: {kind: nokia_srlinux, startup-config: configs/spine2.cli, mgmt-ipv4: 172.30.30.12, labels: {graph-level: 1, graph-icon: switch}}
+    leaf1: {kind: nokia_srlinux, startup-config: configs/leaf1.cli, mgmt-ipv4: 172.30.30.21, labels: {graph-level: 2, graph-icon: switch}}
+    leaf2: {kind: nokia_srlinux, startup-config: configs/leaf2.cli, mgmt-ipv4: 172.30.30.22, labels: {graph-level: 2, graph-icon: switch}}
+    leaf3: {kind: nokia_srlinux, startup-config: configs/leaf3.cli, mgmt-ipv4: 172.30.30.23, labels: {graph-level: 2, graph-icon: switch}}
+    corp1: {kind: linux, mgmt-ipv4: 172.30.30.101, labels: {graph-level: 4, graph-icon: host},
+            exec: ["ip link set eth1 address 02:00:00:01:01:11", "ip link set eth1 mtu 1500", "ip addr add 10.1.1.11/24 dev eth1", "ip route replace default via 10.1.1.1"]}
+    corp2: {kind: linux, mgmt-ipv4: 172.30.30.102, labels: {graph-level: 4, graph-icon: host},
+            exec: ["ip link set eth1 address 02:00:00:01:01:12", "ip link set eth1 mtu 1500", "ip addr add 10.1.1.12/24 dev eth1", "ip route replace default via 10.1.1.1"]}
+    srv1:
+      kind: linux
+      image: ztf-frr:1
+      mgmt-ipv4: 172.30.30.111
+      labels: {graph-level: 4, graph-icon: server}
+      binds: ["configs/frr/daemons:/etc/frr/daemons", "configs/frr/srv1.conf:/etc/frr/frr.conf", "configs/frr/vtysh.conf:/etc/frr/vtysh.conf", "configs/lb/web-init.sh:/web-init.sh:ro"]
+      exec: ["ip link set eth1 address 02:00:00:09:01:11", "ip link set eth1 mtu 1500", "ip addr add 10.9.1.11/24 dev eth1", "ip route del default", "ip route add default via 10.9.1.1",
+             "ip addr add 10.9.100.10/32 dev lo", "/web-init.sh"]
+    srv2:
+      kind: linux
+      image: ztf-frr:1
+      mgmt-ipv4: 172.30.30.112
+      labels: {graph-level: 4, graph-icon: server}
+      binds: ["configs/frr/daemons:/etc/frr/daemons", "configs/frr/srv2.conf:/etc/frr/frr.conf", "configs/frr/vtysh.conf:/etc/frr/vtysh.conf", "configs/lb/web-init.sh:/web-init.sh:ro"]
+      exec: ["ip link set eth1 address 02:00:00:09:01:12", "ip link set eth1 mtu 1500", "ip addr add 10.9.1.12/24 dev eth1", "ip route del default", "ip route add default via 10.9.1.1",
+             "ip addr add 10.9.100.10/32 dev lo", "/web-init.sh"]
+    srv3:
+      kind: linux
+      image: ztf-frr:1
+      mgmt-ipv4: 172.30.30.113
+      labels: {graph-level: 4, graph-icon: server}
+      binds: ["configs/frr/daemons:/etc/frr/daemons", "configs/frr/srv3.conf:/etc/frr/frr.conf", "configs/frr/vtysh.conf:/etc/frr/vtysh.conf", "configs/lb/web-init.sh:/web-init.sh:ro"]
+      exec: ["ip link set eth1 address 02:00:00:09:01:13", "ip link set eth1 mtu 1500", "ip addr add 10.9.1.13/24 dev eth1", "ip route del default", "ip route add default via 10.9.1.1",
+             "ip addr add 10.9.100.10/32 dev lo", "/web-init.sh"]
+    lb1:
+      kind: linux
+      image: ztf-frr:1
+      mgmt-ipv4: 172.30.30.121
+      labels: {graph-level: 4, graph-icon: server}
+      binds: ["configs/lb/keepalived-lb1.conf:/etc/keepalived/keepalived.conf:ro", "configs/lb/haproxy.cfg:/etc/haproxy/haproxy.cfg:ro"]
+      exec: ["ip link set eth1 address 02:00:00:09:01:21", "ip link set eth1 mtu 1500", "ip addr add 10.9.1.21/24 dev eth1", "ip route del default", "ip route add default via 10.9.1.1",
+             "sysctl -w net.ipv4.ip_nonlocal_bind=1", "keepalived -D -f /etc/keepalived/keepalived.conf", "haproxy -D -f /etc/haproxy/haproxy.cfg"]
+    lb2:
+      kind: linux
+      image: ztf-frr:1
+      mgmt-ipv4: 172.30.30.122
+      labels: {graph-level: 4, graph-icon: server}
+      binds: ["configs/lb/keepalived-lb2.conf:/etc/keepalived/keepalived.conf:ro", "configs/lb/haproxy.cfg:/etc/haproxy/haproxy.cfg:ro"]
+      exec: ["ip link set eth1 address 02:00:00:09:01:22", "ip link set eth1 mtu 1500", "ip addr add 10.9.1.22/24 dev eth1", "ip route del default", "ip route add default via 10.9.1.1",
+             "sysctl -w net.ipv4.ip_nonlocal_bind=1", "keepalived -D -f /etc/keepalived/keepalived.conf", "haproxy -D -f /etc/haproxy/haproxy.cfg"]
+  links:
+    - endpoints: ["leaf1:e1-49", "spine1:e1-1"]
+    - endpoints: ["leaf1:e1-50", "spine2:e1-1"]
+    - endpoints: ["leaf2:e1-49", "spine1:e1-2"]
+    - endpoints: ["leaf2:e1-50", "spine2:e1-2"]
+    - endpoints: ["leaf3:e1-49", "spine1:e1-3"]
+    - endpoints: ["leaf3:e1-50", "spine2:e1-3"]
+    - endpoints: ["corp1:eth1", "leaf1:e1-1"]
+    - endpoints: ["corp2:eth1", "leaf1:e1-2"]
+    - endpoints: ["srv1:eth1", "leaf2:e1-1"]
+    - endpoints: ["lb1:eth1", "leaf2:e1-2"]
+    - endpoints: ["srv2:eth1", "leaf3:e1-1"]
+    - endpoints: ["srv3:eth1", "leaf3:e1-2"]
+    - endpoints: ["lb2:eth1", "leaf3:e1-3"]

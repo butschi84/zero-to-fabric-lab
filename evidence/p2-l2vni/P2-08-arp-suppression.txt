@@ -1,0 +1,14 @@
+# P2-08 · leaf3 · 2026-11-26T16:07:54Z
+method: client1 arping -c 3 10.1.1.12 (ARP cache flushed); count ARP requests for
+        10.1.1.12 arriving VXLAN-encapsulated on leaf3's uplinks (a bystander VTEP)
+
+proxy-ARP (ARP suppression) on     0 ARP requests seen on leaf3
+proxy-ARP off                      1 ARP requests seen on leaf3
+
+leaf1 proxy-ARP table before the test:
+Neighbor   MAC Address        Type     State
+---------  -----------------  -------  ------
+10.1.1.11  02:00:00:00:10:11  dynamic  active
+10.1.1.12  02:00:00:00:10:12  evpn     active
+10.1.1.13  02:00:00:00:10:13  dynamic  active
+10.1.1.14  02:00:00:00:10:14  evpn     active

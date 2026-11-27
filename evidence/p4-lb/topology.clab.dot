@@ -1,0 +1,28 @@
+graph "topology.clab" {
+	leaf1--spine2[ color=black ];
+	leaf2--spine1[ color=black ];
+	lb1--leaf2[ color=black ];
+	srv2--leaf3[ color=black ];
+	lb2--leaf3[ color=black ];
+	leaf2--spine2[ color=black ];
+	leaf3--spine1[ color=black ];
+	leaf3--spine2[ color=black ];
+	corp1--leaf1[ color=black ];
+	corp2--leaf1[ color=black ];
+	srv1--leaf2[ color=black ];
+	srv3--leaf3[ color=black ];
+	leaf1--spine1[ color=black ];
+	corp1 [ color=red, fillcolor=red, label=corp1, style=filled, xlabel=linux ];
+	corp2 [ color=red, fillcolor=red, label=corp2, style=filled, xlabel=linux ];
+	lb1 [ color=red, fillcolor=red, label=lb1, style=filled, xlabel=linux ];
+	lb2 [ color=red, fillcolor=red, label=lb2, style=filled, xlabel=linux ];
+	leaf1 [ color=red, fillcolor=red, label=leaf1, style=filled, xlabel=nokia_srlinux ];
+	leaf2 [ color=red, fillcolor=red, label=leaf2, style=filled, xlabel=nokia_srlinux ];
+	leaf3 [ color=red, fillcolor=red, label=leaf3, style=filled, xlabel=nokia_srlinux ];
+	spine1 [ color=red, fillcolor=red, label=spine1, style=filled, xlabel=nokia_srlinux ];
+	spine2 [ color=red, fillcolor=red, label=spine2, style=filled, xlabel=nokia_srlinux ];
+	srv1 [ color=red, fillcolor=red, label=srv1, style=filled, xlabel=linux ];
+	srv2 [ color=red, fillcolor=red, label=srv2, style=filled, xlabel=linux ];
+	srv3 [ color=red, fillcolor=red, label=srv3, style=filled, xlabel=linux ];
+
+}

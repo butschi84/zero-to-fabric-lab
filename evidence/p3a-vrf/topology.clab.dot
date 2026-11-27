@@ -1,0 +1,32 @@
+graph "topology.clab" {
+	srv3--leaf3[ color=black ];
+	leaf1--spine2[ color=black ];
+	leaf2--spine1[ color=black ];
+	dhcp1--leaf1[ color=black ];
+	corp2--leaf2[ color=black ];
+	guest2--leaf2[ color=black ];
+	leaf2--spine2[ color=black ];
+	guest1--leaf1[ color=black ];
+	mgmt2--leaf2[ color=black ];
+	leaf1--spine1[ color=black ];
+	leaf3--spine2[ color=black ];
+	corp1--leaf1[ color=black ];
+	leaf3--spine1[ color=black ];
+	dhcpsrv--leaf3[ color=black ];
+	dhcp2--leaf2[ color=black ];
+	corp1 [ color=red, fillcolor=red, label=corp1, style=filled, xlabel=linux ];
+	corp2 [ color=red, fillcolor=red, label=corp2, style=filled, xlabel=linux ];
+	dhcp1 [ color=red, fillcolor=red, label=dhcp1, style=filled, xlabel=linux ];
+	dhcp2 [ color=red, fillcolor=red, label=dhcp2, style=filled, xlabel=linux ];
+	dhcpsrv [ color=red, fillcolor=red, label=dhcpsrv, style=filled, xlabel=linux ];
+	guest1 [ color=red, fillcolor=red, label=guest1, style=filled, xlabel=linux ];
+	guest2 [ color=red, fillcolor=red, label=guest2, style=filled, xlabel=linux ];
+	leaf1 [ color=red, fillcolor=red, label=leaf1, style=filled, xlabel=nokia_srlinux ];
+	leaf2 [ color=red, fillcolor=red, label=leaf2, style=filled, xlabel=nokia_srlinux ];
+	leaf3 [ color=red, fillcolor=red, label=leaf3, style=filled, xlabel=nokia_srlinux ];
+	mgmt2 [ color=red, fillcolor=red, label=mgmt2, style=filled, xlabel=linux ];
+	spine1 [ color=red, fillcolor=red, label=spine1, style=filled, xlabel=nokia_srlinux ];
+	spine2 [ color=red, fillcolor=red, label=spine2, style=filled, xlabel=nokia_srlinux ];
+	srv3 [ color=red, fillcolor=red, label=srv3, style=filled, xlabel=linux ];
+
+}

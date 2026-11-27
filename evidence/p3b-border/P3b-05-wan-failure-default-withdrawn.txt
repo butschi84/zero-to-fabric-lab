@@ -1,0 +1,16 @@
+# P3b-05 · leaf1 · 2026-11-26T17:36:05Z
+method: fw 'ip link set eth3 down' (WAN link), then poll leaf1 VRF corp route table until 0/0 is gone;
+        same for 'up'; 5 runs. Poll resolution ~0.5 s (one sr_cli call per poll). Lab times, not hardware.
+
+before:
+  Prefix          Route Type  Route Owner   Next-hop (Type)
+  --------------  ----------  ------------  -------------------------------
+  0.0.0.0/0       bgp-evpn    bgp_evpn_mgr  10.255.0.21/32 (indirect/vxlan)
+                                            10.255.0.22/32 (indirect/vxlan)
+
+WAN down -> 0.0.0.0/0 gone from leaf1 corp: min 5.3  median 7.5  max 8.4 s (n=5)
+during the outage (entries left: 0): corp1# ping 198.51.100.1 -> From 10.1.1.1 icmp_seq=1 Destination Net Unreachable
+WAN up   -> 0.0.0.0/0 back in leaf1 corp: min 3.2  median 4.7  max 6.0 s (n=5)
+corp1# ping 198.51.100.1 -> 2 packets transmitted, 2 received, 0% packet loss, time 1000ms
+
+chain: WAN router -(eBGP default-originate)-> fw -(eBGP per VRF, 0/0 only)-> border1/2 -(EVPN Type-5)-> leafs

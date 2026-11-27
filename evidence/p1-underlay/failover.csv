@@ -1,0 +1,3 @@
+test,sent,received,lost,loss_ms_at_10ms_interval,largest_reply_gap_ms,method
+spine1-links-down,1325,1324,1,10,24,"ping -D -i 0.01 client1->client2; a) ip link down on both spine ports b) netem loss 100% on both spine ports"
+spine1-silent-drop,1323,1105,218,2180,2483,"ping -D -i 0.01 client1->client2; a) ip link down on both spine ports b) netem loss 100% on both spine ports"

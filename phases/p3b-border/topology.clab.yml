@@ -1,0 +1,77 @@
+# Phase 3b - border leafs, firewall, WAN, Type-5 default route, shared services.
+# border1/border2 carry every tenant VRF (IP-VRF only) and peer per VRF with a
+# Linux firewall (FRR + iptables, one VLAN sub-interface per tenant). The WAN
+# router sends 0/0 to the firewall; the firewall passes it on to the VRFs, the
+# borders advertise it into the fabric as a Type-5 route. Shared services:
+# corp reaches DNS by route leaking in the fabric (variant A), guest through
+# the firewall (variant B). Unique service addresses, no NAT.
+name: ztf-p3b
+
+mgmt:
+  network: ztf-mgmt
+  ipv4-subnet: 172.30.30.0/24
+
+topology:
+  kinds:
+    nokia_srlinux:
+      image: ghcr.io/nokia/srlinux:24.10.7
+      type: ixr-d2l
+    linux:
+      image: ztf-tools:1
+  nodes:
+    spine1: {kind: nokia_srlinux, startup-config: configs/spine1.cli, mgmt-ipv4: 172.30.30.11, labels: {graph-level: 2, graph-icon: switch}}
+    spine2: {kind: nokia_srlinux, startup-config: configs/spine2.cli, mgmt-ipv4: 172.30.30.12, labels: {graph-level: 2, graph-icon: switch}}
+    leaf1: {kind: nokia_srlinux, startup-config: configs/leaf1.cli, mgmt-ipv4: 172.30.30.21, labels: {graph-level: 3, graph-icon: switch}}
+    leaf3: {kind: nokia_srlinux, startup-config: configs/leaf3.cli, mgmt-ipv4: 172.30.30.23, labels: {graph-level: 3, graph-icon: switch}}
+    border1: {kind: nokia_srlinux, startup-config: configs/border1.cli, mgmt-ipv4: 172.30.30.31, labels: {graph-level: 1, graph-icon: switch}}
+    border2: {kind: nokia_srlinux, startup-config: configs/border2.cli, mgmt-ipv4: 172.30.30.32, labels: {graph-level: 1, graph-icon: switch}}
+    fw:
+      kind: linux
+      image: ztf-frr:1
+      mgmt-ipv4: 172.30.30.41
+      labels: {graph-level: 0, graph-icon: router}
+      binds:
+        - configs/frr/daemons:/etc/frr/daemons
+        - configs/frr/fw.conf:/etc/frr/frr.conf
+        - configs/frr/vtysh.conf:/etc/frr/vtysh.conf
+        - configs/fw/fw-init.sh:/fw-init.sh:ro
+      exec: ["/fw-init.sh"]
+    wan:
+      kind: linux
+      image: ztf-frr:1
+      mgmt-ipv4: 172.30.30.42
+      labels: {graph-level: 0, graph-icon: router}
+      binds:
+        - configs/frr/daemons:/etc/frr/daemons
+        - configs/frr/wan.conf:/etc/frr/frr.conf
+        - configs/frr/vtysh.conf:/etc/frr/vtysh.conf
+      exec: ["ip addr add 10.250.0.0/31 dev eth1", "ip addr add 198.51.100.1/32 dev lo", "ip route del default"]
+    corp1: {kind: linux, mgmt-ipv4: 172.30.30.101, labels: {graph-level: 4, graph-icon: host},
+            exec: ["ip link set eth1 address 02:00:00:01:01:11", "ip link set eth1 mtu 1500", "ip addr add 10.1.1.11/24 dev eth1", "ip route replace default via 10.1.1.1"]}
+    guest1: {kind: linux, mgmt-ipv4: 172.30.30.107, labels: {graph-level: 4, graph-icon: host},
+             exec: ["ip link set eth1 address 02:00:00:02:01:11", "ip link set eth1 mtu 1500", "ip addr add 10.2.1.11/24 dev eth1", "ip route replace default via 10.2.1.1"]}
+    svc-dns:
+      kind: linux
+      mgmt-ipv4: 172.30.30.110
+      labels: {graph-level: 4, graph-icon: server}
+      binds: ["configs/dns/dnsmasq.conf:/etc/dnsmasq.conf:ro"]
+      exec: ["ip link set eth1 address 02:00:00:09:01:53", "ip link set eth1 mtu 1500", "ip addr add 10.9.1.53/24 dev eth1",
+             "ip route replace default via 10.9.1.1", "dnsmasq -C /etc/dnsmasq.conf"]
+    mgmt3: {kind: linux, mgmt-ipv4: 172.30.30.109, labels: {graph-level: 4, graph-icon: host},
+            exec: ["ip link set eth1 address 02:00:00:03:01:13", "ip link set eth1 mtu 1500", "ip addr add 10.3.1.13/24 dev eth1", "ip route replace default via 10.3.1.1"]}
+  links:
+    - endpoints: ["leaf1:e1-49", "spine1:e1-1"]
+    - endpoints: ["leaf1:e1-50", "spine2:e1-1"]
+    - endpoints: ["leaf3:e1-49", "spine1:e1-3"]
+    - endpoints: ["leaf3:e1-50", "spine2:e1-3"]
+    - endpoints: ["border1:e1-49", "spine1:e1-7"]
+    - endpoints: ["border1:e1-50", "spine2:e1-7"]
+    - endpoints: ["border2:e1-49", "spine1:e1-8"]
+    - endpoints: ["border2:e1-50", "spine2:e1-8"]
+    - endpoints: ["fw:eth1", "border1:e1-1"]
+    - endpoints: ["fw:eth2", "border2:e1-1"]
+    - endpoints: ["fw:eth3", "wan:eth1"]
+    - endpoints: ["corp1:eth1", "leaf1:e1-1"]
+    - endpoints: ["guest1:eth1", "leaf1:e1-2"]
+    - endpoints: ["svc-dns:eth1", "leaf3:e1-1"]
+    - endpoints: ["mgmt3:eth1", "leaf3:e1-2"]

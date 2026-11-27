@@ -1,0 +1,6 @@
+# P2-13 · client1 · 2026-11-26T16:08:20Z
+client1# ping matrix, 3 pings each (same L2 segment, three leafs)
+src\dst   client1       client2       client3       mobile        
+client1   OK            OK            OK            OK            
+client2   OK            OK            OK            OK            
+client3   OK            OK            OK            OK            

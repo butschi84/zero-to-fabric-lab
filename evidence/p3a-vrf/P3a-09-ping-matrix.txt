@@ -1,0 +1,8 @@
+# P3a-09 · corp1 · 2026-11-26T17:09:47Z
+corp1# ping matrix, 3 pings each (same tenant: OK, other tenant: FAIL)
+src\dst   corp1         corp2         srv3          guest2        mgmt2         
+corp1     OK            OK            OK            FAIL          FAIL          
+corp2     OK            OK            OK            FAIL          FAIL          
+srv3      OK            OK            OK            FAIL          FAIL          
+guest1    FAIL          FAIL          FAIL          OK            FAIL          
+mgmt2     FAIL          FAIL          FAIL          FAIL          OK            

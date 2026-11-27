@@ -1,0 +1,19 @@
+# P3b-02 · fw · 2026-11-26T17:33:58Z
+corp1# ping -c 3 198.51.100.1 (WAN);  guest1# ping -c 2 198.51.100.1;  guest1# ping -c 2 10.1.1.11 (corp)
+
+fw# iptables -L FORWARD / TENANT-RULES -v -n   (counters since reset)
+Chain FORWARD (policy DROP 0 packets, 0 bytes)
+ pkts bytes target     prot opt in     out     source               destination         
+    8   672 ACCEPT     all  --  *      *       0.0.0.0/0            0.0.0.0/0            ctstate RELATED,ESTABLISHED
+    4   336 TENANT-RULES  all  --  *      *       0.0.0.0/0            0.0.0.0/0           
+Chain TENANT-RULES (1 references)
+ pkts bytes target     prot opt in     out     source               destination         
+    1    84 ACCEPT     all  --  *      eth3    10.1.0.0/16          0.0.0.0/0            /* corp to WAN */
+    1    84 ACCEPT     all  --  *      eth3    10.2.0.0/16          0.0.0.0/0            /* guest to WAN */
+    0     0 ACCEPT     udp  --  *      *       10.2.0.0/16          10.9.1.53            udp dpt:53 /* guest to shared
+    0     0 ACCEPT     icmp --  *      *       10.2.0.0/16          10.9.1.53            /* guest ping shared DNS */
+    2   168 LOG        all  --  *      *       0.0.0.0/0            0.0.0.0/0            limit: avg 5/sec burst 5 LOG 
+    2   168 DROP       all  --  *      *       0.0.0.0/0            0.0.0.0/0            /* everything else */
+
+fw# vtysh -c 'show ip route 0.0.0.0/0'  (learned from the WAN router)
+  Known via "bgp", distance 20, metric 0, best

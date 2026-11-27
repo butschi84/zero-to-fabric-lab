@@ -1,0 +1,22 @@
+# P3a-03 · leaf1 · 2026-11-26T17:08:32Z
+leaf1# info from state interface irb0 subinterface 101 (address, anycast-gw)
+  address 10.1.1.1/24
+  anycast-gw true
+  virtual-router-id 1
+  anycast-gw-mac 00:00:5E:00:01:01
+leaf2# info from state interface irb0 subinterface 101 (address, anycast-gw)
+  address 10.1.1.1/24
+  anycast-gw true
+  virtual-router-id 1
+  anycast-gw-mac 00:00:5E:00:01:01
+
+corp1# ping -c 2 10.1.1.1; ip neigh show 10.1.1.1
+64 bytes from 10.1.1.1: icmp_seq=1 ttl=64 time=2.81 ms
+64 bytes from 10.1.1.1: icmp_seq=2 ttl=64 time=2.46 ms
+2 packets transmitted, 2 received, 0% packet loss, time 301ms
+10.1.1.1 dev eth1 lladdr 00:00:5e:00:01:01 REACHABLE 
+corp2# ping -c 2 10.1.1.1; ip neigh show 10.1.1.1
+64 bytes from 10.1.1.1: icmp_seq=1 ttl=64 time=2.36 ms
+64 bytes from 10.1.1.1: icmp_seq=2 ttl=64 time=1.66 ms
+2 packets transmitted, 2 received, 0% packet loss, time 301ms
+10.1.1.1 dev eth1 lladdr 00:00:5e:00:01:01 REACHABLE 

@@ -1,0 +1,21 @@
+# P4-02 · corp1 · 2026-11-27T09:18:38Z
+method: 100 HTTP requests (new TCP connection each) to the anycast VIP 10.9.100.10 per client;
+        each server answers with its hostname and MAC. Fabric ECMP: leaf1 -> leaf2|leaf3, then leaf3 -> srv2|srv3
+
+client   server (MAC)               answers
+corp1    srv1 (02:00:00:09:01:11)   51
+corp1    srv2 (02:00:00:09:01:12)   26
+corp1    srv3 (02:00:00:09:01:13)   23
+corp2    srv1 (02:00:00:09:01:11)   61
+corp2    srv2 (02:00:00:09:01:12)   22
+corp2    srv3 (02:00:00:09:01:13)   17
+
+leaf1# info system load-balancing hash-options   (empty = defaults: 5-tuple)
+  hash-seed 0
+  destination-address true
+  destination-port true
+  ipv6-flow-label false
+  protocol true
+  source-address true
+  source-port true
+  vlan true

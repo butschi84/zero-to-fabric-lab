@@ -1,0 +1,10 @@
+method: spine-a e1-7 (to gw-a) down / up; 8 TCP flows a-c2 -> b-c3 at 2 Mbit/s each over the DCI
+detection = injection -> first Prometheus answer showing it (gnmic sample 5 s + collector export)
+
+metric                                 before       during       after       
+BGP sessions established (spine-a)     6            5            6           
+BFD sessions up (spine-a)              3            3            4           
+spine-a e1-7 -> gw-a  out bit/s        3548657      0            15691922    
+spine-a e1-8 -> gw-a2 out bit/s        9173429      24347516     3354        
+
+detected: BGP drop after 50 s, ECMP shift after 56 s; recovery seen after 42 s

@@ -1,0 +1,18 @@
+# P3a-08 · leaf1 · 2026-11-26T17:09:47Z
+fault: leaf3 exports VRF corp with export-rt target:65000:50010 (correct: 65000:50001)
+
+spine1 (route reflector) has the route, with the wrong RT:
+  Communities       : [target:65000:50010, mac-nh:1a:34:09:ff:00:00, bgp-tunnel-encap:VXLAN]
+leaf1 EVPN table, entries for 10.1.2.0/24 (default: routes no VRF imports are dropped): 0
+
+leaf1 with 'afi-safi evpn evpn keep-all-routes true' (troubleshooting only):
+  Status  Route-distinguisher  IP-address      neighbor    Label
+  ------  -------------------  --------------  ----------  -----
+  -       10.255.0.13:1        10.1.2.0/24     10.255.0.1  50001
+  -       10.255.0.13:1        10.1.2.0/24     10.255.0.2  50001
+  Communities       : [target:65000:50010, mac-nh:1a:34:09:ff:00:00, bgp-tunnel-encap:VXLAN]
+leaf1 VRF corp route-table entries for 10.1.2.0/24: 0      (received, not imported)
+corp1# ping 10.1.2.13 -> 2 packets transmitted, 0 received, +2 errors, 100% packet loss, time 1001ms
+
+repaired (export-rt 65000:50001): VRF corp entries for 10.1.2.0/24: 1
+corp1# ping 10.1.2.13 -> 2 packets transmitted, 2 received, 0% packet loss, time 1001ms

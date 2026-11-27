@@ -1,0 +1,42 @@
+[
+ {
+  "_id": "6b094cb264ec8bfc54d47c40",
+  "name": "Loki (OTLP)",
+  "description": "",
+  "exporterType": "otlphttp",
+  "platform": "all",
+  "defaultConfig": {
+   "compression": "gzip",
+   "durable_queue": true,
+   "endpoint": "http://172.30.30.212:3100/otlp",
+   "timeout": "10s"
+  },
+  "isTemplate": false,
+  "signalTypes": [
+   "logs"
+  ],
+  "tags": null,
+  "createdAt": "2026-11-27T09:26:10.902002759Z",
+  "updatedAt": "2026-11-27T09:26:10.902002968Z"
+ },
+ {
+  "_id": "6b094cb264ec8bfc54d47c3e",
+  "name": "Prometheus (OTLP)",
+  "description": "",
+  "exporterType": "otlphttp",
+  "platform": "all",
+  "defaultConfig": {
+   "compression": "gzip",
+   "durable_queue": true,
+   "endpoint": "http://172.30.30.210:9090/api/v1/otlp",
+   "timeout": "10s"
+  },
+  "isTemplate": false,
+  "signalTypes": [
+   "metrics"
+  ],
+  "tags": null,
+  "createdAt": "2026-11-27T09:26:10.836320468Z",
+  "updatedAt": "2026-11-27T09:26:10.836320676Z"
+ }
+]

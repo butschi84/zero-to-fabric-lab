@@ -1,0 +1,18 @@
+# P8-03 · gw-b · 2026-11-26T19:51:06Z
+gw-b# show network-instance default protocols bgp neighbor   (DCI sessions: both gateways of site A)
+Peer          Group     Peer-AS  State        AFI/SAFI      [Rx/Active/Tx]
+------------  --------  -------  -----------  ------------  --------------
+10.255.0.21   dci       65500    established  evpn          [27/23/24]
+10.255.0.22   dci       65500    established  evpn          [27/0/47]
+
+leaf-a1# show network-instance default protocols bgp routes evpn route-type 5 summary   (site A's view: prefixes of site B)
+Status  Route-distinguisher  IP-address       Next-Hop     Label
+------  -------------------  ---------------  -----------  -----
+u*>     10.255.1.11:1        10.1.1.0/24      10.255.1.11  50001
+u*>     10.255.1.11:1        10.1.3.0/24      10.255.1.11  50001
+
+leaf-b1# show network-instance default protocols bgp routes evpn route-type 5 summary   (site B's view: prefixes of site A)
+Status  Route-distinguisher  IP-address       Next-Hop     Label
+------  -------------------  ---------------  -----------  -----
+u*>     10.255.0.11:1        10.1.1.0/24      10.255.0.11  50001
+u*>     10.255.0.11:1        10.1.2.0/24      10.255.0.11  50001

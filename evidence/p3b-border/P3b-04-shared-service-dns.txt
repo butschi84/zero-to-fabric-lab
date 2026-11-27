@@ -1,0 +1,19 @@
+# P3b-04 · corp1 · 2026-11-26T17:34:01Z
+corp1# dig +short @10.9.1.53 svc.lab.example -> 10.9.1.53
+corp1# ping -c 3 10.9.1.53 -> 3 packets transmitted, 3 received, 0% packet loss, time 611ms
+guest1# dig +short @10.9.1.53 svc.lab.example -> 10.9.1.53
+guest1# ping -c 3 10.9.1.53 -> 3 packets transmitted, 3 received, 0% packet loss, time 609ms
+
+guest1# traceroute -I -n 10.9.1.53   while fw captures on its guest sub-interfaces
+   1  10.2.1.1  0.302 ms
+   2  10.9.1.53  1.102 ms
+fw# tcpdump -v   (seq 2 was sent with TTL 2; seen entering (253) and leaving (252) the fw)
+  seq 2  10.2.1.11 > 10.9.1.53  ttl at fw 252
+  seq 2  10.2.1.11 > 10.9.1.53  ttl at fw 253
+  seq 3  10.2.1.11 > 10.9.1.53  ttl at fw 252
+
+fw# iptables -L TENANT-RULES -v -n   (counters since reset: guest passes the firewall, corp does not)
+    0     0 ACCEPT     all  --  *      eth3    10.1.0.0/16          0.0.0.0/0            /* corp to WAN */
+    0     0 ACCEPT     all  --  *      eth3    10.2.0.0/16          0.0.0.0/0            /* guest to WAN */
+    1    84 ACCEPT     udp  --  *      *       10.2.0.0/16          10.9.1.53            udp dpt:53 /* guest to shared
+    4   264 ACCEPT     icmp --  *      *       10.2.0.0/16          10.9.1.53            /* guest ping shared DNS */

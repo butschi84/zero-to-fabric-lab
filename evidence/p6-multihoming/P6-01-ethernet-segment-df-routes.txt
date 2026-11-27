@@ -1,0 +1,24 @@
+# P6-01 · leaf1 · 2026-11-26T18:35:33Z
+leaf1# show system network-instance ethernet-segments detail   (excerpt)
+  Name                 : es1
+  ESI                  : 00:11:22:33:44:55:66:77:88:01
+  Multi-homing         : all-active          Oper Multi-homing : all-active
+  Interface            : lag1
+  DF Election          : default             Oper DF Election  : default
+  DF Candidates
+  mac-vrf-101
+  Candidates : 10.255.0.11, 10.255.0.12 (DF)
+
+leaf3# show network-instance default protocols bgp routes evpn route-type 1 summary   (A-D per EVI tag 0, per ES tag 4294967295)
+Status  RD                ESI                             Tag-ID      Next-Hop
+u*>     10.255.0.11:101   00:11:22:33:44:55:66:77:88:01   0           10.255.0.11
+u*>     10.255.0.11:101   00:11:22:33:44:55:66:77:88:01   4294967295  10.255.0.11
+u*>     10.255.0.12:101   00:11:22:33:44:55:66:77:88:01   0           10.255.0.12
+u*>     10.255.0.12:101   00:11:22:33:44:55:66:77:88:01   4294967295  10.255.0.12
+
+leaf1# show network-instance default protocols bgp routes evpn route-type 4 summary   (ES route, used for the DF election)
+Status  Route-distinguisher  ESI                            originating-router
+------  -------------------  -----------------------------  ------------------
+u*>     10.255.0.12:0        00:11:22:33:44:55:66:77:88:01  10.255.0.12
+
+leaf3# mac-table mac 02:00:00:01:01:50   (aliasing: destination is the ESI, not one VTEP)

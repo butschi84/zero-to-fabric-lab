@@ -1,0 +1,5 @@
+test,sent,received,lost,loss_ms_at_10ms_interval,largest_reply_gap_ms,method
+leaf1-access-link-admin-down,1328,849,479,4790,5453,"set interface ethernet-1/1 admin-state disable on leaf1 (LAG member)"
+spine1-hangs-docker-pause,1324,1063,261,2610,2997,"docker pause spine1 (no link-down, BFD 3x1 s detects)"
+leaf1-hangs-docker-pause,1331,754,577,5770,6546,"docker pause leaf1 (links stay up; LACP 3x1 s and BFD 3x1 s detect)"
+leaf1-stopped-docker-stop,1329,1053,276,2760,3133,"docker stop -t 0 leaf1 (node gone, links down on all peers)"

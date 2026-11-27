@@ -1,0 +1,11 @@
+run,event,seconds_until_leaf1_corp_route_table_changed,method
+1,WAN down -> 0/0 withdrawn,8.4,"ip link set eth3 down|up on fw; poll leaf1 VRF corp route table via sr_cli, ~0.5 s resolution"
+1,WAN up -> 0/0 back,3.2,"ip link set eth3 down|up on fw; poll leaf1 VRF corp route table via sr_cli, ~0.5 s resolution"
+2,WAN down -> 0/0 withdrawn,6.1,"ip link set eth3 down|up on fw; poll leaf1 VRF corp route table via sr_cli, ~0.5 s resolution"
+2,WAN up -> 0/0 back,5.1,"ip link set eth3 down|up on fw; poll leaf1 VRF corp route table via sr_cli, ~0.5 s resolution"
+3,WAN down -> 0/0 withdrawn,7.5,"ip link set eth3 down|up on fw; poll leaf1 VRF corp route table via sr_cli, ~0.5 s resolution"
+3,WAN up -> 0/0 back,4.2,"ip link set eth3 down|up on fw; poll leaf1 VRF corp route table via sr_cli, ~0.5 s resolution"
+4,WAN down -> 0/0 withdrawn,5.3,"ip link set eth3 down|up on fw; poll leaf1 VRF corp route table via sr_cli, ~0.5 s resolution"
+4,WAN up -> 0/0 back,4.7,"ip link set eth3 down|up on fw; poll leaf1 VRF corp route table via sr_cli, ~0.5 s resolution"
+5,WAN down -> 0/0 withdrawn,8.1,"ip link set eth3 down|up on fw; poll leaf1 VRF corp route table via sr_cli, ~0.5 s resolution"
+5,WAN up -> 0/0 back,6.0,"ip link set eth3 down|up on fw; poll leaf1 VRF corp route table via sr_cli, ~0.5 s resolution"

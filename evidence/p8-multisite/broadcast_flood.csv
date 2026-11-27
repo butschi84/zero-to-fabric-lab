@@ -1,0 +1,3 @@
+case,source,target_port,rate_sent_pps,received_pps_at_site_b
+stretched,a-c1 (net 01),b-c1,100,101
+l3_separated,a-c2 (net 02),b-c3,100,0

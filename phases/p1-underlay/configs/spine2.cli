@@ -1,0 +1,48 @@
+set / system name host-name spine2
+set / interface system0 admin-state enable
+set / interface system0 subinterface 0 ipv4 admin-state enable
+set / interface system0 subinterface 0 ipv4 address 10.255.0.2/32
+set / network-instance default type default
+set / network-instance default interface system0.0
+set / interface ethernet-1/1 admin-state enable
+set / interface ethernet-1/1 description "to leaf1 e1/50"
+set / interface ethernet-1/1 subinterface 0 ipv4 admin-state enable
+set / interface ethernet-1/1 subinterface 0 ipv4 address 10.254.2.0/31
+set / network-instance default interface ethernet-1/1.0
+set / bfd subinterface ethernet-1/1.0 admin-state enable
+set / bfd subinterface ethernet-1/1.0 desired-minimum-transmit-interval 1000000
+set / bfd subinterface ethernet-1/1.0 required-minimum-receive 1000000
+set / bfd subinterface ethernet-1/1.0 detection-multiplier 3
+set / interface ethernet-1/2 admin-state enable
+set / interface ethernet-1/2 description "to leaf2 e1/50"
+set / interface ethernet-1/2 subinterface 0 ipv4 admin-state enable
+set / interface ethernet-1/2 subinterface 0 ipv4 address 10.254.2.2/31
+set / network-instance default interface ethernet-1/2.0
+set / bfd subinterface ethernet-1/2.0 admin-state enable
+set / bfd subinterface ethernet-1/2.0 desired-minimum-transmit-interval 1000000
+set / bfd subinterface ethernet-1/2.0 required-minimum-receive 1000000
+set / bfd subinterface ethernet-1/2.0 detection-multiplier 3
+set / routing-policy prefix-set loopbacks prefix 10.255.0.0/24 mask-length-range 32..32
+set / routing-policy prefix-set client-nets prefix 10.10.0.0/16 mask-length-range 24..24
+set / routing-policy policy underlay statement 10 match prefix-set loopbacks
+set / routing-policy policy underlay statement 10 action policy-result accept
+set / routing-policy policy underlay statement 20 match prefix-set client-nets
+set / routing-policy policy underlay statement 20 action policy-result accept
+set / routing-policy prefix-set doc-198 prefix 198.51.100.0/24 mask-length-range exact
+set / routing-policy policy underlay statement 30 match prefix-set doc-198
+set / routing-policy policy underlay statement 30 action policy-result accept
+set / network-instance default protocols bgp autonomous-system 65000
+set / network-instance default protocols bgp router-id 10.255.0.2
+set / network-instance default protocols bgp afi-safi ipv4-unicast admin-state enable
+set / network-instance default protocols bgp afi-safi ipv4-unicast multipath allow-multiple-as true
+set / network-instance default protocols bgp afi-safi ipv4-unicast multipath maximum-paths 8
+set / network-instance default protocols bgp group underlay export-policy [ underlay ]
+set / network-instance default protocols bgp group underlay import-policy [ underlay ]
+set / network-instance default protocols bgp group underlay failure-detection enable-bfd true
+set / network-instance default protocols bgp group underlay failure-detection fast-failover true
+set / network-instance default protocols bgp neighbor 10.254.2.1 peer-group underlay
+set / network-instance default protocols bgp neighbor 10.254.2.1 peer-as 65101
+set / network-instance default protocols bgp neighbor 10.254.2.1 description "leaf1"
+set / network-instance default protocols bgp neighbor 10.254.2.3 peer-group underlay
+set / network-instance default protocols bgp neighbor 10.254.2.3 peer-as 65102
+set / network-instance default protocols bgp neighbor 10.254.2.3 description "leaf2"

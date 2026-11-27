@@ -1,0 +1,23 @@
+# P9-02 · host · 2026-11-27T10:38:21Z
+host# grep paths obs/gnmic/gnmic-a.yaml   (subscribed by gnmic-a and gnmic-b)
+/interface[name=ethernet-1/*]/oper-state
+/interface[name=ethernet-1/*]/admin-state
+/interface[name=ethernet-1/*]/statistics/in-octets
+/interface[name=ethernet-1/*]/statistics/out-octets
+/interface[name=ethernet-1/*]/statistics/in-error-packets
+/interface[name=ethernet-1/*]/statistics/out-error-packets
+/interface[name=ethernet-1/*]/statistics/in-discarded-packets
+/interface[name=ethernet-1/*]/statistics/out-discarded-packets
+/network-instance[name=*]/protocols/bgp/neighbor[peer-address=*]/session-state
+/network-instance[name=*]/protocols/bgp/neighbor[peer-address=*]/afi-safi[afi-safi-name=*]/received-routes
+/network-instance[name=*]/protocols/bgp/neighbor[peer-address=*]/afi-safi[afi-safi-name=*]/active-routes
+/bfd/network-instance[name=*]/peer[local-discriminator=*]/session-state
+/bfd/network-instance[name=*]/peer[local-discriminator=*]/remote-address
+/network-instance[name=default]/bgp-rib/afi-safi[afi-safi-name=evpn]/evpn/rib-in-out/rib-in-post/mac-ip-route/used-route
+/network-instance[name=default]/bgp-rib/afi-safi[afi-safi-name=evpn]/evpn/rib-in-out/rib-in-post/imet-route/used-route
+/network-instance[name=default]/bgp-rib/afi-safi[afi-safi-name=evpn]/evpn/rib-in-out/rib-in-post/ip-prefix-route/used-route
+/network-instance[name=default]/bgp-rib/afi-safi[afi-safi-name=evpn]/evpn/rib-in-out/rib-in-post/ethernet-ad-route/used-route
+/network-instance[name=default]/bgp-rib/afi-safi[afi-safi-name=evpn]/evpn/rib-in-out/rib-in-post/ethernet-segment-route/used-route
+/tunnel/vxlan-tunnel/vtep[address=*]/index
+/network-instance[name=*]/bridge-table/statistics
+/network-instance[name=*]/route-table/ipv4-unicast/statistics/active-routes

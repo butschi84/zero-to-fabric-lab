@@ -1,0 +1,46 @@
+[
+ {
+  "_id": "a30133b08dc1726f47bc4fb2",
+  "tenantId": "",
+  "name": "site-a: all signals to Prometheus and Loki",
+  "priority": 100,
+  "isFinal": true,
+  "inputFilter": "true",
+  "pipelineId": "",
+  "destinationIds": [
+   "1462cf985dcb10259fe305b5",
+   "8fb5f44cd2ae9a8021bfb2d6"
+  ],
+  "scope": {
+   "kind": "collector",
+   "id": "355319b618ef11761dc816af"
+  },
+  "enabled": true,
+  "createdBy": "6b094c7564ec8bfc54d47c18",
+  "updatedBy": "6b094c7564ec8bfc54d47c18",
+  "createdAt": "2026-11-27T09:26:11.230345218Z",
+  "updatedAt": "2026-11-27T09:26:11.230345218Z",
+  "matchFilterKey": "filter/route_47bc4fb2_match"
+ },
+ {
+  "_id": "e99127a554b4cc1d7cf5eb1c",
+  "tenantId": "",
+  "name": "Default route",
+  "priority": 1000000,
+  "isFinal": true,
+  "inputFilter": "true",
+  "pipelineId": "",
+  "destinationIds": null,
+  "destinationSelector": {
+   "role": "default-egress"
+  },
+  "scope": {
+   "kind": "collector",
+   "id": "355319b618ef11761dc816af"
+  },
+  "enabled": true,
+  "createdAt": "0001-01-01T00:00:00Z",
+  "updatedAt": "0001-01-01T00:00:00Z",
+  "matchFilterKey": "filter/route_7cf5eb1c_match"
+ }
+]

@@ -1,0 +1,68 @@
+set / system name host-name spine-a
+set / interface system0 admin-state enable
+set / interface system0 subinterface 0 ipv4 admin-state enable
+set / interface system0 subinterface 0 ipv4 address 10.255.0.1/32
+set / network-instance default type default
+set / network-instance default interface system0.0
+set / routing-policy prefix-set loopbacks prefix 10.255.0.0/16 mask-length-range 32..32
+set / routing-policy policy underlay statement 10 match prefix-set loopbacks
+set / routing-policy policy underlay statement 10 action policy-result accept
+set / network-instance default protocols bgp autonomous-system 65000
+set / network-instance default protocols bgp router-id 10.255.0.1
+set / network-instance default protocols bgp afi-safi ipv4-unicast admin-state enable
+set / network-instance default protocols bgp afi-safi ipv4-unicast multipath allow-multiple-as true
+set / network-instance default protocols bgp afi-safi ipv4-unicast multipath maximum-paths 8
+set / network-instance default protocols bgp group underlay export-policy [ underlay ]
+set / network-instance default protocols bgp group underlay import-policy [ underlay ]
+set / network-instance default protocols bgp group underlay failure-detection enable-bfd true
+set / network-instance default protocols bgp group underlay failure-detection fast-failover true
+set / interface ethernet-1/1 admin-state enable
+set / interface ethernet-1/1 description "to leaf-a1"
+set / interface ethernet-1/1 subinterface 0 ipv4 admin-state enable
+set / interface ethernet-1/1 subinterface 0 ipv4 address 10.254.1.0/31
+set / interface ethernet-1/1 subinterface 0 ip-mtu 9000
+set / network-instance default interface ethernet-1/1.0
+set / network-instance default protocols bgp neighbor 10.254.1.1 peer-group underlay
+set / network-instance default protocols bgp neighbor 10.254.1.1 peer-as 65101
+set / network-instance default protocols bgp neighbor 10.254.1.1 description "to leaf-a1"
+set / bfd subinterface ethernet-1/1.0 admin-state enable
+set / bfd subinterface ethernet-1/1.0 desired-minimum-transmit-interval 1000000
+set / bfd subinterface ethernet-1/1.0 required-minimum-receive 1000000
+set / bfd subinterface ethernet-1/1.0 detection-multiplier 3
+set / interface ethernet-1/7 admin-state enable
+set / interface ethernet-1/7 description "to gw-a"
+set / interface ethernet-1/7 subinterface 0 ipv4 admin-state enable
+set / interface ethernet-1/7 subinterface 0 ipv4 address 10.254.1.12/31
+set / interface ethernet-1/7 subinterface 0 ip-mtu 9000
+set / network-instance default interface ethernet-1/7.0
+set / network-instance default protocols bgp neighbor 10.254.1.13 peer-group underlay
+set / network-instance default protocols bgp neighbor 10.254.1.13 peer-as 65201
+set / network-instance default protocols bgp neighbor 10.254.1.13 description "to gw-a"
+set / bfd subinterface ethernet-1/7.0 admin-state enable
+set / bfd subinterface ethernet-1/7.0 desired-minimum-transmit-interval 1000000
+set / bfd subinterface ethernet-1/7.0 required-minimum-receive 1000000
+set / bfd subinterface ethernet-1/7.0 detection-multiplier 3
+set / interface ethernet-1/8 admin-state enable
+set / interface ethernet-1/8 description "to gw-a2"
+set / interface ethernet-1/8 subinterface 0 ipv4 admin-state enable
+set / interface ethernet-1/8 subinterface 0 ipv4 address 10.254.1.14/31
+set / interface ethernet-1/8 subinterface 0 ip-mtu 9000
+set / network-instance default interface ethernet-1/8.0
+set / network-instance default protocols bgp neighbor 10.254.1.15 peer-group underlay
+set / network-instance default protocols bgp neighbor 10.254.1.15 peer-as 65202
+set / network-instance default protocols bgp neighbor 10.254.1.15 description "to gw-a2"
+set / bfd subinterface ethernet-1/8.0 admin-state enable
+set / bfd subinterface ethernet-1/8.0 desired-minimum-transmit-interval 1000000
+set / bfd subinterface ethernet-1/8.0 required-minimum-receive 1000000
+set / bfd subinterface ethernet-1/8.0 detection-multiplier 3
+set / network-instance default protocols bgp group overlay peer-as 65500
+set / network-instance default protocols bgp group overlay local-as as-number 65500
+set / network-instance default protocols bgp group overlay local-as prepend-global-as false
+set / network-instance default protocols bgp group overlay afi-safi evpn admin-state enable
+set / network-instance default protocols bgp group overlay afi-safi ipv4-unicast admin-state disable
+set / network-instance default protocols bgp group overlay transport local-address 10.255.0.1
+set / network-instance default protocols bgp group overlay route-reflector client true
+set / network-instance default protocols bgp group overlay route-reflector cluster-id 10.255.0.1
+set / network-instance default protocols bgp neighbor 10.255.0.11 peer-group overlay
+set / network-instance default protocols bgp neighbor 10.255.0.21 peer-group overlay
+set / network-instance default protocols bgp neighbor 10.255.0.22 peer-group overlay

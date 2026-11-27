@@ -1,0 +1,7 @@
+node                      mem_MiB    cpu_%
+cl3                             7     0.00
+leaf2                        1549     0.00
+leaf3                        1526     0.00
+spine1                       1524     0.00
+spine2                       1524     0.00
+srv-mh                          5     0.00

@@ -1,0 +1,23 @@
+# P8-01 · gw-a · 2026-11-26T19:51:01Z
+topology.clab.yml (excerpt: site B, WAN nodes, branch)
+    spine-b: {kind: nokia_srlinux, startup-config: configs/spine-b.cli, mgmt-ipv4: 172.30.30.12,
+    leaf-b1: {kind: nokia_srlinux, startup-config: configs/leaf-b1.cli, mgmt-ipv4: 172.30.30.22,
+    gw-b: {kind: nokia_srlinux, startup-config: configs/gw-b.cli, mgmt-ipv4: 172.30.30.32,
+    gw-b2: {kind: nokia_srlinux, startup-config: configs/gw-b2.cli, mgmt-ipv4: 172.30.30.34,
+    br1: {kind: nokia_srlinux, startup-config: configs/br1.cli, mgmt-ipv4: 172.30.30.25,
+    wan:
+    wan1:
+    wan2:
+    ipsec-a:
+    ipsec-b:
+    ipsec-br:
+    br-c1: {kind: linux, mgmt-ipv4: 172.30.30.106,
+    br-g1: {kind: linux, mgmt-ipv4: 172.30.30.107,
+    - endpoints: ["gw-a:e1-1", "wan:eth1"]
+    - endpoints: ["gw-b:e1-1", "wan:eth2"]
+    - endpoints: ["gw-a2:e1-1", "wan:eth3"]
+    - endpoints: ["gw-b2:e1-1", "wan:eth4"]
+    - endpoints: ["ipsec-a:eth2", "wan1:eth1"]
+    - endpoints: ["ipsec-br:eth2", "wan1:eth2"]
+    - endpoints: ["ipsec-b:eth2", "wan2:eth1"]
+    - endpoints: ["br1:e1-49", "ipsec-br:eth1"]

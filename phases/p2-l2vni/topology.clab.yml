@@ -1,0 +1,71 @@
+# Phase 2 - L2VNI over EVPN/VXLAN: one bridged segment (VLAN 101, VNI 10101, tenant corp)
+# stretched over three leafs (three VTEPs, so BUM replication is visible). eBGP underlay as in phase 1, iBGP EVPN overlay
+# with both spines as route reflectors (AS 65500). "mobile" is cabled to both
+# leafs; only one of its links is up at a time, to move it (MAC mobility).
+name: ztf-p2
+
+mgmt:
+  network: ztf-mgmt
+  ipv4-subnet: 172.30.30.0/24
+
+topology:
+  kinds:
+    nokia_srlinux:
+      image: ghcr.io/nokia/srlinux:24.10.7
+      type: ixr-d2l
+    linux:
+      image: ztf-tools:1
+  nodes:
+    spine1: {kind: nokia_srlinux, startup-config: configs/spine1.cli, mgmt-ipv4: 172.30.30.11, labels: {graph-level: 1, graph-icon: switch}}
+    spine2: {kind: nokia_srlinux, startup-config: configs/spine2.cli, mgmt-ipv4: 172.30.30.12, labels: {graph-level: 1, graph-icon: switch}}
+    leaf1: {kind: nokia_srlinux, startup-config: configs/leaf1.cli,  mgmt-ipv4: 172.30.30.21, labels: {graph-level: 2, graph-icon: switch}}
+    leaf2: {kind: nokia_srlinux, startup-config: configs/leaf2.cli,  mgmt-ipv4: 172.30.30.22, labels: {graph-level: 2, graph-icon: switch}}
+    client1:
+      labels: {graph-level: 3, graph-icon: host}
+      kind: linux
+      mgmt-ipv4: 172.30.30.101
+      exec:
+        - ip link set eth1 address 02:00:00:00:10:11
+        - ip link set eth1 mtu 1500
+        - ip addr add 10.1.1.11/24 dev eth1
+    client2:
+      labels: {graph-level: 3, graph-icon: host}
+      kind: linux
+      mgmt-ipv4: 172.30.30.102
+      exec:
+        - ip link set eth1 address 02:00:00:00:10:12
+        - ip link set eth1 mtu 1500
+        - ip addr add 10.1.1.12/24 dev eth1
+    leaf3: {kind: nokia_srlinux, startup-config: configs/leaf3.cli,  mgmt-ipv4: 172.30.30.23, labels: {graph-level: 2, graph-icon: switch}}
+    client3:
+      labels: {graph-level: 3, graph-icon: host}
+      kind: linux
+      mgmt-ipv4: 172.30.30.103
+      exec:
+        - ip link set eth1 address 02:00:00:00:10:14
+        - ip link set eth1 mtu 1500
+        - ip addr add 10.1.1.14/24 dev eth1
+    mobile:
+      labels: {graph-level: 3, graph-icon: host}
+      kind: linux
+      mgmt-ipv4: 172.30.30.109
+      exec:
+        # same MAC on both NICs: moving the IP between them = moving the host
+        - ip link set eth1 address 02:00:00:00:10:13
+        - ip link set eth2 address 02:00:00:00:10:13
+        - ip link set eth2 mtu 1500
+        - ip link set eth2 down
+        - ip link set eth1 mtu 1500
+        - ip addr add 10.1.1.13/24 dev eth1
+  links:
+    - endpoints: ["leaf1:e1-49", "spine1:e1-1"]
+    - endpoints: ["leaf1:e1-50", "spine2:e1-1"]
+    - endpoints: ["leaf2:e1-49", "spine1:e1-2"]
+    - endpoints: ["leaf2:e1-50", "spine2:e1-2"]
+    - endpoints: ["client1:eth1", "leaf1:e1-1"]
+    - endpoints: ["client2:eth1", "leaf2:e1-1"]
+    - endpoints: ["leaf3:e1-49", "spine1:e1-3"]
+    - endpoints: ["leaf3:e1-50", "spine2:e1-3"]
+    - endpoints: ["client3:eth1", "leaf3:e1-1"]
+    - endpoints: ["mobile:eth1", "leaf1:e1-2"]
+    - endpoints: ["mobile:eth2", "leaf2:e1-2"]

@@ -1,0 +1,16 @@
+set / system name host-name spine2
+set / interface system0 admin-state enable
+set / interface system0 subinterface 0 ipv4 admin-state enable
+set / interface system0 subinterface 0 ipv4 address 10.255.0.2/32
+set / network-instance default type default
+set / network-instance default interface system0.0
+set / interface ethernet-1/1 admin-state enable
+set / interface ethernet-1/1 description "to leaf1 e1/50"
+set / interface ethernet-1/1 subinterface 0 ipv4 admin-state enable
+set / interface ethernet-1/1 subinterface 0 ipv4 address 10.254.2.0/31
+set / network-instance default interface ethernet-1/1.0
+set / interface ethernet-1/2 admin-state enable
+set / interface ethernet-1/2 description "to leaf2 e1/50"
+set / interface ethernet-1/2 subinterface 0 ipv4 admin-state enable
+set / interface ethernet-1/2 subinterface 0 ipv4 address 10.254.2.2/31
+set / network-instance default interface ethernet-1/2.0

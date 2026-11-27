@@ -1,0 +1,2 @@
+422 {"success":false,"error":"receiverType \"netflow\" cannot be rendered on every supported collector runtime, and a component a runtime does not have makes it reject the ENTIRE served config — the collector would lose every source, processor and destination it has. Supported types: filelog, fluentforward, hostmetrics, http_check, journald, k8s_cluster, k8s_events, k8s_pod_logs, kubeletstats, otlp, prometheus, statsd, syslog, tcp_check, tcplog, udplog, windowseventlog","code":"unknown_receiver_type","field":"receiverType"}
+

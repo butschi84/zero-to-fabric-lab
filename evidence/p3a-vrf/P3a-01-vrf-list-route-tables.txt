@@ -1,0 +1,29 @@
+# P3a-01 · leaf1 · 2026-11-26T17:08:28Z
+leaf1# show network-instance summary   (tenant VRFs)
+Name         Type     Oper state  Description
+-----------  -------  ----------  ---------------------------
+corp         ip-vrf   up          tenant corp, L3VNI 50001
+guest        ip-vrf   up          tenant guest, L3VNI 50002
+
+leaf1# show network-instance corp route-table ipv4-unicast summary
+Prefix          Route Type  Active  Next-hop (Type)                  Next-hop Interface
+--------------  ----------  ------  -------------------------------  ------------------
+10.1.1.0/24     bgp-evpn    False   10.255.0.12/32 (indirect/vxlan)
+                                    10.255.0.13/32 (indirect/vxlan)
+10.1.1.0/24     local       True    10.1.1.1 (direct)                irb0.101
+10.1.1.11/32    arp-nd      True    10.1.1.11 (direct)               irb0.101
+10.1.1.12/32    bgp-evpn    True    10.255.0.12/32 (indirect/vxlan)
+10.1.2.0/24     bgp-evpn    True    10.255.0.13/32 (indirect/vxlan)
+10.1.2.10/32    bgp-evpn    True    10.255.0.13/32 (indirect/vxlan)
+10.1.2.13/32    bgp-evpn    True    10.255.0.13/32 (indirect/vxlan)
+10.1.255.11/32  host        True    None (extract)                   None
+10.1.255.12/32  bgp-evpn    True    10.255.0.12/32 (indirect/vxlan)
+10.1.255.13/32  bgp-evpn    True    10.255.0.13/32 (indirect/vxlan)
+
+leaf3# show network-instance corp route-table ipv4-unicast summary   (/24 only)
+Prefix          Route Type  Active  Next-hop (Type)                  Next-hop Interface
+--------------  ----------  ------  -------------------------------  ------------------
+10.1.1.0/24     bgp-evpn    False   10.255.0.11/32 (indirect/vxlan)
+                                    10.255.0.12/32 (indirect/vxlan)
+10.1.1.0/24     local       True    10.1.1.1 (direct)                irb0.101
+10.1.2.0/24     local       True    10.1.2.1 (direct)                irb0.102

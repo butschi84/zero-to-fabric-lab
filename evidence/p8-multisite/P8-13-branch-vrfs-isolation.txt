@@ -1,0 +1,27 @@
+# P8-13 · br1 · 2026-11-26T19:52:18Z
+br1 (SR Linux, branch router)# show network-instance summary
+Name     Type     Oper state  Description
+-------  -------  ----------  ---------------------------
+corp     ip-vrf   up          tenant corp, L3VNI 50001
+guest    ip-vrf   up          tenant guest, L3VNI 50002
+
+br1# show network-instance corp route-table ipv4-unicast summary   (/24 and the anycast VIP)
+Prefix           Route Type  Route Owner   Next-hop (Type)
+---------------  ----------  ------------  -------------------------------
+10.1.1.0/24      bgp-evpn    bgp_evpn_mgr  10.255.0.11/32 (indirect/vxlan)
+10.1.2.0/24      bgp-evpn    bgp_evpn_mgr  10.255.0.11/32 (indirect/vxlan)
+10.1.3.0/24      bgp-evpn    bgp_evpn_mgr  10.255.1.11/32 (indirect/vxlan)
+10.1.10.0/24     local       net_inst_mgr  10.1.10.1 (direct)
+10.9.100.10/32   bgp-evpn    bgp_evpn_mgr  10.255.0.11/32 (indirect/vxlan)
+
+br1# show network-instance guest route-table ipv4-unicast summary   (/24 and the anycast VIP)
+Prefix           Route Type  Route Owner   Next-hop (Type)
+---------------  ----------  ------------  -------------------------------
+10.2.1.0/24      bgp-evpn    bgp_evpn_mgr  10.255.0.11/32 (indirect/vxlan)
+10.2.10.0/24     local       net_inst_mgr  10.2.10.1 (direct)
+
+isolation (ping -c 3):
+  br-g1 (guest) -> a-c2 10.1.2.11 (corp, site A):  3 transmitted, 0 received
+  br-g1 (guest) -> br-c1 10.1.10.11 (corp, branch): 3 transmitted, 0 received
+  br-g1 (guest) -> a-g1 10.2.1.11 (guest, site A): 3 transmitted, 3 received
+  br-c1 (corp)  -> a-c2 10.1.2.11 (corp, site A):  3 transmitted, 3 received

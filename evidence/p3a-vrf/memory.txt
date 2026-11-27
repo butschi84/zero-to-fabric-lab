@@ -1,0 +1,15 @@
+node                      mem_MiB    cpu_%
+corp1                           5     0.00
+corp2                           4     0.00
+dhcp1                           5     0.00
+dhcp2                           5     0.00
+dhcpsrv                         7     0.00
+guest1                          4     0.00
+guest2                          5     0.00
+leaf1                        1543     0.00
+leaf2                        1543     0.00
+leaf3                        1524     0.00
+mgmt2                           5     0.00
+spine1                       1515     0.00
+spine2                       1499     0.00
+srv3                            5     0.00

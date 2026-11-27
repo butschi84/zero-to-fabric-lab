@@ -1,0 +1,24 @@
+# P2-06 · leaf1 · 2026-11-26T16:07:22Z
+leaf1# tshark -r P2-06-vxlan-icmp.pcap -V -Y icmp.type==8   (first packet, header lines)
+Frame 1: 148 bytes on wire (1184 bits), 148 bytes captured (1184 bits) on interface unknown, id 0
+Ethernet II, Src: 1a:48:03:ff:00:32 (1a:48:03:ff:00:32), Dst: 1a:f7:08:ff:00:01 (1a:f7:08:ff:00:01)
+    Type: IPv4 (0x0800)
+Internet Protocol Version 4, Src: 10.255.0.11, Dst: 10.255.0.12
+    Total Length: 134
+    Time to Live: 255
+    Source Address: 10.255.0.11
+    Destination Address: 10.255.0.12
+User Datagram Protocol, Src Port: 53601, Dst Port: 4789
+    Source Port: 53601
+    Destination Port: 4789
+Virtual eXtensible Local Area Network
+    VXLAN Network Identifier (VNI): 10101
+Ethernet II, Src: 02:00:00:00:10:11 (02:00:00:00:10:11), Dst: 02:00:00:00:10:12 (02:00:00:00:10:12)
+    Type: IPv4 (0x0800)
+Internet Protocol Version 4, Src: 10.1.1.11, Dst: 10.1.1.12
+    Total Length: 84
+    Time to Live: 64
+    Source Address: 10.1.1.11
+    Destination Address: 10.1.1.12
+Internet Control Message Protocol
+    Type: 8 (Echo (ping) request)

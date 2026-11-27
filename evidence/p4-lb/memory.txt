@@ -1,0 +1,13 @@
+node                      mem_MiB    cpu_%
+corp1                          27     0.00
+corp2                           5     0.00
+lb1                            93     0.09
+lb2                           105     0.11
+leaf1                        1529     0.00
+leaf2                        1456     0.00
+leaf3                        1472     0.00
+spine1                       1517     0.00
+spine2                       1514     0.00
+srv1                           26     0.08
+srv2                           36     0.05
+srv3                           27     0.13

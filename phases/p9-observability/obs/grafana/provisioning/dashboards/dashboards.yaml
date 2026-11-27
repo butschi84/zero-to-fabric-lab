@@ -1,0 +1,3 @@
+apiVersion: 1
+providers:
+  - {name: zero-to-fabric, folder: Zero to Fabric, type: file, options: {path: /var/lib/grafana/dashboards}}

@@ -1,0 +1,16 @@
+# P5-07 · leaf2 · 2026-11-26T19:08:08Z
+method: ce-a adds 10 networks (192.168.20-29.0/24) to its 2; leaf2 allows 5 (warning at 80 %)
+
+leaf2 session to ce-a before:  10.11.254.1  established  0d:0h:1m:36s  [3/2/1]
+leaf2 session to ce-a after:   no row (session torn down by the prefix limit, not established)
+
+ce-a# show bgp neighbors 10.11.254.0 (excerpt; the leaf tears the session down, it comes back, is torn down again)
+  BGP state = Idle
+  Notifications:          0         10
+  Last reset 00:00:01,  Notification received (Cease/Maximum Number of Prefixes Reached)
+
+leaf2 log:
+  2026-11-26T19:08:01 In network-instance cust-a, the BGP session with VR cust-a (3): Group ce: Peer 10.11.254.1
+   moved from higher state ESTABLISHED to lower state IDLE due to event MAXPREFIX_EXCEEDED
+
+extra networks removed on ce-a, 5 s later: 10.11.254.1  established  0d:0h:0m:6s  [3/2/1]

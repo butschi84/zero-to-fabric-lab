@@ -1,0 +1,20 @@
+# P5-01 · leaf1 · 2026-11-26T19:07:13Z
+a-vm1# ip -4 addr show eth1; ping 10.0.0.1; ip neigh show 10.0.0.1
+  10.0.0.10/24  ping gateway: OK  10.0.0.1 dev eth1 lladdr 00:00:5e:00:01:01 REACHABLE 
+b-vm1# ip -4 addr show eth1; ping 10.0.0.1; ip neigh show 10.0.0.1
+  10.0.0.10/24  ping gateway: OK  10.0.0.1 dev eth1 lladdr 00:00:5e:00:01:01 REACHABLE 
+
+leaf1# show network-instance cust-a route-table ipv4-unicast summary   (10.0.0.0/24 only)
+Prefix           Route Type  Route Owner   Next-hop (Type)
+---------------  ----------  ------------  -------------------------------
+10.0.0.0/24      bgp-evpn    bgp_evpn_mgr  10.255.0.12/32 (indirect/vxlan)
+10.0.0.0/24      local       net_inst_mgr  10.0.0.1 (direct)
+
+leaf1# show network-instance cust-b route-table ipv4-unicast summary   (10.0.0.0/24 only)
+Prefix           Route Type  Route Owner   Next-hop (Type)
+---------------  ----------  ------------  -------------------------------
+10.0.0.0/24      bgp-evpn    bgp_evpn_mgr  10.255.0.12/32 (indirect/vxlan)
+10.0.0.0/24      local       net_inst_mgr  10.0.0.1 (direct)
+
+who answers on 10.0.0.20 (curl, the VM prints its name):
+  from a-vm1: a-vm2    from b-vm1: b-vm2

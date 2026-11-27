@@ -1,0 +1,10 @@
+# P8-08 · wan · 2026-11-26T19:51:51Z
+wan# containerlab tools netem set -n clab-ztf-p8-wan -i eth2 --delay 30ms --jitter 5ms --loss 1
+wan# (the same for eth4, the port towards gw-b2)
+wan# containerlab tools netem show -n clab-ztf-p8-wan
+│ Interface │ Delay │ Jitter │ Packet Loss │ Rate (Kbit) │ Corruption │
+│ eth2      │ 30ms  │ 5ms    │ 1.00%       │ 0           │ 0.00%      │
+│ eth4      │ 30ms  │ 5ms    │ 1.00%       │ 0           │ 0.00%      │
+
+method: impairment on the WAN node's ports towards gw-b and gw-b2, one direction (egress to site B);
+        each 'netem set' replaces all values; values chosen for the lab, not taken from a real line

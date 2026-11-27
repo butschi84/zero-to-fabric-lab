@@ -1,0 +1,16 @@
+method: WCAG 2.x relative luminance, ratio (L1 + 0.05) / (L2 + 0.05); AA = 4.5 normal text, 3.0 large text
+
+11.80  AA  #15171a on #c9d3d8  node tile / stat tile OK (ink on slate 200)
+11.96  AA  #15171a on #ffc2da  stat tile WARN (ink on magenta 200)
+ 4.84  AA  #15171a on #ff1a75  node tile / stat tile FAIL (ink on magenta 500)
+11.80  AA  #15171a on #c9d3d8  WAN tile (ink on slate 200)
+ 7.59  AA  #4fb3ff on #181b1f  tenant number corp (tenant colour on Grafana panel)
+ 9.70  AA  #ffb347 on #181b1f  tenant number guest (tenant colour on Grafana panel)
+10.74  AA  #7be0a6 on #181b1f  tenant number mgmt (tenant colour on Grafana panel)
+ 8.60  AA  #c9a7ff on #181b1f  tenant number shared (tenant colour on Grafana panel)
+ 3.71  AA-large  #ffffff on #ff1a75  FAIL tile if Grafana picks white text (large numbers only: AA-large)
+11.35  AA  #c9d3d8 on #181b1f  value text slate 200 on Grafana panel
+ 4.65  AA  #ff1a75 on #181b1f  value text magenta 500 on Grafana panel
+11.97  AA  #ffc2da on #151719  site labels magenta 200 on ink canvas
+11.80  AA  #c9d3d8 on #151719  labels slate 200 on ink canvas
+17.28  AA  #ffffff on #181b1f  panel titles white on Grafana panel

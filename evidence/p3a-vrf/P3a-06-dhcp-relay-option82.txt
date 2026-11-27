@@ -1,0 +1,18 @@
+# P3a-06 · dhcpsrv · 2026-11-26T17:08:58Z
+method: udhcpc on dhcp1 (leaf1) and dhcp2 (leaf2), both VLAN 101; capture on the server port (dhcpsrv eth1)
+
+10.1.255.11  -> 10.1.2.10    DISCOVER  giaddr=10.1.255.11  yiaddr=0.0.0.0     mac=02:00:00:01:01:a1
+                option 82: circuit-id="leaf1|corp|irb0|101:0" remote-id=0200000101a1
+10.1.2.10    -> 10.1.255.11  OFFER     giaddr=10.1.255.11  yiaddr=10.1.1.100  mac=02:00:00:01:01:a1
+10.1.255.11  -> 10.1.2.10    REQUEST   giaddr=10.1.255.11  yiaddr=0.0.0.0     mac=02:00:00:01:01:a1
+10.1.2.10    -> 10.1.255.11  ACK       giaddr=10.1.255.11  yiaddr=10.1.1.100  mac=02:00:00:01:01:a1
+10.1.255.12  -> 10.1.2.10    DISCOVER  giaddr=10.1.255.12  yiaddr=0.0.0.0     mac=02:00:00:01:01:a2
+                option 82: circuit-id="leaf2|corp|irb0|101:0" remote-id=0200000101a2
+10.1.2.10    -> 10.1.255.12  OFFER     giaddr=10.1.255.12  yiaddr=10.1.1.101  mac=02:00:00:01:01:a2
+10.1.255.12  -> 10.1.2.10    REQUEST   giaddr=10.1.255.12  yiaddr=0.0.0.0     mac=02:00:00:01:01:a2
+10.1.2.10    -> 10.1.255.12  ACK       giaddr=10.1.255.12  yiaddr=10.1.1.101  mac=02:00:00:01:01:a2
+
+dhcp1# udhcpc  -> udhcpc: lease of 10.1.1.100 obtained from 10.1.2.10, lease time 3600
+dhcp2# udhcpc  -> udhcpc: lease of 10.1.1.101 obtained from 10.1.2.10, lease time 3600
+dhcp1# ip -4 addr show eth1
+  10.1.1.100/24

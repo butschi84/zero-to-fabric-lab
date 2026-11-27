@@ -1,0 +1,18 @@
+# P8-16 · ipsec-br · 2026-11-26T19:54:11Z
+method: WAN 1 (ISP 1) loses 100 % in both directions (netem on the wan1 bridge, links stay up), then is restored;
+        br-c1 (branch, corp) pings a-c2 (site A) every 10 ms; FRR BFD 3 x 300 ms on each tunnel, BGP picks the path
+
+SR Linux minimum-advertisement-interval 5 s (default):
+  wan1-fails-mrai-5s: sent=1324 received=516 lost=808 loss_time~8080 ms (10 ms interval) largest_reply_gap=9181 ms
+  wan1-restored-mrai-5s: sent=1340 received=1340 lost=0 loss_time~0 ms (10 ms interval) largest_reply_gap=20 ms
+set to 1 s on all SR Linux BGP groups (the minimum; kept for the tests that follow):
+  wan1-fails-mrai-1s: sent=1331 received=1078 lost=253 loss_time~2530 ms (10 ms interval) largest_reply_gap=2895 ms
+  wan1-restored-mrai-1s: sent=1332 received=1331 lost=1 loss_time~10 ms (10 ms interval) largest_reply_gap=22 ms
+
+ipsec-br route to leaf-a1 (10.255.0.11/32):
+  before:          10.252.1.1 vti1 
+  WAN 1 down:      10.252.2.1 vti2 
+  WAN 1 restored:  10.252.1.1 vti1 
+  BFD while down:  10.252.2.1 up; 10.252.1.1 down; 
+
+backup path = WAN 2 -> ipsec-b -> site B -> DCI -> site A (WAN 1 preferred by local-pref 200 / AS-path prepend)

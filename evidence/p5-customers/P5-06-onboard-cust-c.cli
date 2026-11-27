@@ -1,0 +1,43 @@
+set / interface ethernet-1/5 admin-state enable
+set / interface ethernet-1/5 description "to cust-c vm"
+set / interface ethernet-1/5 subinterface 0 type bridged
+set / interface ethernet-1/5 subinterface 0 admin-state enable
+set / network-instance mac-vrf-1301 interface ethernet-1/5.0
+set / tunnel-interface vxlan1 vxlan-interface 1301 type bridged
+set / tunnel-interface vxlan1 vxlan-interface 1301 ingress vni 11301
+set / interface irb0 admin-state enable
+set / interface irb0 subinterface 1301 admin-state enable
+set / interface irb0 subinterface 1301 ipv4 admin-state enable
+set / interface irb0 subinterface 1301 ipv4 address 10.0.0.1/24 anycast-gw true
+set / interface irb0 subinterface 1301 ipv4 address 10.0.0.1/24 primary
+set / interface irb0 subinterface 1301 anycast-gw virtual-router-id 1
+set / interface irb0 subinterface 1301 ipv4 arp learn-unsolicited true
+set / interface irb0 subinterface 1301 ipv4 arp host-route populate dynamic
+set / interface irb0 subinterface 1301 ipv4 arp evpn advertise dynamic
+set / network-instance mac-vrf-1301 type mac-vrf
+set / network-instance mac-vrf-1301 admin-state enable
+set / network-instance mac-vrf-1301 interface irb0.1301
+set / network-instance mac-vrf-1301 vxlan-interface vxlan1.1301
+set / network-instance mac-vrf-1301 protocols bgp-evpn bgp-instance 1 admin-state enable
+set / network-instance mac-vrf-1301 protocols bgp-evpn bgp-instance 1 vxlan-interface vxlan1.1301
+set / network-instance mac-vrf-1301 protocols bgp-evpn bgp-instance 1 evi 1301
+set / network-instance mac-vrf-1301 protocols bgp-vpn bgp-instance 1 route-target export-rt target:65000:11301
+set / network-instance mac-vrf-1301 protocols bgp-vpn bgp-instance 1 route-target import-rt target:65000:11301
+set / tunnel-interface vxlan1 vxlan-interface 50013 type routed
+set / tunnel-interface vxlan1 vxlan-interface 50013 ingress vni 50013
+set / interface lo1 admin-state enable
+set / interface lo1 subinterface 13 admin-state enable
+set / interface lo1 subinterface 13 ipv4 admin-state enable
+set / interface lo1 subinterface 13 ipv4 address 10.13.255.11/32
+set / network-instance cust-c type ip-vrf
+set / network-instance cust-c admin-state enable
+set / network-instance cust-c description "tenant cust-c, L3VNI 50013"
+set / network-instance cust-c interface lo1.13
+set / network-instance cust-c interface irb0.1301
+set / network-instance cust-c vxlan-interface vxlan1.50013
+set / network-instance cust-c protocols bgp-evpn bgp-instance 1 admin-state enable
+set / network-instance cust-c protocols bgp-evpn bgp-instance 1 vxlan-interface vxlan1.50013
+set / network-instance cust-c protocols bgp-evpn bgp-instance 1 evi 13
+set / network-instance cust-c protocols bgp-evpn bgp-instance 1 ecmp 8
+set / network-instance cust-c protocols bgp-vpn bgp-instance 1 route-target export-rt target:65000:50013
+set / network-instance cust-c protocols bgp-vpn bgp-instance 1 route-target import-rt target:65000:50013

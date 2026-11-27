@@ -1,0 +1,7 @@
+# P8-11 · a-c1 · 2026-11-26T19:52:05Z
+method: arping -c 3 for an unused address (3 ARP broadcasts), capture VXLAN on the WAN towards site B (gw-b, gw-b2)
+
+a-c1 in stretched network 01 (VNI 10101)     9 ARP requests left site A
+a-c2 in network 02 (exists only in site A)   0 ARP requests left site A
+
+VNI 10101 has three VTEPs in site B (leaf-b1, gw-b, gw-b2): ingress replication sends each broadcast three times

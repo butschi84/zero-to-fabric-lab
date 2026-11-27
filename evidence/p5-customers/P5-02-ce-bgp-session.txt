@@ -1,0 +1,21 @@
+# P5-02 · leaf2 · 2026-11-26T19:07:15Z
+leaf2# show network-instance cust-a protocols bgp neighbor
+Peer         Peer-AS  State        Uptime        [Rx/Active/Tx]
+-----------  -------  -----------  ------------  --------------
+10.11.254.1  64611    established  0d:0h:0m:59s  [3/2/1]
+
+leaf2# show network-instance cust-a protocols bgp routes ipv4 summary   (received from the CE)
+Status  Network          Next Hop     Path Val
+------  ---------------  -----------  ---------------
+u*>     192.168.10.0/24  10.11.254.1  i[64611]
+u*>     192.168.11.0/24  10.11.254.1  i[64611]
+
+ce-a# show bgp ipv4 unicast   (sent to and received from the fabric)
+     Network          Next Hop            Metric LocPrf Weight Path
+ *>  10.0.0.0/24      10.11.254.0                            0 65102 i
+ *>  192.168.10.0/24  0.0.0.0(ce-a)            0         32768 i
+ *>  192.168.11.0/24  0.0.0.0(ce-a)            0         32768 i
+
+leaf2# prefix limit on the CE session
+  max-received-routes 5
+  warning-threshold-pct 80

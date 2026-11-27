@@ -1,0 +1,7 @@
+# P0-06 · host · 2026-11-26T15:50:45Z
+host# time containerlab deploy / destroy
+method: wall clock of each containerlab command on this Mac (images already pulled)
+deploy (first)                         21.5 s
+destroy --cleanup                       1.7 s
+deploy (again)                         25.0 s
+deploy until all SR Linux answer CLI     27.2 s

@@ -1,0 +1,18 @@
+# P1-09b · leaf1 · 2026-11-26T16:32:31Z
+leaf1# show network-instance default protocols bgp routes ipv4 prefix 203.0.113.0/24 detail   (filtered)
+change: leaf1 lowers LOCAL_PREF of ext3 (C) to 50 -> B wins on LOCAL_PREF over A
+  Path 1: <Valid,>
+    Route source    : neighbor 10.253.1.1
+    LocalPref is 100
+    Path            :  i [64501]
+    Tie Break Reason: local-pref
+  Path 2: <Best,Valid,Used,>
+    Route source    : neighbor 10.253.2.1
+    LocalPref is 200
+    Path            :  i [64502, 64510, 64511]
+    Tie Break Reason: none
+  Path 3: <Valid,>
+    Route source    : neighbor 10.253.3.1
+    LocalPref is 50
+    Path            :  i [64503, 64512]
+    Tie Break Reason: local-pref

@@ -1,0 +1,12 @@
+# P8-09 · a-c2 · 2026-11-26T19:51:51Z
+method: a-c2 -> b-c3 ping -c 50 -i 0.1 (L3 between sites), before / with / after the impairment
+
+phase      sent  recv   loss   min ms   avg ms   max ms
+before       50    50     0%    0.651    0.790    1.158
+impaired     50    50     0%   26.288   30.291   35.816
+after        50    50     0%    0.615    0.817    1.721
+
+DCI sessions of gw-a (to gw-b and gw-b2):
+  before: 10.255.1.21 established uptime 0d:0h:1m:32s; 10.255.1.22 established uptime 0d:0h:1m:29s; 
+  during: 10.255.1.21 established uptime 0d:0h:1m:38s; 10.255.1.22 established uptime 0d:0h:1m:35s; 
+  after:  10.255.1.21 established uptime 0d:0h:1m:44s; 10.255.1.22 established uptime 0d:0h:1m:41s; 

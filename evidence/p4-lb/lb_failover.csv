@@ -1,0 +1,7 @@
+run,event,summary,lb2_holds_vip_after_s
+1,"docker pause lb1 (VRRP master)","requests=192 ok=180 failed=12 largest_gap_s=6.07 first_fail_s=0.01 last_fail_s=5.53",2.9
+1,"docker unpause lb1 (preempts back)","requests=240 ok=240 failed=0 largest_gap_s=0.05 first_fail_s=0.00 last_fail_s=0.00",
+2,"docker pause lb1 (VRRP master)","requests=174 ok=160 failed=14 largest_gap_s=7.06 first_fail_s=0.01 last_fail_s=6.52",3.6
+2,"docker unpause lb1 (preempts back)","requests=231 ok=230 failed=1 largest_gap_s=0.55 first_fail_s=1.66 last_fail_s=1.66",
+3,"docker pause lb1 (VRRP master)","requests=138 ok=120 failed=18 largest_gap_s=9.07 first_fail_s=0.01 last_fail_s=8.53",3.6
+3,"docker unpause lb1 (preempts back)","requests=240 ok=240 failed=0 largest_gap_s=0.06 first_fail_s=0.00 last_fail_s=0.00",

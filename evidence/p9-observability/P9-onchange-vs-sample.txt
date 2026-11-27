@@ -1,0 +1,8 @@
+method: spine-a e1-7 down; two gnmic subscriptions to /interface[name=ethernet-1/7]/oper-state run side by side;
+        seconds from the injection to the device timestamp of the first update saying 'down'
+
+subscription                 first 'down' after (s)
+ON_CHANGE                    0.6
+SAMPLE, interval 30 s        25.5
+
+the lab's dashboards use SAMPLE 5 s (obs/gnmic): worst case ~5 s plus the collector's export batch

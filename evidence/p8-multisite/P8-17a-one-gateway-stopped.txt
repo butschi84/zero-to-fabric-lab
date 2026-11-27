@@ -1,0 +1,14 @@
+# P8-17a · leaf-b1 · 2026-11-26T19:56:53Z
+method: docker stop -t 0 gw-a (its netns sidecar keeps the links up: BFD detects it); gw-a2 is left; pings every 10 ms across the event
+
+  b-c3_to_a-c2: sent=1337 received=1086 lost=251 loss_time~2510 ms (10 ms interval) largest_reply_gap=2888 ms
+  br-c1_to_a-c2: sent=1331 received=1087 lost=244 loss_time~2440 ms (10 ms interval) largest_reply_gap=2794 ms
+
+leaf-b1 VRF corp, routes with a next hop in site A (10.255.0.x): before 9, after 8
+gw-b# show network-instance default protocols bgp neighbor   (DCI after)
+  Peer          Group     State
+  ------------  --------  -----------
+  10.255.0.21   dci       established
+  10.255.0.22   dci       established
+
+a-c2 still reachable from site B: 3 transmitted, 3 received; from the branch: 3 transmitted, 3 received

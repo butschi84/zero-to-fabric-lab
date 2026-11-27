@@ -1,0 +1,14 @@
+# P5-05 · leaf1 · 2026-11-26T19:07:45Z
+register read from the running state (info from state ... | as json), customer VRFs only
+
+node    network-instance type        VNI  EVI  RD               export RT     import RT    
+leaf1   cust-a           ip-vrf    50011   11  10.255.0.11:11   65000:50011   65000:50011  
+leaf1   cust-b           ip-vrf    50012   12  10.255.0.11:12   65000:50012   65000:50012  
+leaf1   mac-vrf-1101     mac-vrf   11101 1101  10.255.0.11:1101 65000:11101   65000:11101  
+leaf1   mac-vrf-1201     mac-vrf   11201 1201  10.255.0.11:1201 65000:11201   65000:11201  
+leaf2   cust-a           ip-vrf    50011   11  10.255.0.12:11   65000:50011   65000:50011  
+leaf2   cust-b           ip-vrf    50012   12  10.255.0.12:12   65000:50012   65000:50012  
+leaf2   mac-vrf-1101     mac-vrf   11101 1101  10.255.0.12:1101 65000:11101   65000:11101  
+leaf2   mac-vrf-1201     mac-vrf   11201 1201  10.255.0.12:1201 65000:11201   65000:11201  
+border1 cust-a           ip-vrf    50011   11  10.255.0.21:11   65000:50011   65000:50011  
+border1 cust-b           ip-vrf    50012   12  10.255.0.21:12   65000:50012   65000:50012  

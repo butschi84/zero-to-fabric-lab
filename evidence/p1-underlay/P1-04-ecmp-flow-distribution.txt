@@ -1,0 +1,5 @@
+# P1-04 · leaf1 · 2026-11-26T16:29:31Z
+leaf1# iperf3 -c 10.10.2.10 -P 32; info from state interface ethernet-1/4{9,50} statistics
+method: iperf3 -P 32 -t 5 client1 -> client2, leaf1 uplink counters before/after
+ethernet-1/49    before=42821      after=68781      delta=25960
+ethernet-1/50    before=37519      after=44712      delta=7193

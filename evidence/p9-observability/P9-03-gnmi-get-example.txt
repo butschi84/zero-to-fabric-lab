@@ -1,0 +1,14 @@
+# P9-03 · host · 2026-11-27T10:38:21Z
+host# gnmic -a leaf-a1:57400 get --path .../bgp/neighbor[*]/session-state ; .../bridge-table/statistics
+/network-instance[name=default]/protocols/bgp/neighbor.0/peer-address: 10.254.1.0
+/network-instance[name=default]/protocols/bgp/neighbor.0/session-state: established
+/network-instance[name=default]/protocols/bgp/neighbor.1/peer-address: 10.255.0.1
+/network-instance[name=default]/protocols/bgp/neighbor.1/session-state: established
+
+
+//network-instance.0/bridge-table/statistics/active-entries: 9
+//network-instance.0/name: mac-vrf-101
+//network-instance.1/bridge-table/statistics/active-entries: 4
+//network-instance.1/name: mac-vrf-102
+//network-instance.2/bridge-table/statistics/active-entries: 3
+//network-instance.2/name: mac-vrf-201

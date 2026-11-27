@@ -1,0 +1,24 @@
+# P1-11a · spine1 · 2026-11-26T16:32:45Z
+spine1# show network-instance default protocols bgp routes ipv4 prefix 198.51.100.0/24 detail   (filtered)
+leaf1 exports 198.51.100.0/24 with 64500:100 + large 64500:1:100 (policy underlay-out)
+SR Linux sends standard and large communities to eBGP peers by default.
+
+spine1:
+  Path 1: <Best,Valid,Used,>
+    No LocalPref
+    Path            :  i [65101]
+    Communities     : 64500:100, 64500:1:100
+Path 1 was advertised to: 
+No LocalPref
+Path            :  i [65000, 65101]
+Communities     : 64500:100, 64500:1:100
+
+leaf2:
+  Path 1: <Best,Valid,Used,>
+    No LocalPref
+    Path            :  i [65000, 65101]
+    Communities     : 64500:100, 64500:1:100
+  Path 2: <Best,Valid,Used,>
+    No LocalPref
+    Path            :  i [65000, 65101]
+    Communities     : 64500:100, 64500:1:100

@@ -1,0 +1,20 @@
+# P8-15 · ipsec-br · 2026-11-26T19:52:51Z
+method: br-c1 ping -s 1000 a-c2 (inner IP packet 1028 bytes); capture on br1's uplink (VXLAN) and on WAN 1 (ESP)
+  VXLAN packet on the LAN side:  IP length 1078  -> VXLAN overhead 50 bytes
+  ESP packet on WAN 1:           IP length 1132 (IP proto 50 = ESP) -> ESP overhead 54 bytes
+  total over the host's packet:  104 bytes   (ipsec-br's route to leaf-a1: mtu 1446)
+
+DF ping br-c1 -> a-c2 through the tunnel (WAN MTU 1500):
+  ICMP payload  IP packet   result
+  1300          1328        OK
+  1368          1396        OK
+  1369          1397        FAIL
+  1372          1400        FAIL
+  1400          1428        FAIL
+  1472          1500        FAIL
+  ICMP 'too big' sent to br1 by ipsec-br: 6; reaching the host br-c1: 0
+
+TCP br-c1 <-> srv-a (iperf3, 4 s; MSS 1356 = 1396 usable IP MTU - 40, set with iperf3 -M):
+                             branch -> DC               DC -> branch
+  default MSS (1448)         no data (0 bytes)          no data (0 bytes)
+  MSS adjusted to 1356       21.8 MBytes, 41.3 Mbits/sec 19.5 MBytes, 40.9 Mbits/sec

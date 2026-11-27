@@ -1,0 +1,89 @@
+[
+ {
+  "_id": "6b094cb264ec8bfc54d47c3a",
+  "name": "Probes and IPsec site A (Prometheus scrape)",
+  "description": "",
+  "receiverType": "prometheus",
+  "platform": "all",
+  "defaultConfig": {
+   "metrics_path": "/metrics",
+   "scheme": "http",
+   "scrape_interval": "10s",
+   "targets": [
+    "172.30.30.101:9374",
+    "172.30.30.43:9101",
+    "172.30.30.45:9101"
+   ]
+  },
+  "isTemplate": false,
+  "isCollectorInput": false,
+  "signalTypes": [
+   "metrics"
+  ],
+  "tags": null,
+  "createdAt": "2026-11-27T09:26:10.519219801Z",
+  "updatedAt": "2026-11-27T09:26:10.519219801Z"
+ },
+ {
+  "_id": "6b094cb264ec8bfc54d47c3c",
+  "name": "Probes and IPsec site B (Prometheus scrape)",
+  "description": "",
+  "receiverType": "prometheus",
+  "platform": "all",
+  "defaultConfig": {
+   "metrics_path": "/metrics",
+   "scheme": "http",
+   "scrape_interval": "10s",
+   "targets": [
+    "172.30.30.103:9374",
+    "172.30.30.44:9101"
+   ]
+  },
+  "isTemplate": false,
+  "isCollectorInput": false,
+  "signalTypes": [
+   "metrics"
+  ],
+  "tags": null,
+  "createdAt": "2026-11-27T09:26:10.604857634Z",
+  "updatedAt": "2026-11-27T09:26:10.604857634Z"
+ },
+ {
+  "_id": "6b094cb264ec8bfc54d47c38",
+  "name": "SR Linux syslog (UDP 5514, RFC 5424)",
+  "description": "",
+  "receiverType": "syslog",
+  "platform": "all",
+  "defaultConfig": {
+   "listen_address": "0.0.0.0:5514",
+   "protocol": "udp",
+   "rfc": "rfc5424"
+  },
+  "isTemplate": false,
+  "isCollectorInput": false,
+  "signalTypes": [
+   "logs"
+  ],
+  "tags": null,
+  "createdAt": "2026-11-27T09:26:10.382340009Z",
+  "updatedAt": "2026-11-27T09:26:10.382340009Z"
+ },
+ {
+  "_id": "6b094cb264ec8bfc54d47c36",
+  "name": "gNMI telemetry (OTLP from gnmic)",
+  "description": "",
+  "receiverType": "otlp",
+  "platform": "all",
+  "defaultConfig": {
+   "grpc_endpoint": "0.0.0.0:4317"
+  },
+  "isTemplate": false,
+  "isCollectorInput": false,
+  "signalTypes": [
+   "metrics"
+  ],
+  "tags": null,
+  "createdAt": "2026-11-27T09:26:10.311393967Z",
+  "updatedAt": "2026-11-27T09:26:10.311393967Z"
+ }
+]

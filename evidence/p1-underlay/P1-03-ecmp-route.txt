@@ -1,0 +1,6 @@
+# P1-03 · leaf1 · 2026-11-26T16:29:18Z
+leaf1# show network-instance default route-table ipv4-unicast prefix 10.255.0.12/32   (compact)
+Prefix          Route Type  Pref  Next-hop (Type)                 Next-hop Interface
+--------------  ----------  ----  ------------------------------  ------------------
+10.255.0.12/32  bgp         170   10.254.1.0/31 (indirect/local)  ethernet-1/49.0
+                                  10.254.2.0/31 (indirect/local)  ethernet-1/50.0

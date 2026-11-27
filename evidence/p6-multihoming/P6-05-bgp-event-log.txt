@@ -1,0 +1,16 @@
+# P6-05 · spine1 · 2026-11-26T18:37:15Z
+event: docker pause leaf1 at 2026-11-26T18:36:31 (UTC); BGP/BFD log lines after that
+
+spine1 (underlay session to leaf1, BFD):
+  2026-11-26T18:36:37 BFD:  Network-instance default - The protocol BGP using BFD session from 10.254.1.0:16388 to
+   10.254.1.1:0 has been cleared
+  2026-11-26T18:36:37 BFD:  Network-instance default - Session from 10.254.1.0:16388 to 10.254.1.1:0 has been dele
+  ted
+  2026-11-26T18:36:37 panos     bgp_nhres.c:16796 bgp_nhres_handle_nhres_resp_event  NH unreachable: nh_change NHC
+  hange: NH 10.255.0.11 type 1: vr_id 1: nbo_nexthop 11.0.255.10: addr_type IPV4
+
+leaf3 (BGP log, lines naming leaf1 or a state change):
+  2026-11-26T18:36:41 panos     bgp_nhres.c:16796 bgp_nhres_handle_nhres_resp_event  NH unreachable: nh_change NHC
+  hange: NH 10.255.0.11 type 4: vr_id 1: nbo_nexthop 11.0.255.10: addr_type EVPN
+  2026-11-26T18:36:41 panos     bgp_nhres.c:16796 bgp_nhres_handle_nhres_resp_event  NH unreachable: nh_change NHC
+  hange: NH 10.255.0.11 type 4: vr_id 1: nbo_nexthop 11.0.255.10: addr_type EVPN

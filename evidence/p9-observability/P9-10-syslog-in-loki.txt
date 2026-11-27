@@ -1,0 +1,14 @@
+# P9-10 · host · 2026-11-27T10:38:45Z
+host# Loki: {service_name="unknown_service"} != "TLS profile"   (last 12 lines)
+<182>1 2026-11-27T10:38:26.481608+00:00 leaf-a1 sr_cli - - -  debug|7533|7533|00004|I: common    |root|22|srl running / | Closing the CLI se
+<181>1 2026-11-27T10:38:26.482422+00:00 leaf-a1 sr_aaa_mgr - - -  aaa|2556|2812|00020|N: Closed session 22 for user root from host <empty> i
+<179>1 2026-11-27T10:38:31.921863+00:00 br1 sr_license_mgr - - -  debug|2489|2489|00038|E: licensemgr license_mgr.cc:217     CheckLicenseExp
+<180>1 2026-11-27T10:38:31.923033+00:00 br1 sr_xdp_cpm - - -  debug|2352|3038|00076|W: csim_pd   csim_platform.cc:2358   UpdateLicenseValidi
+<180>1 2026-11-27T10:38:31.923056+00:00 br1 sr_xdp_lc_1 - - -  debug|2352|3039|00077|W: csim_pd   csim_platform.cc:2358   UpdateLicenseValid
+<179>1 2026-11-27T10:38:32.185269+00:00 leaf-b1 sr_license_mgr - - -  debug|2440|2440|00038|E: licensemgr license_mgr.cc:217     CheckLicens
+<180>1 2026-11-27T10:38:32.185962+00:00 leaf-b1 sr_xdp_cpm - - -  debug|2344|2880|00078|W: csim_pd   csim_platform.cc:2358   UpdateLicenseVa
+<180>1 2026-11-27T10:38:32.186045+00:00 leaf-b1 sr_xdp_lc_1 - - -  debug|2344|2881|00079|W: csim_pd   csim_platform.cc:2358   UpdateLicenseV
+<179>1 2026-11-27T10:38:37.703925+00:00 gw-b2 sr_license_mgr - - -  debug|2486|2486|00038|E: licensemgr license_mgr.cc:217     CheckLicenseE
+<180>1 2026-11-27T10:38:37.704695+00:00 gw-b2 sr_xdp_lc_1 - - -  debug|2394|2629|00075|W: csim_pd   csim_platform.cc:2358   UpdateLicenseVal
+<180>1 2026-11-27T10:38:37.704882+00:00 gw-b2 sr_xdp_cpm - - -  debug|2394|2628|00078|W: csim_pd   csim_platform.cc:2358   UpdateLicenseVali
+<182>1 2026-11-27T10:38:45.568847+00:00 leaf-a1 sr_arp_nd_mgr - - -  arpnd|2280|2280|00097|I: The ARP entry for 172.30.30.2 on mgmt0.0 has b

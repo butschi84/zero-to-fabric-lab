@@ -1,0 +1,69 @@
+# Phase 1 - eBGP underlay with ECMP and BFD: 2 spines, 2 leafs, 2 clients.
+# Spines share AS 65000, every leaf has its own AS (RFC 7938). Clients are routed at the leaf.
+# ext1-3 (FRR) are test peers of leaf1 for the BGP deep-dive shots; they all
+# send 203.0.113.0/24 and never reach the underlay.
+name: ztf-p1
+
+mgmt:
+  network: ztf-mgmt
+  ipv4-subnet: 172.30.30.0/24
+
+topology:
+  kinds:
+    nokia_srlinux:
+      image: ghcr.io/nokia/srlinux:24.10.7
+      type: ixr-d2l
+    linux:
+      image: ztf-tools:1
+  nodes:
+    spine1: {kind: nokia_srlinux, startup-config: configs/spine1.cli, mgmt-ipv4: 172.30.30.11, labels: {graph-level: 1, graph-icon: switch}}
+    spine2: {kind: nokia_srlinux, startup-config: configs/spine2.cli, mgmt-ipv4: 172.30.30.12, labels: {graph-level: 1, graph-icon: switch}}
+    leaf1: {kind: nokia_srlinux, startup-config: configs/leaf1.cli,  mgmt-ipv4: 172.30.30.21, labels: {graph-level: 2, graph-icon: switch}}
+    leaf2: {kind: nokia_srlinux, startup-config: configs/leaf2.cli,  mgmt-ipv4: 172.30.30.22, labels: {graph-level: 2, graph-icon: switch}}
+    client1:
+      labels: {graph-level: 3, graph-icon: host}
+      kind: linux
+      mgmt-ipv4: 172.30.30.101
+      exec:
+        - ip addr add 10.10.1.10/24 dev eth1
+        - ip route add 10.0.0.0/8 via 10.10.1.1 dev eth1
+    client2:
+      labels: {graph-level: 3, graph-icon: host}
+      kind: linux
+      mgmt-ipv4: 172.30.30.102
+      exec:
+        - ip addr add 10.10.2.10/24 dev eth1
+        - ip route add 10.0.0.0/8 via 10.10.2.1 dev eth1
+    ext1: &frr
+      labels: {graph-level: 3, graph-icon: router}
+      kind: linux
+      image: quay.io/frrouting/frr:10.7.1
+      mgmt-ipv4: 172.30.30.201
+      binds:
+        - configs/frr/daemons:/etc/frr/daemons
+        - configs/frr/ext1.conf:/etc/frr/frr.conf
+        - configs/frr/vtysh.conf:/etc/frr/vtysh.conf
+    ext2:
+      <<: *frr
+      mgmt-ipv4: 172.30.30.202
+      binds:
+        - configs/frr/daemons:/etc/frr/daemons
+        - configs/frr/ext2.conf:/etc/frr/frr.conf
+        - configs/frr/vtysh.conf:/etc/frr/vtysh.conf
+    ext3:
+      <<: *frr
+      mgmt-ipv4: 172.30.30.203
+      binds:
+        - configs/frr/daemons:/etc/frr/daemons
+        - configs/frr/ext3.conf:/etc/frr/frr.conf
+        - configs/frr/vtysh.conf:/etc/frr/vtysh.conf
+  links:
+    - endpoints: ["leaf1:e1-49", "spine1:e1-1"]
+    - endpoints: ["leaf1:e1-50", "spine2:e1-1"]
+    - endpoints: ["leaf2:e1-49", "spine1:e1-2"]
+    - endpoints: ["leaf2:e1-50", "spine2:e1-2"]
+    - endpoints: ["client1:eth1", "leaf1:e1-1"]
+    - endpoints: ["client2:eth1", "leaf2:e1-1"]
+    - endpoints: ["ext1:eth1", "leaf1:e1-3"]
+    - endpoints: ["ext2:eth1", "leaf1:e1-4"]
+    - endpoints: ["ext3:eth1", "leaf1:e1-5"]

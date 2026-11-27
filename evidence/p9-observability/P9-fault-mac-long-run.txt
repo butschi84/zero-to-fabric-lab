@@ -1,0 +1,19 @@
+method: b-c1 (site B) takes a-c1's MAC 02:00:00:0a:01:11 on the stretched VLAN 101; both send gratuitous ARP
+every 0.5 s; SR Linux MAC duplication detection (default: 5 moves in 3 min) marks it duplicate
+
+metric                             before   during   after   
+duplicate MAC entries (fabric)     0        1        0       
+
+detected after 59 s; cleared (MAC restored + delete-mac on both leafs) after 3 s
+
+MAC table entries for 02:00:00:0a:01:11 during the fault (type duplicate = blocked):
+leaf-a1  Address            Destination                                            Type
+leaf-a1  02:00:00:0A:01:11  ethernet-1/1.0                                         duplicate
+leaf-b1  Address            Destination                                            Type
+leaf-b1  02:00:00:0A:01:11  ethernet-1/1.0                                         duplicate
+
+leaf logs (also delivered as syslog via the site collectors to Loki):
+2026-11-27T12:22:59Z leaf-a1 sr_l2_mac_mgr: bridgetable|2841|2841|00028|N: A duplicate MAC address 02:00:00:0A:01:11 was detected on mac-vrf-101.
+2026-11-27T12:22:59Z leaf-a1 sr_l2_mac_mgr: bridgetable|2841|2841|00029|N: A duplicate MAC address 02:00:00:0A:01:11 was detected on sub-interface eth
+2026-11-27T12:23:09Z leaf-b1 sr_l2_mac_mgr: bridgetable|2780|2780|00027|N: A duplicate MAC address 02:00:00:0A:01:11 was detected on mac-vrf-101.
+2026-11-27T12:23:09Z leaf-b1 sr_l2_mac_mgr: bridgetable|2780|2780|00028|N: A duplicate MAC address 02:00:00:0A:01:11 was detected on sub-interface eth

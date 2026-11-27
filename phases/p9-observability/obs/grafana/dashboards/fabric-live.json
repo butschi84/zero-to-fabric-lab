@@ -1,0 +1,2034 @@
+{
+ "uid": "ztf-fabric-live",
+ "title": "Zero to Fabric \u00b7 Fabric live",
+ "tags": [
+  "zero-to-fabric",
+  "phase9",
+  "hero"
+ ],
+ "timezone": "utc",
+ "schemaVersion": 41,
+ "version": 1,
+ "refresh": "5s",
+ "time": {
+  "from": "now-10m",
+  "to": "now"
+ },
+ "style": "dark",
+ "graphTooltip": 1,
+ "annotations": {
+  "list": [
+   {
+    "builtIn": 1,
+    "datasource": {
+     "type": "grafana",
+     "uid": "-- Grafana --"
+    },
+    "enable": true,
+    "hide": true,
+    "iconColor": "rgba(0, 211, 255, 1)",
+    "name": "Annotations & Alerts",
+    "type": "dashboard"
+   },
+   {
+    "datasource": {
+     "type": "grafana",
+     "uid": "-- Grafana --"
+    },
+    "enable": true,
+    "iconColor": "#ff1a75",
+    "name": "Faults",
+    "target": {
+     "type": "tags",
+     "tags": [
+      "fault"
+     ],
+     "limit": 100,
+     "matchAny": true
+    }
+   }
+  ]
+ },
+ "panels": [
+  {
+   "type": "canvas",
+   "title": "Fabric live: nodes by BGP sessions up (pink: degraded or no telemetry), links by link state (magenta: down, dim: no telemetry)",
+   "datasource": {
+    "type": "prometheus",
+    "uid": "prom"
+   },
+   "gridPos": {
+    "x": 0,
+    "y": 0,
+    "w": 24,
+    "h": 11
+   },
+   "targets": [
+    {
+     "refId": "Q0",
+     "expr": "(sum(srl_network_instance_protocols_bgp_neighbor_session_state{source=\"leaf-a1\"}) / count(srl_network_instance_protocols_bgp_neighbor_session_state{source=\"leaf-a1\"})) and on() (time() - max(timestamp(srl_network_instance_protocols_bgp_neighbor_session_state{source=\"leaf-a1\"})) < 20)",
+     "legendFormat": "leaf-a1",
+     "datasource": {
+      "type": "prometheus",
+      "uid": "prom"
+     },
+     "instant": true
+    },
+    {
+     "refId": "Q1",
+     "expr": "(sum(srl_network_instance_protocols_bgp_neighbor_session_state{source=\"spine-a\"}) / count(srl_network_instance_protocols_bgp_neighbor_session_state{source=\"spine-a\"})) and on() (time() - max(timestamp(srl_network_instance_protocols_bgp_neighbor_session_state{source=\"spine-a\"})) < 20)",
+     "legendFormat": "spine-a",
+     "datasource": {
+      "type": "prometheus",
+      "uid": "prom"
+     },
+     "instant": true
+    },
+    {
+     "refId": "Q2",
+     "expr": "(sum(srl_network_instance_protocols_bgp_neighbor_session_state{source=\"gw-a\"}) / count(srl_network_instance_protocols_bgp_neighbor_session_state{source=\"gw-a\"})) and on() (time() - max(timestamp(srl_network_instance_protocols_bgp_neighbor_session_state{source=\"gw-a\"})) < 20)",
+     "legendFormat": "gw-a",
+     "datasource": {
+      "type": "prometheus",
+      "uid": "prom"
+     },
+     "instant": true
+    },
+    {
+     "refId": "Q3",
+     "expr": "(sum(srl_network_instance_protocols_bgp_neighbor_session_state{source=\"gw-a2\"}) / count(srl_network_instance_protocols_bgp_neighbor_session_state{source=\"gw-a2\"})) and on() (time() - max(timestamp(srl_network_instance_protocols_bgp_neighbor_session_state{source=\"gw-a2\"})) < 20)",
+     "legendFormat": "gw-a2",
+     "datasource": {
+      "type": "prometheus",
+      "uid": "prom"
+     },
+     "instant": true
+    },
+    {
+     "refId": "Q4",
+     "expr": "(sum(srl_network_instance_protocols_bgp_neighbor_session_state{source=\"leaf-b1\"}) / count(srl_network_instance_protocols_bgp_neighbor_session_state{source=\"leaf-b1\"})) and on() (time() - max(timestamp(srl_network_instance_protocols_bgp_neighbor_session_state{source=\"leaf-b1\"})) < 20)",
+     "legendFormat": "leaf-b1",
+     "datasource": {
+      "type": "prometheus",
+      "uid": "prom"
+     },
+     "instant": true
+    },
+    {
+     "refId": "Q5",
+     "expr": "(sum(srl_network_instance_protocols_bgp_neighbor_session_state{source=\"spine-b\"}) / count(srl_network_instance_protocols_bgp_neighbor_session_state{source=\"spine-b\"})) and on() (time() - max(timestamp(srl_network_instance_protocols_bgp_neighbor_session_state{source=\"spine-b\"})) < 20)",
+     "legendFormat": "spine-b",
+     "datasource": {
+      "type": "prometheus",
+      "uid": "prom"
+     },
+     "instant": true
+    },
+    {
+     "refId": "Q6",
+     "expr": "(sum(srl_network_instance_protocols_bgp_neighbor_session_state{source=\"gw-b\"}) / count(srl_network_instance_protocols_bgp_neighbor_session_state{source=\"gw-b\"})) and on() (time() - max(timestamp(srl_network_instance_protocols_bgp_neighbor_session_state{source=\"gw-b\"})) < 20)",
+     "legendFormat": "gw-b",
+     "datasource": {
+      "type": "prometheus",
+      "uid": "prom"
+     },
+     "instant": true
+    },
+    {
+     "refId": "Q7",
+     "expr": "(sum(srl_network_instance_protocols_bgp_neighbor_session_state{source=\"gw-b2\"}) / count(srl_network_instance_protocols_bgp_neighbor_session_state{source=\"gw-b2\"})) and on() (time() - max(timestamp(srl_network_instance_protocols_bgp_neighbor_session_state{source=\"gw-b2\"})) < 20)",
+     "legendFormat": "gw-b2",
+     "datasource": {
+      "type": "prometheus",
+      "uid": "prom"
+     },
+     "instant": true
+    },
+    {
+     "refId": "Q8",
+     "expr": "(sum(srl_network_instance_protocols_bgp_neighbor_session_state{source=\"br1\"}) / count(srl_network_instance_protocols_bgp_neighbor_session_state{source=\"br1\"})) and on() (time() - max(timestamp(srl_network_instance_protocols_bgp_neighbor_session_state{source=\"br1\"})) < 20)",
+     "legendFormat": "br1",
+     "datasource": {
+      "type": "prometheus",
+      "uid": "prom"
+     },
+     "instant": true
+    },
+    {
+     "refId": "Q9",
+     "expr": "(srl_interface_oper_state{source=\"spine-a\",interface_name=\"ethernet-1/1\"}) and on() (time() - max(timestamp(srl_network_instance_protocols_bgp_neighbor_session_state{source=\"spine-a\"})) < 20)",
+     "legendFormat": "spine-a~leaf-a1",
+     "datasource": {
+      "type": "prometheus",
+      "uid": "prom"
+     },
+     "instant": true
+    },
+    {
+     "refId": "Q10",
+     "expr": "(srl_interface_oper_state{source=\"spine-a\",interface_name=\"ethernet-1/7\"}) and on() (time() - max(timestamp(srl_network_instance_protocols_bgp_neighbor_session_state{source=\"spine-a\"})) < 20)",
+     "legendFormat": "spine-a~gw-a",
+     "datasource": {
+      "type": "prometheus",
+      "uid": "prom"
+     },
+     "instant": true
+    },
+    {
+     "refId": "Q11",
+     "expr": "(srl_interface_oper_state{source=\"spine-a\",interface_name=\"ethernet-1/8\"}) and on() (time() - max(timestamp(srl_network_instance_protocols_bgp_neighbor_session_state{source=\"spine-a\"})) < 20)",
+     "legendFormat": "spine-a~gw-a2",
+     "datasource": {
+      "type": "prometheus",
+      "uid": "prom"
+     },
+     "instant": true
+    },
+    {
+     "refId": "Q12",
+     "expr": "(srl_interface_oper_state{source=\"spine-b\",interface_name=\"ethernet-1/1\"}) and on() (time() - max(timestamp(srl_network_instance_protocols_bgp_neighbor_session_state{source=\"spine-b\"})) < 20)",
+     "legendFormat": "spine-b~leaf-b1",
+     "datasource": {
+      "type": "prometheus",
+      "uid": "prom"
+     },
+     "instant": true
+    },
+    {
+     "refId": "Q13",
+     "expr": "(srl_interface_oper_state{source=\"spine-b\",interface_name=\"ethernet-1/7\"}) and on() (time() - max(timestamp(srl_network_instance_protocols_bgp_neighbor_session_state{source=\"spine-b\"})) < 20)",
+     "legendFormat": "spine-b~gw-b",
+     "datasource": {
+      "type": "prometheus",
+      "uid": "prom"
+     },
+     "instant": true
+    },
+    {
+     "refId": "Q14",
+     "expr": "(srl_interface_oper_state{source=\"spine-b\",interface_name=\"ethernet-1/8\"}) and on() (time() - max(timestamp(srl_network_instance_protocols_bgp_neighbor_session_state{source=\"spine-b\"})) < 20)",
+     "legendFormat": "spine-b~gw-b2",
+     "datasource": {
+      "type": "prometheus",
+      "uid": "prom"
+     },
+     "instant": true
+    },
+    {
+     "refId": "Q15",
+     "expr": "(srl_interface_oper_state{source=\"gw-a\",interface_name=\"ethernet-1/1\"}) and on() (time() - max(timestamp(srl_network_instance_protocols_bgp_neighbor_session_state{source=\"gw-a\"})) < 20)",
+     "legendFormat": "gw-a~WAN",
+     "datasource": {
+      "type": "prometheus",
+      "uid": "prom"
+     },
+     "instant": true
+    },
+    {
+     "refId": "Q16",
+     "expr": "(srl_interface_oper_state{source=\"gw-a2\",interface_name=\"ethernet-1/1\"}) and on() (time() - max(timestamp(srl_network_instance_protocols_bgp_neighbor_session_state{source=\"gw-a2\"})) < 20)",
+     "legendFormat": "gw-a2~WAN",
+     "datasource": {
+      "type": "prometheus",
+      "uid": "prom"
+     },
+     "instant": true
+    },
+    {
+     "refId": "Q17",
+     "expr": "(srl_interface_oper_state{source=\"gw-b\",interface_name=\"ethernet-1/1\"}) and on() (time() - max(timestamp(srl_network_instance_protocols_bgp_neighbor_session_state{source=\"gw-b\"})) < 20)",
+     "legendFormat": "gw-b~WAN",
+     "datasource": {
+      "type": "prometheus",
+      "uid": "prom"
+     },
+     "instant": true
+    },
+    {
+     "refId": "Q18",
+     "expr": "(srl_interface_oper_state{source=\"gw-b2\",interface_name=\"ethernet-1/1\"}) and on() (time() - max(timestamp(srl_network_instance_protocols_bgp_neighbor_session_state{source=\"gw-b2\"})) < 20)",
+     "legendFormat": "gw-b2~WAN",
+     "datasource": {
+      "type": "prometheus",
+      "uid": "prom"
+     },
+     "instant": true
+    },
+    {
+     "refId": "Q19",
+     "expr": "min(ipsec_child_sa_installed{gateway=\"ipsec-br\"})",
+     "legendFormat": "br1~WAN",
+     "datasource": {
+      "type": "prometheus",
+      "uid": "prom"
+     },
+     "instant": true
+    }
+   ],
+   "fieldConfig": {
+    "defaults": {
+     "min": 0,
+     "max": 1,
+     "color": {
+      "mode": "thresholds"
+     },
+     "thresholds": {
+      "mode": "absolute",
+      "steps": [
+       {
+        "color": "#ff1a75",
+        "value": null
+       },
+       {
+        "color": "#ffc2da",
+        "value": 0.5
+       },
+       {
+        "color": "#c9d3d8",
+        "value": 0.999
+       }
+      ]
+     }
+    },
+    "overrides": []
+   },
+   "options": {
+    "inlineEditing": false,
+    "showAdvancedTypes": true,
+    "panZoom": false,
+    "root": {
+     "type": "frame",
+     "name": "root",
+     "elements": [
+      {
+       "type": "metric-value",
+       "name": "leaf-a1",
+       "constraint": {
+        "horizontal": "left",
+        "vertical": "top"
+       },
+       "placement": {
+        "left": 155.0,
+        "top": 268.0,
+        "width": 150,
+        "height": 64
+       },
+       "config": {
+        "text": {
+         "fixed": "leaf-a1",
+         "mode": "fixed"
+        },
+        "color": {
+         "fixed": "#15171a"
+        },
+        "size": 20,
+        "align": "center",
+        "valign": "middle"
+       },
+       "background": {
+        "color": {
+         "field": "leaf-a1",
+         "fixed": "#ffc2da"
+        }
+       },
+       "border": {
+        "color": {
+         "fixed": "#8b979d"
+        },
+        "width": 1,
+        "radius": 10
+       },
+       "connections": []
+      },
+      {
+       "type": "metric-value",
+       "name": "spine-a",
+       "constraint": {
+        "horizontal": "left",
+        "vertical": "top"
+       },
+       "placement": {
+        "left": 155.0,
+        "top": 143.0,
+        "width": 150,
+        "height": 64
+       },
+       "config": {
+        "text": {
+         "fixed": "spine-a",
+         "mode": "fixed"
+        },
+        "color": {
+         "fixed": "#15171a"
+        },
+        "size": 20,
+        "align": "center",
+        "valign": "middle"
+       },
+       "background": {
+        "color": {
+         "field": "spine-a",
+         "fixed": "#ffc2da"
+        }
+       },
+       "border": {
+        "color": {
+         "fixed": "#8b979d"
+        },
+        "width": 1,
+        "radius": 10
+       },
+       "connections": [
+        {
+         "targetName": "leaf-a1",
+         "source": {
+          "x": 0,
+          "y": -1
+         },
+         "target": {
+          "x": 0,
+          "y": 1
+         },
+         "path": "straight",
+         "direction": {
+          "fixed": "none",
+          "mode": "fixed"
+         },
+         "color": {
+          "field": "spine-a~leaf-a1",
+          "fixed": "#5b6b73"
+         },
+         "size": {
+          "fixed": 2.5,
+          "min": 2,
+          "max": 3
+         }
+        },
+        {
+         "targetName": "gw-a",
+         "source": {
+          "x": 1,
+          "y": 0
+         },
+         "target": {
+          "x": -1,
+          "y": 0
+         },
+         "path": "straight",
+         "direction": {
+          "fixed": "none",
+          "mode": "fixed"
+         },
+         "color": {
+          "field": "spine-a~gw-a",
+          "fixed": "#5b6b73"
+         },
+         "size": {
+          "fixed": 2.5,
+          "min": 2,
+          "max": 3
+         }
+        },
+        {
+         "targetName": "gw-a2",
+         "source": {
+          "x": 1,
+          "y": 0
+         },
+         "target": {
+          "x": -1,
+          "y": 0
+         },
+         "path": "straight",
+         "direction": {
+          "fixed": "none",
+          "mode": "fixed"
+         },
+         "color": {
+          "field": "spine-a~gw-a2",
+          "fixed": "#5b6b73"
+         },
+         "size": {
+          "fixed": 2.5,
+          "min": 2,
+          "max": 3
+         }
+        }
+       ]
+      },
+      {
+       "type": "metric-value",
+       "name": "gw-a",
+       "constraint": {
+        "horizontal": "left",
+        "vertical": "top"
+       },
+       "placement": {
+        "left": 445.0,
+        "top": 63.0,
+        "width": 150,
+        "height": 64
+       },
+       "config": {
+        "text": {
+         "fixed": "gw-a",
+         "mode": "fixed"
+        },
+        "color": {
+         "fixed": "#15171a"
+        },
+        "size": 20,
+        "align": "center",
+        "valign": "middle"
+       },
+       "background": {
+        "color": {
+         "field": "gw-a",
+         "fixed": "#ffc2da"
+        }
+       },
+       "border": {
+        "color": {
+         "fixed": "#8b979d"
+        },
+        "width": 1,
+        "radius": 10
+       },
+       "connections": [
+        {
+         "targetName": "WAN",
+         "source": {
+          "x": 1,
+          "y": 0
+         },
+         "target": {
+          "x": -1,
+          "y": 0
+         },
+         "path": "straight",
+         "direction": {
+          "fixed": "none",
+          "mode": "fixed"
+         },
+         "color": {
+          "field": "gw-a~WAN",
+          "fixed": "#5b6b73"
+         },
+         "size": {
+          "fixed": 2.5,
+          "min": 2,
+          "max": 3
+         }
+        }
+       ]
+      },
+      {
+       "type": "metric-value",
+       "name": "gw-a2",
+       "constraint": {
+        "horizontal": "left",
+        "vertical": "top"
+       },
+       "placement": {
+        "left": 445.0,
+        "top": 223.0,
+        "width": 150,
+        "height": 64
+       },
+       "config": {
+        "text": {
+         "fixed": "gw-a2",
+         "mode": "fixed"
+        },
+        "color": {
+         "fixed": "#15171a"
+        },
+        "size": 20,
+        "align": "center",
+        "valign": "middle"
+       },
+       "background": {
+        "color": {
+         "field": "gw-a2",
+         "fixed": "#ffc2da"
+        }
+       },
+       "border": {
+        "color": {
+         "fixed": "#8b979d"
+        },
+        "width": 1,
+        "radius": 10
+       },
+       "connections": [
+        {
+         "targetName": "WAN",
+         "source": {
+          "x": 1,
+          "y": 0
+         },
+         "target": {
+          "x": -1,
+          "y": 0
+         },
+         "path": "straight",
+         "direction": {
+          "fixed": "none",
+          "mode": "fixed"
+         },
+         "color": {
+          "field": "gw-a2~WAN",
+          "fixed": "#5b6b73"
+         },
+         "size": {
+          "fixed": 2.5,
+          "min": 2,
+          "max": 3
+         }
+        }
+       ]
+      },
+      {
+       "type": "metric-value",
+       "name": "leaf-b1",
+       "constraint": {
+        "horizontal": "left",
+        "vertical": "top"
+       },
+       "placement": {
+        "left": 1575.0,
+        "top": 268.0,
+        "width": 150,
+        "height": 64
+       },
+       "config": {
+        "text": {
+         "fixed": "leaf-b1",
+         "mode": "fixed"
+        },
+        "color": {
+         "fixed": "#15171a"
+        },
+        "size": 20,
+        "align": "center",
+        "valign": "middle"
+       },
+       "background": {
+        "color": {
+         "field": "leaf-b1",
+         "fixed": "#ffc2da"
+        }
+       },
+       "border": {
+        "color": {
+         "fixed": "#8b979d"
+        },
+        "width": 1,
+        "radius": 10
+       },
+       "connections": []
+      },
+      {
+       "type": "metric-value",
+       "name": "spine-b",
+       "constraint": {
+        "horizontal": "left",
+        "vertical": "top"
+       },
+       "placement": {
+        "left": 1575.0,
+        "top": 143.0,
+        "width": 150,
+        "height": 64
+       },
+       "config": {
+        "text": {
+         "fixed": "spine-b",
+         "mode": "fixed"
+        },
+        "color": {
+         "fixed": "#15171a"
+        },
+        "size": 20,
+        "align": "center",
+        "valign": "middle"
+       },
+       "background": {
+        "color": {
+         "field": "spine-b",
+         "fixed": "#ffc2da"
+        }
+       },
+       "border": {
+        "color": {
+         "fixed": "#8b979d"
+        },
+        "width": 1,
+        "radius": 10
+       },
+       "connections": [
+        {
+         "targetName": "leaf-b1",
+         "source": {
+          "x": 0,
+          "y": -1
+         },
+         "target": {
+          "x": 0,
+          "y": 1
+         },
+         "path": "straight",
+         "direction": {
+          "fixed": "none",
+          "mode": "fixed"
+         },
+         "color": {
+          "field": "spine-b~leaf-b1",
+          "fixed": "#5b6b73"
+         },
+         "size": {
+          "fixed": 2.5,
+          "min": 2,
+          "max": 3
+         }
+        },
+        {
+         "targetName": "gw-b",
+         "source": {
+          "x": -1,
+          "y": 0
+         },
+         "target": {
+          "x": 1,
+          "y": 0
+         },
+         "path": "straight",
+         "direction": {
+          "fixed": "none",
+          "mode": "fixed"
+         },
+         "color": {
+          "field": "spine-b~gw-b",
+          "fixed": "#5b6b73"
+         },
+         "size": {
+          "fixed": 2.5,
+          "min": 2,
+          "max": 3
+         }
+        },
+        {
+         "targetName": "gw-b2",
+         "source": {
+          "x": -1,
+          "y": 0
+         },
+         "target": {
+          "x": 1,
+          "y": 0
+         },
+         "path": "straight",
+         "direction": {
+          "fixed": "none",
+          "mode": "fixed"
+         },
+         "color": {
+          "field": "spine-b~gw-b2",
+          "fixed": "#5b6b73"
+         },
+         "size": {
+          "fixed": 2.5,
+          "min": 2,
+          "max": 3
+         }
+        }
+       ]
+      },
+      {
+       "type": "metric-value",
+       "name": "gw-b",
+       "constraint": {
+        "horizontal": "left",
+        "vertical": "top"
+       },
+       "placement": {
+        "left": 1285.0,
+        "top": 63.0,
+        "width": 150,
+        "height": 64
+       },
+       "config": {
+        "text": {
+         "fixed": "gw-b",
+         "mode": "fixed"
+        },
+        "color": {
+         "fixed": "#15171a"
+        },
+        "size": 20,
+        "align": "center",
+        "valign": "middle"
+       },
+       "background": {
+        "color": {
+         "field": "gw-b",
+         "fixed": "#ffc2da"
+        }
+       },
+       "border": {
+        "color": {
+         "fixed": "#8b979d"
+        },
+        "width": 1,
+        "radius": 10
+       },
+       "connections": [
+        {
+         "targetName": "WAN",
+         "source": {
+          "x": -1,
+          "y": 0
+         },
+         "target": {
+          "x": 1,
+          "y": 0
+         },
+         "path": "straight",
+         "direction": {
+          "fixed": "none",
+          "mode": "fixed"
+         },
+         "color": {
+          "field": "gw-b~WAN",
+          "fixed": "#5b6b73"
+         },
+         "size": {
+          "fixed": 2.5,
+          "min": 2,
+          "max": 3
+         }
+        }
+       ]
+      },
+      {
+       "type": "metric-value",
+       "name": "gw-b2",
+       "constraint": {
+        "horizontal": "left",
+        "vertical": "top"
+       },
+       "placement": {
+        "left": 1285.0,
+        "top": 223.0,
+        "width": 150,
+        "height": 64
+       },
+       "config": {
+        "text": {
+         "fixed": "gw-b2",
+         "mode": "fixed"
+        },
+        "color": {
+         "fixed": "#15171a"
+        },
+        "size": 20,
+        "align": "center",
+        "valign": "middle"
+       },
+       "background": {
+        "color": {
+         "field": "gw-b2",
+         "fixed": "#ffc2da"
+        }
+       },
+       "border": {
+        "color": {
+         "fixed": "#8b979d"
+        },
+        "width": 1,
+        "radius": 10
+       },
+       "connections": [
+        {
+         "targetName": "WAN",
+         "source": {
+          "x": -1,
+          "y": 0
+         },
+         "target": {
+          "x": 1,
+          "y": 0
+         },
+         "path": "straight",
+         "direction": {
+          "fixed": "none",
+          "mode": "fixed"
+         },
+         "color": {
+          "field": "gw-b2~WAN",
+          "fixed": "#5b6b73"
+         },
+         "size": {
+          "fixed": 2.5,
+          "min": 2,
+          "max": 3
+         }
+        }
+       ]
+      },
+      {
+       "type": "text",
+       "name": "WAN",
+       "constraint": {
+        "horizontal": "left",
+        "vertical": "top"
+       },
+       "placement": {
+        "left": 845.0,
+        "top": 135.0,
+        "width": 190,
+        "height": 80
+       },
+       "config": {
+        "text": {
+         "fixed": "WAN",
+         "field": null,
+         "mode": "fixed"
+        },
+        "color": {
+         "fixed": "#15171a"
+        },
+        "size": 20,
+        "align": "center",
+        "valign": "middle"
+       },
+       "background": {
+        "color": {
+         "fixed": "#c9d3d8"
+        }
+       },
+       "border": {
+        "color": {
+         "fixed": "#8b979d"
+        },
+        "width": 1,
+        "radius": 10
+       },
+       "connections": []
+      },
+      {
+       "type": "metric-value",
+       "name": "br1",
+       "constraint": {
+        "horizontal": "left",
+        "vertical": "top"
+       },
+       "placement": {
+        "left": 865.0,
+        "top": 273.0,
+        "width": 150,
+        "height": 64
+       },
+       "config": {
+        "text": {
+         "fixed": "br1",
+         "mode": "fixed"
+        },
+        "color": {
+         "fixed": "#15171a"
+        },
+        "size": 20,
+        "align": "center",
+        "valign": "middle"
+       },
+       "background": {
+        "color": {
+         "field": "br1",
+         "fixed": "#ffc2da"
+        }
+       },
+       "border": {
+        "color": {
+         "fixed": "#8b979d"
+        },
+        "width": 1,
+        "radius": 10
+       },
+       "connections": [
+        {
+         "targetName": "WAN",
+         "source": {
+          "x": 0,
+          "y": 1
+         },
+         "target": {
+          "x": 0,
+          "y": -1
+         },
+         "path": "straight",
+         "direction": {
+          "fixed": "none",
+          "mode": "fixed"
+         },
+         "color": {
+          "field": "br1~WAN",
+          "fixed": "#5b6b73"
+         },
+         "size": {
+          "fixed": 2.5,
+          "min": 2,
+          "max": 3
+         }
+        }
+       ]
+      },
+      {
+       "type": "text",
+       "name": "SITE A",
+       "constraint": {
+        "horizontal": "left",
+        "vertical": "top"
+       },
+       "placement": {
+        "left": 80,
+        "top": 12,
+        "width": 300,
+        "height": 36
+       },
+       "config": {
+        "text": {
+         "fixed": "SITE A",
+         "mode": "fixed"
+        },
+        "color": {
+         "fixed": "#ffc2da"
+        },
+        "size": 20,
+        "align": "center",
+        "valign": "middle"
+       },
+       "background": {
+        "color": {
+         "fixed": "transparent"
+        }
+       },
+       "border": {
+        "color": {
+         "fixed": "transparent"
+        }
+       },
+       "connections": []
+      },
+      {
+       "type": "text",
+       "name": "SITE B",
+       "constraint": {
+        "horizontal": "left",
+        "vertical": "top"
+       },
+       "placement": {
+        "left": 1500,
+        "top": 12,
+        "width": 300,
+        "height": 36
+       },
+       "config": {
+        "text": {
+         "fixed": "SITE B",
+         "mode": "fixed"
+        },
+        "color": {
+         "fixed": "#ffc2da"
+        },
+        "size": 20,
+        "align": "center",
+        "valign": "middle"
+       },
+       "background": {
+        "color": {
+         "fixed": "transparent"
+        }
+       },
+       "border": {
+        "color": {
+         "fixed": "transparent"
+        }
+       },
+       "connections": []
+      },
+      {
+       "type": "text",
+       "name": "BRANCH (IPsec)",
+       "constraint": {
+        "horizontal": "left",
+        "vertical": "top"
+       },
+       "placement": {
+        "left": 1000,
+        "top": 287,
+        "width": 300,
+        "height": 36
+       },
+       "config": {
+        "text": {
+         "fixed": "BRANCH (IPsec)",
+         "mode": "fixed"
+        },
+        "color": {
+         "fixed": "#c9d3d8"
+        },
+        "size": 20,
+        "align": "center",
+        "valign": "middle"
+       },
+       "background": {
+        "color": {
+         "fixed": "transparent"
+        }
+       },
+       "border": {
+        "color": {
+         "fixed": "transparent"
+        }
+       },
+       "connections": []
+      },
+      {
+       "type": "text",
+       "name": "DCI / WAN",
+       "constraint": {
+        "horizontal": "left",
+        "vertical": "top"
+       },
+       "placement": {
+        "left": 790,
+        "top": 92,
+        "width": 300,
+        "height": 36
+       },
+       "config": {
+        "text": {
+         "fixed": "DCI / WAN",
+         "mode": "fixed"
+        },
+        "color": {
+         "fixed": "#c9d3d8"
+        },
+        "size": 20,
+        "align": "center",
+        "valign": "middle"
+       },
+       "background": {
+        "color": {
+         "fixed": "transparent"
+        }
+       },
+       "border": {
+        "color": {
+         "fixed": "transparent"
+        }
+       },
+       "connections": []
+      }
+     ],
+     "background": {
+      "color": {
+       "fixed": "#151719"
+      }
+     },
+     "border": {
+      "color": {
+       "fixed": "transparent"
+      }
+     },
+     "constraint": {
+      "horizontal": "left",
+      "vertical": "top"
+     },
+     "placement": {
+      "left": 0,
+      "top": 0,
+      "width": 1880,
+      "height": 360
+     }
+    }
+   },
+   "id": 100
+  },
+  {
+   "type": "stat",
+   "title": "UNDERLAY \u00b7 BGP up",
+   "id": 2,
+   "datasource": {
+    "type": "prometheus",
+    "uid": "prom"
+   },
+   "gridPos": {
+    "x": 0,
+    "y": 11,
+    "w": 4,
+    "h": 4
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "expr": "sum(srl_network_instance_protocols_bgp_neighbor_session_state) / count(srl_network_instance_protocols_bgp_neighbor_session_state)",
+     "legendFormat": "BGP",
+     "instant": true,
+     "datasource": {
+      "type": "prometheus",
+      "uid": "prom"
+     }
+    }
+   ],
+   "options": {
+    "colorMode": "background_solid",
+    "graphMode": "none",
+    "textMode": "value",
+    "justifyMode": "center",
+    "reduceOptions": {
+     "calcs": [
+      "lastNotNull"
+     ]
+    },
+    "text": {
+     "titleSize": 22,
+     "valueSize": 54
+    }
+   },
+   "fieldConfig": {
+    "defaults": {
+     "unit": "percentunit",
+     "decimals": 0,
+     "min": 0,
+     "max": 1,
+     "color": {
+      "mode": "thresholds"
+     },
+     "thresholds": {
+      "mode": "absolute",
+      "steps": [
+       {
+        "color": "#ff1a75",
+        "value": null
+       },
+       {
+        "color": "#ffc2da",
+        "value": 0.9
+       },
+       {
+        "color": "#c9d3d8",
+        "value": 0.999
+       }
+      ]
+     }
+    },
+    "overrides": []
+   }
+  },
+  {
+   "type": "stat",
+   "title": "UNDERLAY \u00b7 BFD up",
+   "id": 3,
+   "datasource": {
+    "type": "prometheus",
+    "uid": "prom"
+   },
+   "gridPos": {
+    "x": 4,
+    "y": 11,
+    "w": 4,
+    "h": 4
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "expr": "sum(srl_bfd_network_instance_peer_session_state) / count(srl_bfd_network_instance_peer_session_state)",
+     "legendFormat": "BFD",
+     "instant": true,
+     "datasource": {
+      "type": "prometheus",
+      "uid": "prom"
+     }
+    }
+   ],
+   "options": {
+    "colorMode": "background_solid",
+    "graphMode": "none",
+    "textMode": "value",
+    "justifyMode": "center",
+    "reduceOptions": {
+     "calcs": [
+      "lastNotNull"
+     ]
+    },
+    "text": {
+     "titleSize": 22,
+     "valueSize": 54
+    }
+   },
+   "fieldConfig": {
+    "defaults": {
+     "unit": "percentunit",
+     "decimals": 0,
+     "min": 0,
+     "max": 1,
+     "color": {
+      "mode": "thresholds"
+     },
+     "thresholds": {
+      "mode": "absolute",
+      "steps": [
+       {
+        "color": "#ff1a75",
+        "value": null
+       },
+       {
+        "color": "#ffc2da",
+        "value": 0.9
+       },
+       {
+        "color": "#c9d3d8",
+        "value": 0.999
+       }
+      ]
+     }
+    },
+    "overrides": []
+   }
+  },
+  {
+   "type": "timeseries",
+   "title": "UNDERLAY \u00b7 ECMP: spine-a towards gw-a / gw-a2 (share of traffic)",
+   "id": 4,
+   "datasource": {
+    "type": "prometheus",
+    "uid": "prom"
+   },
+   "gridPos": {
+    "x": 8,
+    "y": 11,
+    "w": 16,
+    "h": 4
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "expr": "rate(srl_interface_statistics_out_octets_total{source=\"spine-a\",interface_name=\"ethernet-1/7\"}[30s])*8",
+     "legendFormat": "via gw-a",
+     "datasource": {
+      "type": "prometheus",
+      "uid": "prom"
+     }
+    },
+    {
+     "refId": "B",
+     "expr": "rate(srl_interface_statistics_out_octets_total{source=\"spine-a\",interface_name=\"ethernet-1/8\"}[30s])*8",
+     "legendFormat": "via gw-a2",
+     "datasource": {
+      "type": "prometheus",
+      "uid": "prom"
+     }
+    }
+   ],
+   "options": {
+    "legend": {
+     "displayMode": "list",
+     "placement": "bottom",
+     "fontSize": 16
+    },
+    "tooltip": {
+     "mode": "multi"
+    }
+   },
+   "fieldConfig": {
+    "defaults": {
+     "unit": "percentunit",
+     "custom": {
+      "lineWidth": 1,
+      "fillOpacity": 70,
+      "gradientMode": "opacity",
+      "stacking": {
+       "mode": "percent",
+       "group": "A"
+      },
+      "drawStyle": "line",
+      "lineInterpolation": "smooth"
+     },
+     "color": {
+      "mode": "shades",
+      "fixedColor": "#c9d3d8"
+     }
+    },
+    "overrides": [
+     {
+      "matcher": {
+       "id": "byName",
+       "options": "via gw-a"
+      },
+      "properties": [
+       {
+        "id": "color",
+        "value": {
+         "mode": "fixed",
+         "fixedColor": "#c9d3d8"
+        }
+       }
+      ]
+     },
+     {
+      "matcher": {
+       "id": "byName",
+       "options": "via gw-a2"
+      },
+      "properties": [
+       {
+        "id": "color",
+        "value": {
+         "mode": "fixed",
+         "fixedColor": "#ffc2da"
+        }
+       }
+      ]
+     }
+    ]
+   },
+   "interval": "30s"
+  },
+  {
+   "type": "stat",
+   "title": "OVERLAY \u00b7 EVPN routes in use",
+   "id": 5,
+   "datasource": {
+    "type": "prometheus",
+    "uid": "prom"
+   },
+   "gridPos": {
+    "x": 0,
+    "y": 15,
+    "w": 10,
+    "h": 4
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "expr": "sum(srl_network_instance_bgp_rib_afi_safi_evpn_rib_in_out_rib_in_post_mac_ip_route_used_route)",
+     "legendFormat": "Type 2",
+     "instant": true,
+     "datasource": {
+      "type": "prometheus",
+      "uid": "prom"
+     }
+    },
+    {
+     "refId": "B",
+     "expr": "sum(srl_network_instance_bgp_rib_afi_safi_evpn_rib_in_out_rib_in_post_imet_route_used_route)",
+     "legendFormat": "Type 3",
+     "instant": true,
+     "datasource": {
+      "type": "prometheus",
+      "uid": "prom"
+     }
+    },
+    {
+     "refId": "C",
+     "expr": "sum(srl_network_instance_bgp_rib_afi_safi_evpn_rib_in_out_rib_in_post_ip_prefix_route_used_route)",
+     "legendFormat": "Type 5",
+     "instant": true,
+     "datasource": {
+      "type": "prometheus",
+      "uid": "prom"
+     }
+    }
+   ],
+   "options": {
+    "colorMode": "value",
+    "graphMode": "none",
+    "textMode": "value_and_name",
+    "justifyMode": "center",
+    "reduceOptions": {
+     "calcs": [
+      "lastNotNull"
+     ]
+    },
+    "text": {
+     "titleSize": 22,
+     "valueSize": 54
+    }
+   },
+   "fieldConfig": {
+    "defaults": {
+     "decimals": 0,
+     "color": {
+      "mode": "thresholds"
+     },
+     "thresholds": {
+      "mode": "absolute",
+      "steps": [
+       {
+        "color": "#c9d3d8",
+        "value": null
+       }
+      ]
+     }
+    },
+    "overrides": []
+   }
+  },
+  {
+   "type": "stat",
+   "title": "OVERLAY \u00b7 VTEPs reachable",
+   "id": 6,
+   "datasource": {
+    "type": "prometheus",
+    "uid": "prom"
+   },
+   "gridPos": {
+    "x": 10,
+    "y": 15,
+    "w": 4,
+    "h": 4
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "expr": "sum(count by (source) (srl_tunnel_vxlan_tunnel_vtep_index{source=~\"leaf-.*\"}))",
+     "legendFormat": "VTEPs",
+     "instant": true,
+     "datasource": {
+      "type": "prometheus",
+      "uid": "prom"
+     }
+    }
+   ],
+   "options": {
+    "colorMode": "value",
+    "graphMode": "none",
+    "textMode": "value",
+    "justifyMode": "center",
+    "reduceOptions": {
+     "calcs": [
+      "lastNotNull"
+     ]
+    },
+    "text": {
+     "titleSize": 22,
+     "valueSize": 54
+    }
+   },
+   "fieldConfig": {
+    "defaults": {
+     "decimals": 0,
+     "color": {
+      "mode": "thresholds"
+     },
+     "thresholds": {
+      "mode": "absolute",
+      "steps": [
+       {
+        "color": "#c9d3d8",
+        "value": null
+       }
+      ]
+     }
+    },
+    "overrides": []
+   }
+  },
+  {
+   "type": "stat",
+   "title": "OVERLAY \u00b7 MAC mobility",
+   "id": 7,
+   "datasource": {
+    "type": "datasource",
+    "uid": "-- Mixed --"
+   },
+   "gridPos": {
+    "x": 14,
+    "y": 15,
+    "w": 10,
+    "h": 4
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "expr": "sum(srl_network_instance_bridge_table_statistics_mac_type_active_entries{mac_type_type=\"duplicate\"}) or vector(0)",
+     "legendFormat": "duplicate MACs now",
+     "instant": true,
+     "datasource": {
+      "type": "prometheus",
+      "uid": "prom"
+     }
+    },
+    {
+     "refId": "B",
+     "expr": "sum(count_over_time({service_name=\"unknown_service\"} |~ \"(?i)duplicate mac\" [10m]))",
+     "legendFormat": "events 10 min",
+     "instant": true,
+     "datasource": {
+      "type": "loki",
+      "uid": "loki"
+     }
+    }
+   ],
+   "options": {
+    "colorMode": "background_solid",
+    "graphMode": "none",
+    "textMode": "value_and_name",
+    "justifyMode": "center",
+    "reduceOptions": {
+     "calcs": [
+      "lastNotNull"
+     ]
+    },
+    "text": {
+     "titleSize": 22,
+     "valueSize": 54
+    }
+   },
+   "fieldConfig": {
+    "defaults": {
+     "decimals": 0,
+     "color": {
+      "mode": "thresholds"
+     },
+     "thresholds": {
+      "mode": "absolute",
+      "steps": [
+       {
+        "color": "#c9d3d8",
+        "value": null
+       },
+       {
+        "color": "#ff1a75",
+        "value": 1
+       }
+      ]
+     },
+     "noValue": "0"
+    },
+    "overrides": [
+     {
+      "matcher": {
+       "id": "byFrameRefID",
+       "options": "B"
+      },
+      "properties": [
+       {
+        "id": "displayName",
+        "value": "MAC moves in syslog, 10 min"
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "type": "stat",
+   "title": "TENANTS \u00b7 routes per VRF (leafs, both sites)",
+   "id": 8,
+   "datasource": {
+    "type": "prometheus",
+    "uid": "prom"
+   },
+   "gridPos": {
+    "x": 0,
+    "y": 19,
+    "w": 24,
+    "h": 4
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "expr": "sum by (network_instance_name) (srl_network_instance_route_table_ipv4_unicast_statistics_active_routes{source=~\"leaf-.*\",network_instance_name!~\"default|mgmt\"})",
+     "legendFormat": "{{network_instance_name}}",
+     "instant": true,
+     "datasource": {
+      "type": "prometheus",
+      "uid": "prom"
+     }
+    }
+   ],
+   "options": {
+    "colorMode": "value",
+    "graphMode": "none",
+    "textMode": "value_and_name",
+    "justifyMode": "center",
+    "reduceOptions": {
+     "calcs": [
+      "lastNotNull"
+     ]
+    },
+    "text": {
+     "titleSize": 22,
+     "valueSize": 54
+    }
+   },
+   "fieldConfig": {
+    "defaults": {
+     "decimals": 0,
+     "color": {
+      "mode": "thresholds"
+     },
+     "thresholds": {
+      "mode": "absolute",
+      "steps": [
+       {
+        "color": "#c9d3d8",
+        "value": null
+       }
+      ]
+     }
+    },
+    "overrides": [
+     {
+      "matcher": {
+       "id": "byName",
+       "options": "corp"
+      },
+      "properties": [
+       {
+        "id": "color",
+        "value": {
+         "mode": "fixed",
+         "fixedColor": "#4fb3ff"
+        }
+       }
+      ]
+     },
+     {
+      "matcher": {
+       "id": "byName",
+       "options": "guest"
+      },
+      "properties": [
+       {
+        "id": "color",
+        "value": {
+         "mode": "fixed",
+         "fixedColor": "#ffb347"
+        }
+       }
+      ]
+     },
+     {
+      "matcher": {
+       "id": "byName",
+       "options": "mgmt"
+      },
+      "properties": [
+       {
+        "id": "color",
+        "value": {
+         "mode": "fixed",
+         "fixedColor": "#7be0a6"
+        }
+       }
+      ]
+     },
+     {
+      "matcher": {
+       "id": "byName",
+       "options": "shared"
+      },
+      "properties": [
+       {
+        "id": "color",
+        "value": {
+         "mode": "fixed",
+         "fixedColor": "#c9a7ff"
+        }
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "type": "stat",
+   "title": "DCI \u00b7 latency A <-> B",
+   "id": 9,
+   "datasource": {
+    "type": "prometheus",
+    "uid": "prom"
+   },
+   "gridPos": {
+    "x": 0,
+    "y": 23,
+    "w": 5,
+    "h": 4
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "expr": "avg((rate(smokeping_response_duration_seconds_sum{instance=\"172.30.30.101:9374\",host=~\"10.1.1.21|10.1.3.21\"}[1m]) / rate(smokeping_response_duration_seconds_count{instance=\"172.30.30.101:9374\",host=~\"10.1.1.21|10.1.3.21\"}[1m])) >= 0)",
+     "legendFormat": "RTT",
+     "instant": true,
+     "datasource": {
+      "type": "prometheus",
+      "uid": "prom"
+     }
+    }
+   ],
+   "options": {
+    "colorMode": "background_solid",
+    "graphMode": "none",
+    "textMode": "value",
+    "justifyMode": "center",
+    "reduceOptions": {
+     "calcs": [
+      "lastNotNull"
+     ]
+    },
+    "text": {
+     "titleSize": 22,
+     "valueSize": 54
+    }
+   },
+   "fieldConfig": {
+    "defaults": {
+     "unit": "s",
+     "decimals": 1,
+     "color": {
+      "mode": "thresholds"
+     },
+     "thresholds": {
+      "mode": "absolute",
+      "steps": [
+       {
+        "color": "#c9d3d8",
+        "value": null
+       },
+       {
+        "color": "#ffc2da",
+        "value": 0.025
+       },
+       {
+        "color": "#ff1a75",
+        "value": 0.06
+       }
+      ]
+     },
+     "noValue": "no reply"
+    },
+    "overrides": []
+   }
+  },
+  {
+   "type": "stat",
+   "title": "DCI \u00b7 jitter (p90 - p10)",
+   "id": 10,
+   "datasource": {
+    "type": "prometheus",
+    "uid": "prom"
+   },
+   "gridPos": {
+    "x": 5,
+    "y": 23,
+    "w": 5,
+    "h": 4
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "expr": "histogram_quantile(0.9, sum by (le) (rate(smokeping_response_duration_seconds_bucket{instance=\"172.30.30.101:9374\",host=~\"10.1.1.21|10.1.3.21\"}[1m]))) - histogram_quantile(0.1, sum by (le) (rate(smokeping_response_duration_seconds_bucket{instance=\"172.30.30.101:9374\",host=~\"10.1.1.21|10.1.3.21\"}[1m])))",
+     "legendFormat": "jitter",
+     "instant": true,
+     "datasource": {
+      "type": "prometheus",
+      "uid": "prom"
+     }
+    }
+   ],
+   "options": {
+    "colorMode": "background_solid",
+    "graphMode": "none",
+    "textMode": "value",
+    "justifyMode": "center",
+    "reduceOptions": {
+     "calcs": [
+      "lastNotNull"
+     ]
+    },
+    "text": {
+     "titleSize": 22,
+     "valueSize": 54
+    }
+   },
+   "fieldConfig": {
+    "defaults": {
+     "unit": "s",
+     "decimals": 1,
+     "color": {
+      "mode": "thresholds"
+     },
+     "thresholds": {
+      "mode": "absolute",
+      "steps": [
+       {
+        "color": "#c9d3d8",
+        "value": null
+       },
+       {
+        "color": "#ffc2da",
+        "value": 0.03
+       },
+       {
+        "color": "#ff1a75",
+        "value": 0.06
+       }
+      ]
+     },
+     "noValue": "no reply"
+    },
+    "overrides": []
+   }
+  },
+  {
+   "type": "stat",
+   "title": "DCI \u00b7 IPsec tunnels up",
+   "id": 11,
+   "datasource": {
+    "type": "prometheus",
+    "uid": "prom"
+   },
+   "gridPos": {
+    "x": 10,
+    "y": 23,
+    "w": 4,
+    "h": 4
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "expr": "sum(ipsec_child_sa_installed)",
+     "legendFormat": "child SAs",
+     "instant": true,
+     "datasource": {
+      "type": "prometheus",
+      "uid": "prom"
+     }
+    }
+   ],
+   "options": {
+    "colorMode": "background_solid",
+    "graphMode": "none",
+    "textMode": "value",
+    "justifyMode": "center",
+    "reduceOptions": {
+     "calcs": [
+      "lastNotNull"
+     ]
+    },
+    "text": {
+     "titleSize": 22,
+     "valueSize": 54
+    }
+   },
+   "fieldConfig": {
+    "defaults": {
+     "decimals": 0,
+     "color": {
+      "mode": "thresholds"
+     },
+     "thresholds": {
+      "mode": "absolute",
+      "steps": [
+       {
+        "color": "#ff1a75",
+        "value": null
+       },
+       {
+        "color": "#c9d3d8",
+        "value": 1
+       }
+      ]
+     }
+    },
+    "overrides": []
+   }
+  },
+  {
+   "type": "timeseries",
+   "title": "DCI \u00b7 RTT site A -> site B",
+   "id": 12,
+   "datasource": {
+    "type": "prometheus",
+    "uid": "prom"
+   },
+   "gridPos": {
+    "x": 14,
+    "y": 23,
+    "w": 10,
+    "h": 4
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "expr": "rate(smokeping_response_duration_seconds_sum{instance=\"172.30.30.101:9374\",host=~\"10.1.1.21|10.1.3.21\"}[1m]) / rate(smokeping_response_duration_seconds_count{instance=\"172.30.30.101:9374\",host=~\"10.1.1.21|10.1.3.21\"}[1m])",
+     "legendFormat": "to {{host}}",
+     "datasource": {
+      "type": "prometheus",
+      "uid": "prom"
+     }
+    }
+   ],
+   "options": {
+    "legend": {
+     "displayMode": "list",
+     "placement": "bottom",
+     "fontSize": 16
+    },
+    "tooltip": {
+     "mode": "multi"
+    }
+   },
+   "fieldConfig": {
+    "defaults": {
+     "unit": "s",
+     "custom": {
+      "lineWidth": 3,
+      "fillOpacity": 10,
+      "gradientMode": "opacity"
+     },
+     "color": {
+      "mode": "shades",
+      "fixedColor": "#c9d3d8"
+     }
+    },
+    "overrides": [
+     {
+      "matcher": {
+       "id": "byName",
+       "options": "to 10.1.1.21"
+      },
+      "properties": [
+       {
+        "id": "color",
+        "value": {
+         "mode": "fixed",
+         "fixedColor": "#c9d3d8"
+        }
+       }
+      ]
+     },
+     {
+      "matcher": {
+       "id": "byName",
+       "options": "to 10.1.3.21"
+      },
+      "properties": [
+       {
+        "id": "color",
+        "value": {
+         "mode": "fixed",
+         "fixedColor": "#ffc2da"
+        }
+       }
+      ]
+     }
+    ]
+   }
+  }
+ ]
+}

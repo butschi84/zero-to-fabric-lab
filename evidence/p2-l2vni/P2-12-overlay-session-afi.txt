@@ -1,0 +1,12 @@
+# P2-12 · leaf1 · 2026-11-26T16:08:20Z
+leaf1# show network-instance default protocols bgp neighbor 10.255.0.1 detail   (filtered)
+Peer : 10.255.0.1, remote AS: 65500, local AS: 65500, peer-type : ibgp
+Group : overlay
+Admin-state is enable, session-state is established, up for 0d:0h:1m:20s
+   Restarts by the peer : None
+Cap Sent:  ROUTE_REFRESH 4-OCTET_ASN MP_BGP GRACEFUL_RESTART
+Cap Recv:  ROUTE_REFRESH 4-OCTET_ASN MP_BGP GRACEFUL_RESTART
+Evpn-unicast AFI/SAFI
+    End of RIB                     : sent, received
+    Received routes                : 9
+    Active routes                  : 9

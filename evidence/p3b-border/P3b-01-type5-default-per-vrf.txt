@@ -1,0 +1,34 @@
+# P3b-01 · leaf1 · 2026-11-26T17:33:54Z
+leaf1# show network-instance default protocols bgp routes evpn route-type 5 summary   (0.0.0.0/0 only)
+Status  Route-distinguisher  IP-address      Next-Hop     Label
+------  -------------------  --------------  -----------  -----
+u*>     10.255.0.21:1        0.0.0.0/0       10.255.0.21  50001
+u*>     10.255.0.21:2        0.0.0.0/0       10.255.0.21  50002
+u*>     10.255.0.21:9        0.0.0.0/0       10.255.0.21  50009
+u*>     10.255.0.22:1        0.0.0.0/0       10.255.0.22  50001
+u*>     10.255.0.22:2        0.0.0.0/0       10.255.0.22  50002
+u*>     10.255.0.22:9        0.0.0.0/0       10.255.0.22  50009
+
+leaf1# show network-instance corp route-table ... 0.0.0.0/0
+Prefix          Route Type  Route Owner   Next-hop (Type)
+--------------  ----------  ------------  -------------------------------
+0.0.0.0/0       bgp-evpn    bgp_evpn_mgr  10.255.0.21/32 (indirect/vxlan)
+                                          10.255.0.22/32 (indirect/vxlan)
+
+leaf1# show network-instance guest route-table ... 0.0.0.0/0
+Prefix          Route Type  Route Owner   Next-hop (Type)
+--------------  ----------  ------------  -------------------------------
+0.0.0.0/0       bgp-evpn    bgp_evpn_mgr  10.255.0.21/32 (indirect/vxlan)
+                                          10.255.0.22/32 (indirect/vxlan)
+
+leaf1# show network-instance shared route-table ... 0.0.0.0/0
+Prefix          Route Type  Route Owner   Next-hop (Type)
+--------------  ----------  ------------  -------------------------------
+0.0.0.0/0       bgp-evpn    bgp_evpn_mgr  10.255.0.21/32 (indirect/vxlan)
+                                          10.255.0.22/32 (indirect/vxlan)
+
+leaf3# show network-instance mgmt-net route-table ... 0.0.0.0/0
+Prefix          Route Type  Route Owner   Next-hop (Type)
+--------------  ----------  ------------  -------------------------------
+0.0.0.0/0       bgp-evpn    bgp_evpn_mgr  10.255.0.21/32 (indirect/vxlan)
+                                          10.255.0.22/32 (indirect/vxlan)

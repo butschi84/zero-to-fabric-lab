@@ -1,0 +1,14 @@
+# P1-10 · leaf1 · 2026-11-26T16:32:31Z
+leaf1# show network-instance default protocols bgp neighbor 10.254.1.0 detail   (filtered)
+Peer : 10.254.1.0, remote AS: 65000, local AS: 65101, peer-type : ebgp
+Admin-state is enable, session-state is established, up for 0d:0h:1m:31s
+Cap Sent:  ROUTE_REFRESH 4-OCTET_ASN MP_BGP GRACEFUL_RESTART
+Cap Recv:  ROUTE_REFRESH 4-OCTET_ASN MP_BGP GRACEFUL_RESTART
+Ipv4-unicast AFI/SAFI
+    End of RIB                     : sent, received
+    Received routes                : 3
+    Rejected routes                : None
+    Active routes                  : 3
+    Advertised routes              : 4
+
+the underlay carries IPv4 unicast only; the EVPN family follows in phase 2 (P2-02, P2-12)

@@ -1,0 +1,19 @@
+method: WAN ip-mtu 9000 -> 1500 on gw-a/gw-a2/gw-b/gw-b2 while 8 TCP flows a-c2 -> b-c3 run (default MSS 1448).
+A 1500-byte host packet + 50 bytes VXLAN no longer fits; the hosts are not told (no ICMP reaches them).
+
+metric                                   before       during       after       
+gw-a/gw-a2 WAN out bit/s                 18240837     6724         16666331    
+gateway discards per second (gNMI)       2.70         0.00         0.00        
+
+detected (throughput collapse in Prometheus) after 15 s.
+The dropped packets do NOT show up as interface discards in SR Linux's counters here.
+
+iperf3 8 s, default MSS, before:
+[  5]   0.00-8.00   sec  50.8 MBytes  53.2 Mbits/sec  408            sender
+[  5]   0.00-8.82   sec  50.8 MBytes  48.2 Mbits/sec                  receiver
+iperf3 8 s, default MSS, during:
+[  5]   0.00-8.00   sec  0.00 Bytes  0.00 bits/sec    5            sender
+[  5]   0.00-8.00   sec  0.00 Bytes  0.00 bits/sec                  receiver
+iperf3 8 s, MSS 1356 (-M), during:
+[  5]   0.00-8.00   sec  39.6 MBytes  41.5 Mbits/sec  426            sender
+[  5]   0.00-21.24  sec  39.6 MBytes  15.6 Mbits/sec                  receiver

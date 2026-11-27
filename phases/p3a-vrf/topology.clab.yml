@@ -1,0 +1,68 @@
+# Phase 3a - tenants as VRFs: corp, guest, mgmt as IP-VRFs with an L3VNI each
+# (symmetric IRB), anycast gateway (same IP and MAC on every leaf), DHCP relay
+# with option 82 (circuit-id, remote-id) and a unique giaddr per leaf; the
+# server (ISC Kea) picks the pool by relay address, because SR Linux 24.10 has
+# no link-selection suboption (RFC 3527).
+# Fabric as in phase 2 (eBGP underlay, iBGP EVPN, spines as route reflectors).
+name: ztf-p3a
+
+mgmt:
+  network: ztf-mgmt
+  ipv4-subnet: 172.30.30.0/24
+
+topology:
+  kinds:
+    nokia_srlinux:
+      image: ghcr.io/nokia/srlinux:24.10.7
+      type: ixr-d2l
+    linux:
+      image: ztf-tools:1
+  nodes:
+    spine1: {kind: nokia_srlinux, startup-config: configs/spine1.cli, mgmt-ipv4: 172.30.30.11, labels: {graph-level: 1, graph-icon: switch}}
+    spine2: {kind: nokia_srlinux, startup-config: configs/spine2.cli, mgmt-ipv4: 172.30.30.12, labels: {graph-level: 1, graph-icon: switch}}
+    leaf1: {kind: nokia_srlinux, startup-config: configs/leaf1.cli, mgmt-ipv4: 172.30.30.21, labels: {graph-level: 2, graph-icon: switch}}
+    leaf2: {kind: nokia_srlinux, startup-config: configs/leaf2.cli, mgmt-ipv4: 172.30.30.22, labels: {graph-level: 2, graph-icon: switch}}
+    leaf3: {kind: nokia_srlinux, startup-config: configs/leaf3.cli, mgmt-ipv4: 172.30.30.23, labels: {graph-level: 2, graph-icon: switch}}
+    # corp network 01 (VLAN 101, 10.1.1.0/24) on all three leafs
+    corp1: {kind: linux, mgmt-ipv4: 172.30.30.101, labels: {graph-level: 3, graph-icon: host},
+            exec: ["ip link set eth1 address 02:00:00:01:01:11", "ip link set eth1 mtu 1500", "ip addr add 10.1.1.11/24 dev eth1", "ip route replace default via 10.1.1.1"]}
+    corp2: {kind: linux, mgmt-ipv4: 172.30.30.102, labels: {graph-level: 3, graph-icon: host},
+            exec: ["ip link set eth1 address 02:00:00:01:01:12", "ip link set eth1 mtu 1500", "ip addr add 10.1.1.12/24 dev eth1", "ip route replace default via 10.1.1.1"]}
+    # corp network 02 (VLAN 102, 10.1.2.0/24) only on leaf3: routed via the L3VNI
+    srv3: {kind: linux, mgmt-ipv4: 172.30.30.103, labels: {graph-level: 3, graph-icon: host},
+           exec: ["ip link set eth1 address 02:00:00:01:02:13", "ip link set eth1 mtu 1500", "ip addr add 10.1.2.13/24 dev eth1", "ip route replace default via 10.1.2.1"]}
+    dhcpsrv:
+      kind: linux
+      mgmt-ipv4: 172.30.30.104
+      labels: {graph-level: 3, graph-icon: server}
+      binds: ["configs/dhcp/kea-dhcp4.conf:/etc/kea/kea-dhcp4.conf:ro"]
+      exec: ["ip link set eth1 address 02:00:00:01:02:10", "ip link set eth1 mtu 1500", "ip addr add 10.1.2.10/24 dev eth1",
+             "ip route replace default via 10.1.2.1", "mkdir -p /run/kea /var/lib/kea", "sh -c 'kea-dhcp4 -c /etc/kea/kea-dhcp4.conf > /tmp/kea.out 2>&1 &'"]
+    # DHCP clients in corp network 01, one per leaf (no address until they ask)
+    dhcp1: {kind: linux, mgmt-ipv4: 172.30.30.105, labels: {graph-level: 3, graph-icon: host},
+            exec: ["ip link set eth1 address 02:00:00:01:01:a1", "ip link set eth1 mtu 1500"]}
+    dhcp2: {kind: linux, mgmt-ipv4: 172.30.30.106, labels: {graph-level: 3, graph-icon: host},
+            exec: ["ip link set eth1 address 02:00:00:01:01:a2", "ip link set eth1 mtu 1500"]}
+    # guest (VLAN 201, 10.2.1.0/24) and mgmt (VLAN 301, 10.3.1.0/24)
+    guest1: {kind: linux, mgmt-ipv4: 172.30.30.107, labels: {graph-level: 3, graph-icon: host},
+             exec: ["ip link set eth1 address 02:00:00:02:01:11", "ip link set eth1 mtu 1500", "ip addr add 10.2.1.11/24 dev eth1", "ip route replace default via 10.2.1.1"]}
+    guest2: {kind: linux, mgmt-ipv4: 172.30.30.108, labels: {graph-level: 3, graph-icon: host},
+             exec: ["ip link set eth1 address 02:00:00:02:01:12", "ip link set eth1 mtu 1500", "ip addr add 10.2.1.12/24 dev eth1", "ip route replace default via 10.2.1.1"]}
+    mgmt2: {kind: linux, mgmt-ipv4: 172.30.30.109, labels: {graph-level: 3, graph-icon: host},
+            exec: ["ip link set eth1 address 02:00:00:03:01:12", "ip link set eth1 mtu 1500", "ip addr add 10.3.1.12/24 dev eth1", "ip route replace default via 10.3.1.1"]}
+  links:
+    - endpoints: ["leaf1:e1-49", "spine1:e1-1"]
+    - endpoints: ["leaf1:e1-50", "spine2:e1-1"]
+    - endpoints: ["leaf2:e1-49", "spine1:e1-2"]
+    - endpoints: ["leaf2:e1-50", "spine2:e1-2"]
+    - endpoints: ["leaf3:e1-49", "spine1:e1-3"]
+    - endpoints: ["leaf3:e1-50", "spine2:e1-3"]
+    - endpoints: ["corp1:eth1", "leaf1:e1-1"]
+    - endpoints: ["guest1:eth1", "leaf1:e1-2"]
+    - endpoints: ["dhcp1:eth1", "leaf1:e1-3"]
+    - endpoints: ["corp2:eth1", "leaf2:e1-1"]
+    - endpoints: ["guest2:eth1", "leaf2:e1-2"]
+    - endpoints: ["dhcp2:eth1", "leaf2:e1-3"]
+    - endpoints: ["mgmt2:eth1", "leaf2:e1-4"]
+    - endpoints: ["srv3:eth1", "leaf3:e1-1"]
+    - endpoints: ["dhcpsrv:eth1", "leaf3:e1-2"]

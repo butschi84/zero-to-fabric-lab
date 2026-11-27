@@ -1,0 +1,30 @@
+graph "topology.clab" {
+	border1--spine2[ color=black ];
+	fw--border1[ color=black ];
+	c-vm1--leaf1[ color=black ];
+	a-vm2--leaf2[ color=black ];
+	b-vm2--leaf2[ color=black ];
+	leaf1--spine1[ color=black ];
+	leaf2--spine1[ color=black ];
+	a-vm1--leaf1[ color=black ];
+	b-vm1--leaf1[ color=black ];
+	ce-a--leaf2[ color=black ];
+	svc-dns--leaf2[ color=black ];
+	leaf1--spine2[ color=black ];
+	leaf2--spine2[ color=black ];
+	border1--spine1[ color=black ];
+	a-vm1 [ color=red, fillcolor=red, label=a-vm1, style=filled, xlabel=linux ];
+	a-vm2 [ color=red, fillcolor=red, label=a-vm2, style=filled, xlabel=linux ];
+	b-vm1 [ color=red, fillcolor=red, label=b-vm1, style=filled, xlabel=linux ];
+	b-vm2 [ color=red, fillcolor=red, label=b-vm2, style=filled, xlabel=linux ];
+	border1 [ color=red, fillcolor=red, label=border1, style=filled, xlabel=nokia_srlinux ];
+	c-vm1 [ color=red, fillcolor=red, label=c-vm1, style=filled, xlabel=linux ];
+	ce-a [ color=red, fillcolor=red, label=ce-a, style=filled, xlabel=linux ];
+	fw [ color=red, fillcolor=red, label=fw, style=filled, xlabel=linux ];
+	leaf1 [ color=red, fillcolor=red, label=leaf1, style=filled, xlabel=nokia_srlinux ];
+	leaf2 [ color=red, fillcolor=red, label=leaf2, style=filled, xlabel=nokia_srlinux ];
+	spine1 [ color=red, fillcolor=red, label=spine1, style=filled, xlabel=nokia_srlinux ];
+	spine2 [ color=red, fillcolor=red, label=spine2, style=filled, xlabel=nokia_srlinux ];
+	svc-dns [ color=red, fillcolor=red, label=svc-dns, style=filled, xlabel=linux ];
+
+}

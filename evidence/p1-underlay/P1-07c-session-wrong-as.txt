@@ -1,0 +1,23 @@
+# P1-07c · leaf1 · 2026-11-26T16:32:21Z
+test: ext3 configured with remote-as 65199 for leaf1 (leaf1 really is 65101)
+Peer        Group      Peer-AS  State        Uptime         [Rx/Active/Tx]
+----------  ---------  -------  -----------  -------------  --------------
+10.253.3.1  testpeers  64503    active       -
+
+Admin-state is enable, session-state is active, up for N/A
+Last-state was idle, last-event was recvNotify, 4 peer-flaps
+Last received Notification was Error: Open Message Error SubError: Bad Peer As
+
+events (ext3, FRR log):
+2026/11/26 16:31:51.431 BGP: [PXVXG-TFNNT] %ADJCHANGE: neighbor 10.253.3.0(Unknown) in vrf default Down Remote AS chan
+2026/11/26 16:31:51.437 BGP: [HZN6M-XRM1G] %NOTIFICATION: sent to neighbor 10.253.3.0 2/2 (OPEN Message Error/Bad Peer
+2026/11/26 16:31:52.486 BGP: [HZN6M-XRM1G] %NOTIFICATION: sent to neighbor 10.253.3.0 2/2 (OPEN Message Error/Bad Peer
+2026/11/26 16:31:54.489 BGP: [HZN6M-XRM1G] %NOTIFICATION: sent to neighbor 10.253.3.0 2/2 (OPEN Message Error/Bad Peer
+2026/11/26 16:31:58.494 BGP: [HZN6M-XRM1G] %NOTIFICATION: sent to neighbor 10.253.3.0 2/2 (OPEN Message Error/Bad Peer
+2026/11/26 16:32:06.503 BGP: [HZN6M-XRM1G] %NOTIFICATION: sent to neighbor 10.253.3.0 2/2 (OPEN Message Error/Bad Peer
+
+events (leaf1 log):
+2026-11-26T16:31:52Z  moved from higher state OPENCONFIRM to lower state IDLE due to event RECVNOTIFY
+2026-11-26T16:31:54Z  moved from higher state OPENCONFIRM to lower state IDLE due to event RECVNOTIFY
+2026-11-26T16:31:58Z  moved from higher state OPENCONFIRM to lower state IDLE due to event RECVNOTIFY
+2026-11-26T16:32:06Z  moved from higher state OPENCONFIRM to lower state IDLE due to event RECVNOTIFY

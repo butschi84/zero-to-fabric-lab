@@ -1,0 +1,5 @@
+test,sent,received,lost,loss_ms_at_10ms_interval,largest_reply_gap_ms,method
+b-c3_to_a-c2,1337,1086,251,2510,2888,"docker stop -t 0 gw-a (one of site A's two gateways); pings every 10 ms"
+br-c1_to_a-c2,1331,1087,244,2440,2794,"docker stop -t 0 gw-a (one of site A's two gateways); pings every 10 ms"
+b-c3_to_br-c1,1764,1540,224,2240,2603,"site A down (gw-a already stopped; gw-a2 spine-a leaf-a1 srv-a ipsec-a stopped at once); pings every 10 ms"
+b-c1_to_b-c3,1768,1768,0,0,34,"site A down (gw-a already stopped; gw-a2 spine-a leaf-a1 srv-a ipsec-a stopped at once); pings every 10 ms"

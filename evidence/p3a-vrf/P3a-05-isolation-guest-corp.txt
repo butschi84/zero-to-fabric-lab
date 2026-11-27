@@ -1,0 +1,22 @@
+# P3a-05 · guest1 · 2026-11-26T17:08:41Z
+guest1# ping -c 3 10.1.1.11   (corp1)
+From 10.2.1.1 icmp_seq=1 Destination Net Unreachable
+From 10.2.1.1 icmp_seq=2 Destination Net Unreachable
+From 10.2.1.1 icmp_seq=3 Destination Net Unreachable
+3 packets transmitted, 0 received, +3 errors, 100% packet loss, time 612ms
+guest1# ping -c 3 10.2.1.12   (guest2, same tenant, other leaf)
+3 packets transmitted, 3 received, 0% packet loss, time 609ms
+
+leaf1# show network-instance guest route-table ipv4-unicast summary
+Prefix          Route Type  Active  Next-hop (Type)                  Next-hop Interface
+--------------  ----------  ------  -------------------------------  ------------------
+10.2.1.0/24     bgp-evpn    False   10.255.0.12/32 (indirect/vxlan)
+10.2.1.0/24     local       True    10.2.1.1 (direct)                irb0.201
+10.2.1.11/32    arp-nd      True    10.2.1.11 (direct)               irb0.201
+10.2.1.12/32    bgp-evpn    True    10.255.0.12/32 (indirect/vxlan)
+10.2.255.11/32  host        True    None (extract)                   None
+10.2.255.12/32  bgp-evpn    True    10.255.0.12/32 (indirect/vxlan)
+
+leaf1# info from state network-instance guest route-table ipv4-unicast statistics
+  active-routes 7
+  total-routes 8

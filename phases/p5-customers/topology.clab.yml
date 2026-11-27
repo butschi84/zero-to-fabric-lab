@@ -1,0 +1,70 @@
+# Phase 5 - hosting customers with overlapping addresses. cust-a and cust-b
+# both use 10.0.0.0/24 (VRFs with L3VNI 50011/50012); a-vm1/b-vm1 even share
+# 10.0.0.10. ce-a is customer A's router (eBGP into VRF cust-a, prefix limit).
+# Both reach the shared DNS (10.9.1.53, VRF shared) through border1 and a
+# firewall that maps each customer to its own range (see configs/fw).
+name: ztf-p5
+
+mgmt:
+  network: ztf-mgmt
+  ipv4-subnet: 172.30.30.0/24
+
+topology:
+  kinds:
+    nokia_srlinux:
+      image: ghcr.io/nokia/srlinux:24.10.7
+      type: ixr-d2l
+    linux:
+      image: ztf-tools:1
+  nodes:
+    spine1: {kind: nokia_srlinux, startup-config: configs/spine1.cli, mgmt-ipv4: 172.30.30.11, labels: {graph-level: 2, graph-icon: switch}}
+    spine2: {kind: nokia_srlinux, startup-config: configs/spine2.cli, mgmt-ipv4: 172.30.30.12, labels: {graph-level: 2, graph-icon: switch}}
+    leaf1: {kind: nokia_srlinux, startup-config: configs/leaf1.cli, mgmt-ipv4: 172.30.30.21, labels: {graph-level: 3, graph-icon: switch}}
+    leaf2: {kind: nokia_srlinux, startup-config: configs/leaf2.cli, mgmt-ipv4: 172.30.30.22, labels: {graph-level: 3, graph-icon: switch}}
+    border1: {kind: nokia_srlinux, startup-config: configs/border1.cli, mgmt-ipv4: 172.30.30.31, labels: {graph-level: 1, graph-icon: switch}}
+    fw:
+      kind: linux
+      image: ztf-frr:1
+      mgmt-ipv4: 172.30.30.41
+      labels: {graph-level: 0, graph-icon: router}
+      binds: ["configs/fw/fw-init.sh:/fw-init.sh:ro"]
+      exec: ["/fw-init.sh"]
+    ce-a:
+      kind: linux
+      image: ztf-frr:1
+      mgmt-ipv4: 172.30.30.51
+      labels: {graph-level: 4, graph-icon: router}
+      binds: ["configs/frr/daemons:/etc/frr/daemons", "configs/frr/ce-a.conf:/etc/frr/frr.conf", "configs/frr/vtysh.conf:/etc/frr/vtysh.conf"]
+      exec: ["ip addr add 10.11.254.1/31 dev eth1", "ip route del default", "ip addr add 192.168.10.1/32 dev lo"]
+    svc-dns:
+      kind: linux
+      mgmt-ipv4: 172.30.30.110
+      labels: {graph-level: 4, graph-icon: server}
+      binds: ["configs/dns/dnsmasq.conf:/etc/dnsmasq.conf:ro"]
+      exec: ["ip link set eth1 address 02:00:00:09:01:53", "ip link set eth1 mtu 1500", "ip addr add 10.9.1.53/24 dev eth1",
+             "ip route replace default via 10.9.1.1", "dnsmasq -C /etc/dnsmasq.conf"]
+    a-vm1: {kind: linux, mgmt-ipv4: 172.30.30.131, labels: {graph-level: 4, graph-icon: host}, binds: ["configs/vm/vm-init.sh:/vm-init.sh:ro"],
+            exec: ["ip link set eth1 address 02:00:00:0a:00:10", "ip link set eth1 mtu 1500", "ip addr add 10.0.0.10/24 dev eth1", "ip route del default", "ip route add default via 10.0.0.1", "/vm-init.sh"]}
+    b-vm1: {kind: linux, mgmt-ipv4: 172.30.30.132, labels: {graph-level: 4, graph-icon: host}, binds: ["configs/vm/vm-init.sh:/vm-init.sh:ro"],
+            exec: ["ip link set eth1 address 02:00:00:0b:00:10", "ip link set eth1 mtu 1500", "ip addr add 10.0.0.10/24 dev eth1", "ip route del default", "ip route add default via 10.0.0.1", "/vm-init.sh"]}
+    a-vm2: {kind: linux, mgmt-ipv4: 172.30.30.133, labels: {graph-level: 4, graph-icon: host}, binds: ["configs/vm/vm-init.sh:/vm-init.sh:ro"],
+            exec: ["ip link set eth1 address 02:00:00:0a:00:20", "ip link set eth1 mtu 1500", "ip addr add 10.0.0.20/24 dev eth1", "ip route del default", "ip route add default via 10.0.0.1", "/vm-init.sh"]}
+    b-vm2: {kind: linux, mgmt-ipv4: 172.30.30.134, labels: {graph-level: 4, graph-icon: host}, binds: ["configs/vm/vm-init.sh:/vm-init.sh:ro"],
+            exec: ["ip link set eth1 address 02:00:00:0b:00:20", "ip link set eth1 mtu 1500", "ip addr add 10.0.0.20/24 dev eth1", "ip route del default", "ip route add default via 10.0.0.1", "/vm-init.sh"]}
+    c-vm1: {kind: linux, mgmt-ipv4: 172.30.30.135, labels: {graph-level: 4, graph-icon: host}, binds: ["configs/vm/vm-init.sh:/vm-init.sh:ro"],
+            exec: ["ip link set eth1 address 02:00:00:0c:00:10", "ip link set eth1 mtu 1500", "ip addr add 10.0.0.10/24 dev eth1", "ip route del default", "ip route add default via 10.0.0.1", "/vm-init.sh"]}
+  links:
+    - endpoints: ["leaf1:e1-49", "spine1:e1-1"]
+    - endpoints: ["leaf1:e1-50", "spine2:e1-1"]
+    - endpoints: ["leaf2:e1-49", "spine1:e1-2"]
+    - endpoints: ["leaf2:e1-50", "spine2:e1-2"]
+    - endpoints: ["border1:e1-49", "spine1:e1-7"]
+    - endpoints: ["border1:e1-50", "spine2:e1-7"]
+    - endpoints: ["fw:eth1", "border1:e1-1"]
+    - endpoints: ["a-vm1:eth1", "leaf1:e1-1"]
+    - endpoints: ["b-vm1:eth1", "leaf1:e1-2"]
+    - endpoints: ["c-vm1:eth1", "leaf1:e1-5"]   # customer C, onboarded at run time (P5-06)
+    - endpoints: ["a-vm2:eth1", "leaf2:e1-1"]
+    - endpoints: ["b-vm2:eth1", "leaf2:e1-2"]
+    - endpoints: ["ce-a:eth1", "leaf2:e1-3"]
+    - endpoints: ["svc-dns:eth1", "leaf2:e1-4"]

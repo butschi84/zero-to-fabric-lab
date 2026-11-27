@@ -1,0 +1,815 @@
+{
+ "uid": "ztf-fabric",
+ "title": "Zero to Fabric \u00b7 Fabric observability",
+ "tags": [
+  "zero-to-fabric",
+  "phase9"
+ ],
+ "timezone": "utc",
+ "schemaVersion": 41,
+ "version": 1,
+ "refresh": "5s",
+ "time": {
+  "from": "now-15m",
+  "to": "now"
+ },
+ "templating": {
+  "list": [
+   {
+    "name": "site",
+    "type": "custom",
+    "query": "a,b",
+    "current": {
+     "text": "All",
+     "value": "$__all"
+    },
+    "includeAll": true,
+    "allValue": ".*",
+    "multi": false,
+    "label": "Site"
+   }
+  ]
+ },
+ "panels": [
+  {
+   "type": "row",
+   "title": "Fabric overview",
+   "id": 1,
+   "gridPos": {
+    "x": 0,
+    "y": 0,
+    "w": 24,
+    "h": 1
+   },
+   "collapsed": false
+  },
+  {
+   "type": "stat",
+   "title": "BGP sessions established",
+   "id": 2,
+   "datasource": {
+    "type": "prometheus",
+    "uid": "prom"
+   },
+   "gridPos": {
+    "x": 0,
+    "y": 1,
+    "w": 6,
+    "h": 4
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "expr": "sum(srl_network_instance_protocols_bgp_neighbor_session_state{site=~\"$site\"}) / count(srl_network_instance_protocols_bgp_neighbor_session_state{site=~\"$site\"})",
+     "legendFormat": "BGP",
+     "instant": true
+    }
+   ],
+   "fieldConfig": {
+    "defaults": {
+     "unit": "percentunit",
+     "min": 0,
+     "max": 1,
+     "decimals": 0,
+     "color": {
+      "mode": "thresholds"
+     },
+     "thresholds": {
+      "mode": "absolute",
+      "steps": [
+       {
+        "color": "#ff1a75",
+        "value": null
+       },
+       {
+        "color": "#ffc2da",
+        "value": 0.95
+       },
+       {
+        "color": "#c9d3d8",
+        "value": 1
+       }
+      ]
+     }
+    },
+    "overrides": []
+   },
+   "options": {
+    "colorMode": "background",
+    "graphMode": "none",
+    "textMode": "value_and_name",
+    "reduceOptions": {
+     "calcs": [
+      "lastNotNull"
+     ]
+    }
+   }
+  },
+  {
+   "type": "stat",
+   "title": "BFD sessions up",
+   "id": 3,
+   "datasource": {
+    "type": "prometheus",
+    "uid": "prom"
+   },
+   "gridPos": {
+    "x": 6,
+    "y": 1,
+    "w": 6,
+    "h": 4
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "expr": "sum(srl_bfd_network_instance_peer_session_state{site=~\"$site\"}) / count(srl_bfd_network_instance_peer_session_state{site=~\"$site\"})",
+     "legendFormat": "BFD",
+     "instant": true
+    }
+   ],
+   "fieldConfig": {
+    "defaults": {
+     "unit": "percentunit",
+     "min": 0,
+     "max": 1,
+     "decimals": 0,
+     "color": {
+      "mode": "thresholds"
+     },
+     "thresholds": {
+      "mode": "absolute",
+      "steps": [
+       {
+        "color": "#ff1a75",
+        "value": null
+       },
+       {
+        "color": "#ffc2da",
+        "value": 0.95
+       },
+       {
+        "color": "#c9d3d8",
+        "value": 1
+       }
+      ]
+     }
+    },
+    "overrides": []
+   },
+   "options": {
+    "colorMode": "background",
+    "graphMode": "none",
+    "textMode": "value_and_name",
+    "reduceOptions": {
+     "calcs": [
+      "lastNotNull"
+     ]
+    }
+   }
+  },
+  {
+   "type": "stat",
+   "title": "Fabric ports up (of the enabled ones)",
+   "id": 4,
+   "datasource": {
+    "type": "prometheus",
+    "uid": "prom"
+   },
+   "gridPos": {
+    "x": 12,
+    "y": 1,
+    "w": 6,
+    "h": 4
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "expr": "sum(srl_interface_oper_state{site=~\"$site\"} and on(source, interface_name) srl_interface_admin_state == 1) / count(srl_interface_admin_state{site=~\"$site\"} == 1)",
+     "legendFormat": "ports",
+     "instant": true
+    }
+   ],
+   "fieldConfig": {
+    "defaults": {
+     "unit": "percentunit",
+     "min": 0,
+     "max": 1,
+     "decimals": 0,
+     "color": {
+      "mode": "thresholds"
+     },
+     "thresholds": {
+      "mode": "absolute",
+      "steps": [
+       {
+        "color": "#ff1a75",
+        "value": null
+       },
+       {
+        "color": "#ffc2da",
+        "value": 0.95
+       },
+       {
+        "color": "#c9d3d8",
+        "value": 1
+       }
+      ]
+     }
+    },
+    "overrides": []
+   },
+   "options": {
+    "colorMode": "background",
+    "graphMode": "none",
+    "textMode": "value_and_name",
+    "reduceOptions": {
+     "calcs": [
+      "lastNotNull"
+     ]
+    }
+   }
+  },
+  {
+   "type": "stat",
+   "title": "Duplicate MACs (MAC flapping)",
+   "id": 5,
+   "datasource": {
+    "type": "prometheus",
+    "uid": "prom"
+   },
+   "gridPos": {
+    "x": 18,
+    "y": 1,
+    "w": 6,
+    "h": 4
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "expr": "sum(srl_network_instance_bridge_table_statistics_mac_type_active_entries{mac_type_type=\"duplicate\",site=~\"$site\"}) or vector(0)",
+     "legendFormat": "duplicate MACs",
+     "instant": true
+    }
+   ],
+   "fieldConfig": {
+    "defaults": {
+     "color": {
+      "mode": "thresholds"
+     },
+     "thresholds": {
+      "mode": "absolute",
+      "steps": [
+       {
+        "color": "#c9d3d8",
+        "value": null
+       },
+       {
+        "color": "#ff1a75",
+        "value": 1
+       }
+      ]
+     }
+    },
+    "overrides": []
+   },
+   "options": {
+    "colorMode": "background",
+    "graphMode": "none",
+    "reduceOptions": {
+     "calcs": [
+      "lastNotNull"
+     ]
+    }
+   }
+  },
+  {
+   "type": "row",
+   "title": "Underlay: links, ECMP, BGP, BFD",
+   "id": 6,
+   "gridPos": {
+    "x": 0,
+    "y": 5,
+    "w": 24,
+    "h": 1
+   },
+   "collapsed": false
+  },
+  {
+   "type": "timeseries",
+   "title": "Link utilisation (out)",
+   "id": 7,
+   "datasource": {
+    "type": "prometheus",
+    "uid": "prom"
+   },
+   "gridPos": {
+    "x": 0,
+    "y": 6,
+    "w": 12,
+    "h": 8
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "expr": "rate(srl_interface_statistics_out_octets_total{site=~\"$site\"}[30s]) * 8",
+     "legendFormat": "{{source}} {{interface_name}}"
+    }
+   ],
+   "fieldConfig": {
+    "defaults": {
+     "unit": "bps",
+     "color": {
+      "mode": "shades",
+      "fixedColor": "#c9d3d8"
+     }
+    },
+    "overrides": []
+   },
+   "options": {}
+  },
+  {
+   "type": "timeseries",
+   "title": "ECMP: spine-a towards the two gateways (out)",
+   "id": 8,
+   "datasource": {
+    "type": "prometheus",
+    "uid": "prom"
+   },
+   "gridPos": {
+    "x": 12,
+    "y": 6,
+    "w": 12,
+    "h": 8
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "expr": "rate(srl_interface_statistics_out_octets_total{source=\"spine-a\",interface_name=~\"ethernet-1/(7|8)\"}[30s]) * 8",
+     "legendFormat": "spine-a {{interface_name}}"
+    }
+   ],
+   "fieldConfig": {
+    "defaults": {
+     "unit": "bps",
+     "color": {
+      "mode": "shades",
+      "fixedColor": "#c9d3d8"
+     }
+    },
+    "overrides": []
+   },
+   "options": {}
+  },
+  {
+   "type": "timeseries",
+   "title": "Errors and drops per second",
+   "id": 9,
+   "datasource": {
+    "type": "prometheus",
+    "uid": "prom"
+   },
+   "gridPos": {
+    "x": 0,
+    "y": 14,
+    "w": 8,
+    "h": 8
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "expr": "rate(srl_interface_statistics_in_discarded_packets_total{site=~\"$site\"}[30s]) + rate(srl_interface_statistics_out_discarded_packets_total{site=~\"$site\"}[30s])",
+     "legendFormat": "discards {{source}} {{interface_name}}"
+    },
+    {
+     "refId": "B",
+     "expr": "rate(srl_interface_statistics_in_error_packets_total{site=~\"$site\"}[30s]) + rate(srl_interface_statistics_out_error_packets_total{site=~\"$site\"}[30s])",
+     "legendFormat": "errors {{source}} {{interface_name}}"
+    }
+   ],
+   "fieldConfig": {
+    "defaults": {
+     "unit": "pps",
+     "color": {
+      "mode": "shades",
+      "fixedColor": "#c9d3d8"
+     }
+    },
+    "overrides": []
+   },
+   "options": {}
+  },
+  {
+   "type": "timeseries",
+   "title": "BGP sessions established per node",
+   "id": 10,
+   "datasource": {
+    "type": "prometheus",
+    "uid": "prom"
+   },
+   "gridPos": {
+    "x": 8,
+    "y": 14,
+    "w": 8,
+    "h": 8
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "expr": "sum by (source) (srl_network_instance_protocols_bgp_neighbor_session_state{site=~\"$site\"})",
+     "legendFormat": "{{source}}"
+    }
+   ],
+   "fieldConfig": {
+    "defaults": {
+     "custom": {
+      "lineInterpolation": "stepAfter"
+     },
+     "decimals": 0
+    },
+    "overrides": []
+   },
+   "options": {}
+  },
+  {
+   "type": "timeseries",
+   "title": "BFD sessions up per node",
+   "id": 11,
+   "datasource": {
+    "type": "prometheus",
+    "uid": "prom"
+   },
+   "gridPos": {
+    "x": 16,
+    "y": 14,
+    "w": 8,
+    "h": 8
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "expr": "sum by (source) (srl_bfd_network_instance_peer_session_state{site=~\"$site\"})",
+     "legendFormat": "{{source}}"
+    }
+   ],
+   "fieldConfig": {
+    "defaults": {
+     "custom": {
+      "lineInterpolation": "stepAfter"
+     },
+     "decimals": 0
+    },
+    "overrides": []
+   },
+   "options": {}
+  },
+  {
+   "type": "row",
+   "title": "Overlay: EVPN, VTEPs, MAC tables",
+   "id": 12,
+   "gridPos": {
+    "x": 0,
+    "y": 22,
+    "w": 24,
+    "h": 1
+   },
+   "collapsed": false
+  },
+  {
+   "type": "timeseries",
+   "title": "EVPN routes in use per type",
+   "id": 13,
+   "datasource": {
+    "type": "prometheus",
+    "uid": "prom"
+   },
+   "gridPos": {
+    "x": 0,
+    "y": 23,
+    "w": 8,
+    "h": 8
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "expr": "sum by (source) (srl_network_instance_bgp_rib_afi_safi_evpn_rib_in_out_rib_in_post_mac_ip_route_used_route{site=~\"$site\"})",
+     "legendFormat": "Type 2 {{source}}"
+    },
+    {
+     "refId": "B",
+     "expr": "sum by (source) (srl_network_instance_bgp_rib_afi_safi_evpn_rib_in_out_rib_in_post_imet_route_used_route{site=~\"$site\"})",
+     "legendFormat": "Type 3 {{source}}"
+    },
+    {
+     "refId": "C",
+     "expr": "sum by (source) (srl_network_instance_bgp_rib_afi_safi_evpn_rib_in_out_rib_in_post_ip_prefix_route_used_route{site=~\"$site\"})",
+     "legendFormat": "Type 5 {{source}}"
+    }
+   ],
+   "fieldConfig": {
+    "defaults": {
+     "color": {
+      "mode": "shades",
+      "fixedColor": "#c9d3d8"
+     }
+    },
+    "overrides": []
+   },
+   "options": {}
+  },
+  {
+   "type": "timeseries",
+   "title": "Remote VTEPs per node",
+   "id": 14,
+   "datasource": {
+    "type": "prometheus",
+    "uid": "prom"
+   },
+   "gridPos": {
+    "x": 8,
+    "y": 23,
+    "w": 8,
+    "h": 8
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "expr": "count by (source) (srl_tunnel_vxlan_tunnel_vtep_index{site=~\"$site\"})",
+     "legendFormat": "{{source}}"
+    }
+   ],
+   "fieldConfig": {
+    "defaults": {
+     "color": {
+      "mode": "shades",
+      "fixedColor": "#c9d3d8"
+     }
+    },
+    "overrides": []
+   },
+   "options": {}
+  },
+  {
+   "type": "timeseries",
+   "title": "MAC table size (active entries)",
+   "id": 15,
+   "datasource": {
+    "type": "prometheus",
+    "uid": "prom"
+   },
+   "gridPos": {
+    "x": 16,
+    "y": 23,
+    "w": 8,
+    "h": 8
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "expr": "srl_network_instance_bridge_table_statistics_active_entries{site=~\"$site\"}",
+     "legendFormat": "{{source}} {{network_instance_name}}"
+    }
+   ],
+   "fieldConfig": {
+    "defaults": {
+     "color": {
+      "mode": "shades",
+      "fixedColor": "#c9d3d8"
+     }
+    },
+    "overrides": []
+   },
+   "options": {}
+  },
+  {
+   "type": "logs",
+   "title": "MAC moves and duplicates (syslog)",
+   "id": 16,
+   "datasource": {
+    "type": "loki",
+    "uid": "loki"
+   },
+   "gridPos": {
+    "x": 0,
+    "y": 31,
+    "w": 24,
+    "h": 6
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "expr": "{service_name=\"unknown_service\"} |~ \"(?i)(duplicate mac|mac.*mov|flap)\"",
+     "legendFormat": ""
+    }
+   ],
+   "fieldConfig": {
+    "defaults": {
+     "color": {
+      "mode": "shades",
+      "fixedColor": "#c9d3d8"
+     }
+    },
+    "overrides": []
+   },
+   "options": {}
+  },
+  {
+   "type": "row",
+   "title": "Tenants (VRFs)",
+   "id": 17,
+   "gridPos": {
+    "x": 0,
+    "y": 37,
+    "w": 24,
+    "h": 1
+   },
+   "collapsed": false
+  },
+  {
+   "type": "timeseries",
+   "title": "IPv4 routes per VRF",
+   "id": 18,
+   "datasource": {
+    "type": "prometheus",
+    "uid": "prom"
+   },
+   "gridPos": {
+    "x": 0,
+    "y": 38,
+    "w": 24,
+    "h": 7
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "expr": "srl_network_instance_route_table_ipv4_unicast_statistics_active_routes{network_instance_name!~\"default|mgmt\",site=~\"$site\"}",
+     "legendFormat": "{{network_instance_name}} @ {{source}}"
+    }
+   ],
+   "fieldConfig": {
+    "defaults": {
+     "color": {
+      "mode": "shades",
+      "fixedColor": "#c9d3d8"
+     }
+    },
+    "overrides": []
+   },
+   "options": {}
+  },
+  {
+   "type": "row",
+   "title": "Sites and WAN: probes, IPsec",
+   "id": 19,
+   "gridPos": {
+    "x": 0,
+    "y": 45,
+    "w": 24,
+    "h": 1
+   },
+   "collapsed": false
+  },
+  {
+   "type": "timeseries",
+   "title": "Probe round-trip time (avg over 30 s)",
+   "id": 20,
+   "datasource": {
+    "type": "prometheus",
+    "uid": "prom"
+   },
+   "gridPos": {
+    "x": 0,
+    "y": 46,
+    "w": 8,
+    "h": 8
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "expr": "rate(smokeping_response_duration_seconds_sum[30s]) / rate(smokeping_response_duration_seconds_count[30s])",
+     "legendFormat": "{{instance}} -> {{host}}"
+    }
+   ],
+   "fieldConfig": {
+    "defaults": {
+     "unit": "s",
+     "color": {
+      "mode": "shades",
+      "fixedColor": "#c9d3d8"
+     }
+    },
+    "overrides": []
+   },
+   "options": {}
+  },
+  {
+   "type": "timeseries",
+   "title": "Probe loss",
+   "id": 21,
+   "datasource": {
+    "type": "prometheus",
+    "uid": "prom"
+   },
+   "gridPos": {
+    "x": 8,
+    "y": 46,
+    "w": 8,
+    "h": 8
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "expr": "clamp_min(1 - increase(smokeping_response_duration_seconds_count[1m]) / increase(smokeping_requests_total[1m]), 0)",
+     "legendFormat": "{{instance}} -> {{host}}"
+    }
+   ],
+   "fieldConfig": {
+    "defaults": {
+     "unit": "percentunit",
+     "color": {
+      "mode": "shades",
+      "fixedColor": "#c9d3d8"
+     }
+    },
+    "overrides": []
+   },
+   "options": {}
+  },
+  {
+   "type": "timeseries",
+   "title": "IPsec: ESP traffic per tunnel (child SAs installed in legend)",
+   "id": 22,
+   "datasource": {
+    "type": "prometheus",
+    "uid": "prom"
+   },
+   "gridPos": {
+    "x": 16,
+    "y": 46,
+    "w": 8,
+    "h": 8
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "expr": "rate(ipsec_child_sa_bytes_total[30s]) * 8",
+     "legendFormat": "{{gateway}} {{tunnel}} {{direction}}"
+    }
+   ],
+   "fieldConfig": {
+    "defaults": {
+     "unit": "bps",
+     "color": {
+      "mode": "shades",
+      "fixedColor": "#c9d3d8"
+     }
+    },
+    "overrides": []
+   },
+   "options": {}
+  },
+  {
+   "type": "row",
+   "title": "Syslog from the fabric",
+   "id": 23,
+   "gridPos": {
+    "x": 0,
+    "y": 54,
+    "w": 24,
+    "h": 1
+   },
+   "collapsed": false
+  },
+  {
+   "type": "logs",
+   "title": "SR Linux syslog (via the site collectors)",
+   "id": 24,
+   "datasource": {
+    "type": "loki",
+    "uid": "loki"
+   },
+   "gridPos": {
+    "x": 0,
+    "y": 55,
+    "w": 24,
+    "h": 9
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "expr": "{service_name=\"unknown_service\"} != \"TLS profile\"",
+     "legendFormat": ""
+    }
+   ],
+   "fieldConfig": {
+    "defaults": {
+     "color": {
+      "mode": "shades",
+      "fixedColor": "#c9d3d8"
+     }
+    },
+    "overrides": []
+   },
+   "options": {}
+  }
+ ]
+}

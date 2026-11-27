@@ -1,0 +1,10 @@
+# P0-08b · leaf1 e1-49 · 2026-11-26T22:13:15Z
+host# tshark -r P0-08b-leaf1-e1-49.pcap -n   (between leaf1 and spine1)
+ 0.000  1a:bb:02:ff:00:31 > ff:ff:ff:ff:ff:ff  ARP who has 10.254.1.0? tell 10.254.1.1
+ 0.002  1a:02:04:ff:00:01 > 1a:bb:02:ff:00:31  ARP reply: 10.254.1.0 is here
+ 0.587  1a:02:04:ff:00:01 > ff:ff:ff:ff:ff:ff  ARP who has 10.254.1.1? tell 10.254.1.0
+ 0.589  1a:bb:02:ff:00:31 > 1a:02:04:ff:00:01  ARP reply: 10.254.1.1 is here
+ 2.752  1a:bb:02:ff:00:31 > 1a:02:04:ff:00:01  ICMP echo request 10.10.1.10 > 10.10.2.10 ttl 63
+ 2.797  1a:02:04:ff:00:01 > 1a:bb:02:ff:00:31  ICMP echo reply   10.10.2.10 > 10.10.1.10 ttl 62
+
+MAC names: leaf1-e1-49 1a:bb:02:ff:00:31, spine1-e1-1 1a:02:04:ff:00:01

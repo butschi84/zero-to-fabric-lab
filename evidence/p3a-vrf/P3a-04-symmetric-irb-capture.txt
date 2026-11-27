@@ -1,0 +1,22 @@
+# P3a-04 · leaf1 · 2026-11-26T17:08:40Z
+leaf1# tshark -V (first echo request, header lines)
+method: corp1 10.1.1.11 (leaf1, VLAN 101) ping srv3 10.1.2.13 (leaf3, VLAN 102), capture on leaf1 uplinks
+
+Ethernet II, Src: 1a:f9:07:ff:00:31 (1a:f9:07:ff:00:31), Dst: 1a:ed:0b:ff:00:01 (1a:ed:0b:ff:00:01)
+Internet Protocol Version 4, Src: 10.255.0.11, Dst: 10.255.0.13
+    Time to Live: 255
+    Source Address: 10.255.0.11
+    Destination Address: 10.255.0.13
+User Datagram Protocol, Src Port: 62004, Dst Port: 4789
+    Destination Port: 4789
+Virtual eXtensible Local Area Network
+    VXLAN Network Identifier (VNI): 50001
+Ethernet II, Src: 1a:f9:07:ff:00:00 (1a:f9:07:ff:00:00), Dst: 1a:34:09:ff:00:00 (1a:34:09:ff:00:00)
+Internet Protocol Version 4, Src: 10.1.1.11, Dst: 10.1.2.13
+    Time to Live: 63
+    Source Address: 10.1.1.11
+    Destination Address: 10.1.2.13
+Internet Control Message Protocol
+
+srv3# ip neigh  (who srv3 sees as the sender: the anycast gateway MAC, routed)
+10.1.2.1 lladdr 00:00:5e:00:01:01 REACHABLE 

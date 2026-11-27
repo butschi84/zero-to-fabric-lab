@@ -1,0 +1,59 @@
+15:49:26 INFO Containerlab started version=0.83.0
+15:49:26 INFO Parsing & checking topology file=topology.clab.yml
+15:49:26 INFO Creating docker network name=ztf-mgmt IPv4 subnet=172.30.30.0/24 IPv6 subnet="" MTU=0
+15:49:26 INFO Creating lab directory path=./phases/p0-mini/clab-ztf-p0
+15:49:26 INFO Creating container name=client2
+15:49:26 INFO Creating container name=client1
+15:49:26 INFO Creating container name=spine2-netns
+15:49:26 INFO Creating container name=spine1-netns
+15:49:26 INFO Creating container name=leaf2-netns
+15:49:26 INFO Creating container name=leaf1-netns
+15:49:26 INFO Creating container name=leaf1
+15:49:26 INFO Creating container name=spine2
+15:49:26 INFO Creating container name=leaf2
+15:49:26 INFO Creating container name=spine1
+15:49:27 INFO Running postdeploy actions kind=nokia_srlinux node=spine2
+15:49:27 INFO Created link: leaf1:e1-49 ▪┄┄▪ spine1:e1-1
+15:49:27 INFO Created link: leaf1:e1-50 ▪┄┄▪ spine2:e1-1
+15:49:27 WARN Unable to open /etc/hosts file for srl node spine2: open /var/lib/docker/containers/279a6d604df52670ff1eed42ce9071187c5dee46a24b6f201dc2e26614cf980b/hosts: no such file or directory
+15:49:27 WARN Unable to populate hosts for node "spine2": open /var/lib/docker/containers/279a6d604df52670ff1eed42ce9071187c5dee46a24b6f201dc2e26614cf980b/hosts: no such file or directory
+15:49:27 INFO Created link: leaf2:e1-50 ▪┄┄▪ spine2:e1-2
+15:49:27 INFO Created link: leaf2:e1-49 ▪┄┄▪ spine1:e1-2
+15:49:27 INFO Running postdeploy actions kind=nokia_srlinux node=spine1
+15:49:27 INFO Created link: client1:eth1 ▪┄┄▪ leaf1:e1-1
+15:49:27 INFO Running postdeploy actions kind=nokia_srlinux node=leaf1
+15:49:27 INFO Created link: client2:eth1 ▪┄┄▪ leaf2:e1-1
+15:49:27 INFO Running postdeploy actions kind=nokia_srlinux node=leaf2
+15:49:27 WARN Unable to open /etc/hosts file for srl node leaf2: open /var/lib/docker/containers/caa46e6bb89697f61278e3cd38d451bd743d03c23409f602828a0b0b2d7a9cab/hosts: no such file or directory
+15:49:27 WARN Unable to populate hosts for node "leaf2": open /var/lib/docker/containers/caa46e6bb89697f61278e3cd38d451bd743d03c23409f602828a0b0b2d7a9cab/hosts: no such file or directory
+15:49:27 WARN Unable to open /etc/hosts file for srl node spine1: open /var/lib/docker/containers/b3709fe4ce472bac320a377565814703ff5ff50177a667e14c7ffa87198d2b72/hosts: no such file or directory
+15:49:27 WARN Unable to populate hosts for node "spine1": open /var/lib/docker/containers/b3709fe4ce472bac320a377565814703ff5ff50177a667e14c7ffa87198d2b72/hosts: no such file or directory
+15:49:27 WARN Unable to open /etc/hosts file for srl node leaf1: open /var/lib/docker/containers/358d172bffd733052fc27465e3e70cb884ebebd88d38b2f19b90d3e20e6c25c1/hosts: no such file or directory
+15:49:27 WARN Unable to populate hosts for node "leaf1": open /var/lib/docker/containers/358d172bffd733052fc27465e3e70cb884ebebd88d38b2f19b90d3e20e6c25c1/hosts: no such file or directory
+15:49:47 INFO Executed command node=client1 command="ip addr add 10.10.1.10/24 dev eth1" stdout=""
+15:49:47 INFO Executed command node=client2 command="ip addr add 10.10.2.10/24 dev eth1" stdout=""
+15:49:47 INFO Executed command node=client1 command="ip route add 10.0.0.0/8 via 10.10.1.1 dev eth1" stdout=""
+15:49:47 INFO Executed command node=client2 command="ip route add 10.0.0.0/8 via 10.10.2.1 dev eth1" stdout=""
+15:49:47 INFO Adding host entries path=/etc/hosts
+15:49:47 INFO Adding SSH config for nodes path=/etc/ssh/ssh_config.d/clab-ztf-p0.conf
+╭─────────────────────┬───────────────────────────────┬─────────┬────────────────╮
+│         Name        │           Kind/Image          │  State  │ IPv4/6 Address │
+├─────────────────────┼───────────────────────────────┼─────────┼────────────────┤
+│ clab-ztf-p0-client1 │ linux                         │ running │ 172.30.30.101  │
+│                     │ ztf-tools:1                   │         │ N/A            │
+├─────────────────────┼───────────────────────────────┼─────────┼────────────────┤
+│ clab-ztf-p0-client2 │ linux                         │ running │ 172.30.30.102  │
+│                     │ ztf-tools:1                   │         │ N/A            │
+├─────────────────────┼───────────────────────────────┼─────────┼────────────────┤
+│ clab-ztf-p0-leaf1   │ nokia_srlinux                 │ running │ 172.30.30.21   │
+│                     │ ghcr.io/nokia/srlinux:24.10.7 │         │ N/A            │
+├─────────────────────┼───────────────────────────────┼─────────┼────────────────┤
+│ clab-ztf-p0-leaf2   │ nokia_srlinux                 │ running │ 172.30.30.22   │
+│                     │ ghcr.io/nokia/srlinux:24.10.7 │         │ N/A            │
+├─────────────────────┼───────────────────────────────┼─────────┼────────────────┤
+│ clab-ztf-p0-spine1  │ nokia_srlinux                 │ running │ 172.30.30.11   │
+│                     │ ghcr.io/nokia/srlinux:24.10.7 │         │ N/A            │
+├─────────────────────┼───────────────────────────────┼─────────┼────────────────┤
+│ clab-ztf-p0-spine2  │ nokia_srlinux                 │ running │ 172.30.30.12   │
+│                     │ ghcr.io/nokia/srlinux:24.10.7 │         │ N/A            │
+╰─────────────────────┴───────────────────────────────┴─────────┴────────────────╯

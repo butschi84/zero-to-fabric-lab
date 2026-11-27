@@ -1,0 +1,7 @@
+# P8-19 · gw-b · 2026-11-26T19:57:20Z
+event: site A stopped at ~2026-11-26T19:56:56 + 3 s (UTC); gw-b BGP/BFD log lines naming site A's gateways
+
+  2026-11-26T19:57:02 In network-instance default, the BGP session with VR default (1): Group underlay: Peer 10.25
+  3.0.3 moved from higher state ESTABLISHED to lower state IDLE due to event BFD_DOWN
+  2026-11-26T19:57:02 BFD:  Network-instance default - The protocol BGP using BFD session from 10.253.0.2:16386 to
+   10.253.0.3:0 has been cleared

@@ -1,0 +1,23 @@
+graph "topology.clab" {
+	client3--leaf3[ color=blue ];
+	mobile--leaf1[ color=black ];
+	leaf2--spine1[ color=black ];
+	leaf2--spine2[ color=black ];
+	client2--leaf2[ color=blue ];
+	leaf3--spine1[ color=black ];
+	mobile--leaf2[ color=black ];
+	leaf1--spine1[ color=black ];
+	leaf1--spine2[ color=black ];
+	client1--leaf1[ color=blue ];
+	leaf3--spine2[ color=black ];
+	client1 [ color=red, fillcolor=red, label=client1, style=filled, xlabel=linux ];
+	client2 [ color=red, fillcolor=red, label=client2, style=filled, xlabel=linux ];
+	client3 [ color=red, fillcolor=red, label=client3, style=filled, xlabel=linux ];
+	leaf1 [ color=red, fillcolor=red, label=leaf1, style=filled, xlabel=nokia_srlinux ];
+	leaf2 [ color=red, fillcolor=red, label=leaf2, style=filled, xlabel=nokia_srlinux ];
+	leaf3 [ color=red, fillcolor=red, label=leaf3, style=filled, xlabel=nokia_srlinux ];
+	mobile [ color=red, fillcolor=red, label=mobile, style=filled, xlabel=linux ];
+	spine1 [ color=red, fillcolor=red, label=spine1, style=filled, xlabel=nokia_srlinux ];
+	spine2 [ color=red, fillcolor=red, label=spine2, style=filled, xlabel=nokia_srlinux ];
+
+}

@@ -1,0 +1,4 @@
+apiVersion: 1
+datasources:
+  - {name: Prometheus, uid: prom, type: prometheus, url: http://172.30.30.210:9090, isDefault: true, jsonData: {timeInterval: 5s}}
+  - {name: Loki, uid: loki, type: loki, url: http://172.30.30.212:3100}

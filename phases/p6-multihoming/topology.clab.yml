@@ -1,0 +1,50 @@
+# Phase 6 - operations: EVPN multihoming and failure tests. srv-mh is attached
+# to leaf1 and leaf2 with one LACP bond; both leafs present the same ESI
+# (all-active), LACP system id and key. cl3 on leaf3 (same corp VLAN 101)
+# runs the measurements. Fabric as in phase 3a.
+name: ztf-p6
+
+mgmt:
+  network: ztf-mgmt
+  ipv4-subnet: 172.30.30.0/24
+
+topology:
+  kinds:
+    nokia_srlinux:
+      image: ghcr.io/nokia/srlinux:24.10.7
+      type: ixr-d2l
+    linux:
+      image: ztf-tools:1
+  nodes:
+    spine1: {kind: nokia_srlinux, startup-config: configs/spine1.cli, mgmt-ipv4: 172.30.30.11, labels: {graph-level: 1, graph-icon: switch}}
+    spine2: {kind: nokia_srlinux, startup-config: configs/spine2.cli, mgmt-ipv4: 172.30.30.12, labels: {graph-level: 1, graph-icon: switch}}
+    leaf1: {kind: nokia_srlinux, startup-config: configs/leaf1.cli, mgmt-ipv4: 172.30.30.21, labels: {graph-level: 2, graph-icon: switch}}
+    leaf2: {kind: nokia_srlinux, startup-config: configs/leaf2.cli, mgmt-ipv4: 172.30.30.22, labels: {graph-level: 2, graph-icon: switch}}
+    leaf3: {kind: nokia_srlinux, startup-config: configs/leaf3.cli, mgmt-ipv4: 172.30.30.23, labels: {graph-level: 2, graph-icon: switch}}
+    srv-mh:
+      kind: linux
+      mgmt-ipv4: 172.30.30.150
+      labels: {graph-level: 3, graph-icon: server}
+      exec:
+        - ip link add bond0 type bond mode 802.3ad lacp_rate fast miimon 100 xmit_hash_policy layer3+4
+        - ip link set eth1 down
+        - ip link set eth2 down
+        - ip link set eth1 master bond0
+        - ip link set eth2 master bond0
+        - ip link set bond0 address 02:00:00:01:01:50
+        - ip link set bond0 mtu 1500
+        - ip link set bond0 up
+        - ip addr add 10.1.1.50/24 dev bond0
+        - ip route replace default via 10.1.1.1
+    cl3: {kind: linux, mgmt-ipv4: 172.30.30.103, labels: {graph-level: 3, graph-icon: host},
+          exec: ["ip link set eth1 address 02:00:00:01:01:13", "ip link set eth1 mtu 1500", "ip addr add 10.1.1.13/24 dev eth1", "ip route replace default via 10.1.1.1"]}
+  links:
+    - endpoints: ["leaf1:e1-49", "spine1:e1-1"]
+    - endpoints: ["leaf1:e1-50", "spine2:e1-1"]
+    - endpoints: ["leaf2:e1-49", "spine1:e1-2"]
+    - endpoints: ["leaf2:e1-50", "spine2:e1-2"]
+    - endpoints: ["leaf3:e1-49", "spine1:e1-3"]
+    - endpoints: ["leaf3:e1-50", "spine2:e1-3"]
+    - endpoints: ["srv-mh:eth1", "leaf1:e1-1"]
+    - endpoints: ["srv-mh:eth2", "leaf2:e1-1"]
+    - endpoints: ["cl3:eth1", "leaf3:e1-1"]

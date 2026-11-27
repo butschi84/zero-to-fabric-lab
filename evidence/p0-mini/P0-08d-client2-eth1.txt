@@ -1,0 +1,12 @@
+# P0-08d · client2 eth1 · 2026-11-26T22:13:16Z
+host# tshark -r P0-08d-client2-eth1.pcap -n   (target side)
+ 0.000  aa:c1:ab:70:c9:b3 > 1a:fd:03:ff:00:01  ARP who has 10.10.2.1? tell 10.10.2.10
+ 0.003  1a:fd:03:ff:00:01 > aa:c1:ab:70:c9:b3  ARP reply: 10.10.2.1 is here
+ 2.200  1a:fd:03:ff:00:01 > ff:ff:ff:ff:ff:ff  ARP who has 10.10.2.10? tell 10.10.2.1
+ 2.200  aa:c1:ab:70:c9:b3 > 1a:fd:03:ff:00:01  ARP reply: 10.10.2.10 is here
+ 2.203  1a:fd:03:ff:00:01 > aa:c1:ab:70:c9:b3  ICMP echo request 10.10.1.10 > 10.10.2.10 ttl 61
+ 2.203  aa:c1:ab:70:c9:b3 > 1a:fd:03:ff:00:01  ICMP echo reply   10.10.2.10 > 10.10.1.10 ttl 64
+ 7.677  aa:c1:ab:70:c9:b3 > 1a:fd:03:ff:00:01  ARP who has 10.10.2.1? tell 10.10.2.10
+ 7.680  1a:fd:03:ff:00:01 > aa:c1:ab:70:c9:b3  ARP reply: 10.10.2.1 is here
+
+MAC names: leaf2-e1-1 1a:fd:03:ff:00:01, client2 aa:c1:ab:70:c9:b3

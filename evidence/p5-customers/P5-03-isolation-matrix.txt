@@ -1,0 +1,19 @@
+# P5-03 · a-vm1 · 2026-11-26T19:07:16Z
+method: cell = who answers (HTTP name) or ping result; 10.0.0.20 exists in both customers
+
+src      10.0.0.20 (http) 192.168.10.1 CE-A 10.9.1.53 DNS    MAC of 10.0.0.20
+a-vm1    a-vm2            OK               OK               02:00:00:0a:00:20
+b-vm1    b-vm2            FAIL             OK               02:00:00:0b:00:20
+
+leaf1# cust-b route table lookups
+  entries for 192.168.10.0/24 in cust-b: 0
+  entries for 10.0.0.20 in cust-b: 1
+
+leaf1# info from state network-instance cust-b route-table ipv4-unicast statistics
+  active-routes 10
+  total-routes 11
+
+fw# iptables -L FORWARD -v -n   (customer to customer never reaches the firewall: no route)
+    1    84 ACCEPT     all  --  eth1.11 eth1.9  0.0.0.0/0            10.9.1.53            /* cust-a to shared DNS */
+    1    84 ACCEPT     all  --  eth1.12 eth1.9  0.0.0.0/0            10.9.1.53            /* cust-b to shared DNS */
+    0     0 DROP       all  --  *      *       0.0.0.0/0            0.0.0.0/0            /* everything else (e.g. cust

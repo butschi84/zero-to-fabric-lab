@@ -1,0 +1,16 @@
+# P6-04 · leaf3 · 2026-11-26T18:37:14Z
+leaf3# Type-1 (ES) next hops, leaf1 loopback reachability, overlay session (before / 12 s into each failure)
+1 leaf1 access link admin down
+  before: Type-1 next hops: 10.255.0.11 10.255.0.12 | leaf1 loopback in leaf3 underlay: yes | spine1 overlay session to leaf1: established
+  12 s in: Type-1 next hops: 10.255.0.12 | leaf1 loopback in leaf3 underlay: yes | spine1 overlay session to leaf1: established
+2 spine1 hangs (docker pause)
+  before: Type-1 next hops: 10.255.0.11 10.255.0.12 | leaf1 loopback in leaf3 underlay: yes | spine1 overlay session to leaf1: established
+  12 s in: Type-1 next hops: 10.255.0.11 10.255.0.12 | leaf1 loopback in leaf3 underlay: yes | spine1 overlay session to leaf1: 
+3 leaf1 hangs (docker pause)
+  before: Type-1 next hops: 10.255.0.11 10.255.0.12 | leaf1 loopback in leaf3 underlay: yes | spine1 overlay session to leaf1: established
+  12 s in: Type-1 next hops: 10.255.0.11 10.255.0.12 | leaf1 loopback in leaf3 underlay: NO | spine1 overlay session to leaf1: established
+4 leaf1 stopped (docker stop: all its links go down)
+  before: Type-1 next hops: 10.255.0.11 10.255.0.12 | leaf1 loopback in leaf3 underlay: yes | spine1 overlay session to leaf1: established
+  12 s in: Type-1 next hops: 10.255.0.12 | leaf1 loopback in leaf3 underlay: NO | spine1 overlay session to leaf1: connect
+
+server MAC 02:00:00:01:01:50 on leaf3 -> vxlan-interface:vxlan1.101 esi:00:11:22:33:44:55:66:77:88:01

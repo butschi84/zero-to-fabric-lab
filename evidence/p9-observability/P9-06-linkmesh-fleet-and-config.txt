@@ -1,0 +1,13 @@
+# P9-06 · host · 2026-11-27T10:38:44Z
+host# LinkMesh API: collectors, sources, destinations, routes (written by obs/linkmesh/bootstrap.py)
+collector-b  status=healthy version=0.165.0 lastSeen=2026-11-27T10:38:19.020565011Z
+collector-a  status=healthy version=0.165.0 lastSeen=2026-11-27T10:38:18.91037822Z
+
+source       Probes and IPsec site A (Prometheus scrape)    prometheus {"metrics_path": "/metrics", "scheme": "http", "scrape_inter
+source       Probes and IPsec site B (Prometheus scrape)    prometheus {"metrics_path": "/metrics", "scheme": "http", "scrape_inter
+source       SR Linux syslog (UDP 5514, RFC 5424)           syslog     {"listen_address": "0.0.0.0:5514", "protocol": "udp", "rfc":
+source       gNMI telemetry (OTLP from gnmic)               otlp       {"grpc_endpoint": "0.0.0.0:4317"}
+destination  Loki (OTLP)                                    otlphttp   http://172.30.30.212:3100/otlp durable_queue=True
+destination  Prometheus (OTLP)                              otlphttp   http://172.30.30.210:9090/api/v1/otlp durable_queue=True
+route        site-a: all signals to Prometheus and Loki     filter=true destinations=2
+route        site-b: all signals to Prometheus and Loki     filter=true destinations=2

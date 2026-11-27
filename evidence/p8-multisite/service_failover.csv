@@ -1,0 +1,9 @@
+metric,value
+requests,328
+ok,320
+failed,8
+largest_gap_s,4.06
+first_fail_s,0.01
+last_fail_s,3.52
+before_event,"srv-a=60"
+after_event,"srv-b=260"

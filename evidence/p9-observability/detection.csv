@@ -1,0 +1,9 @@
+fault,injected_utc,signal,detection_s,method
+link,2026-11-27T08:43:54Z,BGP sessions on spine-a drop,8,ip link set e1-7 down in spine-a; gNMI sample 5 s
+link,2026-11-27T08:43:54Z,ECMP: spine-a e1-7 traffic < 1 kbit/s,15,rate over 15 s
+link-repair,2026-11-27T08:43:54Z,BGP sessions on spine-a back,38,ip link set e1-7 up
+mac,2026-11-27T08:46:19Z,duplicate MAC entries > 0,44,b-c1 set to a-c1's MAC; both send GARP every 0.5 s
+mtu,2026-11-27T08:49:03Z,DCI throughput < 10 % of before,15,WAN ip-mtu 9000 -> 1500 on the four gateways during 8 running TCP flows
+sitecut,2026-11-27T08:51:23Z,site B newest sample older than 15 s,11,iptables DROP to/from LinkMesh/Prometheus/Loki in collector-b's namespace
+onchange,2026-11-27T11:58:08Z,first 'down' notification via gNMI ON_CHANGE,0.6,gnmic subscribe on spine-a e1-7 oper-state
+onchange,2026-11-27T11:58:08Z,first 'down' notification via gNMI SAMPLE 30 s,25.5,gnmic subscribe on spine-a e1-7 oper-state

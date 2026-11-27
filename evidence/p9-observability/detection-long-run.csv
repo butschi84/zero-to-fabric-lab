@@ -1,0 +1,10 @@
+# long run 2026-11-27 with background load (make load) and screen recording running; detection includes the docker start of the injection command and Chrome load. Reference values without load: detection.csv
+fault,injected_utc,signal,detection_s,method
+onchange,2026-11-27T11:58:08Z,first 'down' notification via gNMI ON_CHANGE,0.6,gnmic subscribe on spine-a e1-7 oper-state
+onchange,2026-11-27T11:58:08Z,first 'down' notification via gNMI SAMPLE 30 s,25.5,gnmic subscribe on spine-a e1-7 oper-state
+mac,2026-11-27T12:22:05Z,duplicate MAC entries > 0,59,b-c1 set to a-c1's MAC; both send GARP every 0.5 s
+sitecut,2026-11-27T12:28:35Z,site B newest sample older than 15 s,45,iptables DROP to/from LinkMesh/Prometheus/Loki in collector-b's namespace
+link,2026-11-27T12:37:43Z,BGP sessions on spine-a drop,50,ip link set e1-7 down in spine-a; gNMI sample 5 s
+link,2026-11-27T12:37:43Z,ECMP: spine-a e1-7 traffic < 1 kbit/s,56,rate over 15 s
+link-repair,2026-11-27T12:37:43Z,BGP sessions on spine-a back,42,ip link set e1-7 up
+mtu,2026-11-27T12:45:09Z,DCI throughput falls by > 12 Mbit/s (the 8 TCP flows),79,WAN ip-mtu 9000 -> 1500 on the four gateways during 8 running TCP flows

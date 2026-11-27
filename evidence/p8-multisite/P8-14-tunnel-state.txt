@@ -1,0 +1,30 @@
+# P8-14 · ipsec-br · 2026-11-26T19:52:22Z
+ipsec-br# swanctl --version -> strongSwan swanctl 5.9.14   (kernel ESP, Linux xfrm)
+ipsec-br# swanctl --list-sas   (excerpt)
+wan2: #2, ESTABLISHED, IKEv2, 50d738601d478ffa_i* f363f495f9c246af_r
+  remote 'dc-b' @ 203.0.113.1[4500]
+  AES_GCM_16-256/PRF_HMAC_SHA2_256/ECP_256
+  wan2: #1, reqid 1, INSTALLED, TUNNEL, ESP:AES_GCM_16-256
+  in c9ca8105 (0x00000002), 52232 bytes, 958 packets, 1s ago
+  out c02ac7ba (0x00000002), 48657 bytes, 897 packets, 0s ago
+wan1: #1, ESTABLISHED, IKEv2, 6ec66ba969f54f76_i* fc2a5dd0b85e152b_r
+  remote 'dc-a' @ 198.51.100.1[4500]
+  AES_GCM_16-256/PRF_HMAC_SHA2_256/ECP_256
+  wan1: #2, reqid 2, INSTALLED, TUNNEL, ESP:AES_GCM_16-256
+  in cae983c5 (0x00000001), 72248 bytes, 1029 packets, 0s ago
+  out cba2dcf7 (0x00000001), 64492 bytes, 975 packets, 0s ago
+
+ipsec-br# vtysh -c 'show bgp summary'   (FRR: underlay only, one session per tunnel)
+  ipsec-a(10.252.1.1)  AS 65321  up 00:03:27  prefixes rx 8   tx 1   ipsec-a over WAN 1
+  ipsec-b(10.252.2.1)  AS 65322  up 00:03:25  prefixes rx 8   tx 1   ipsec-b over WAN 2
+  10.254.21.1          AS 65120  up 00:02:16  prefixes rx 1   tx 9   br1   
+
+br1# show network-instance default protocols bgp neighbor   (EVPN to the four gateways, over the tunnels)
+Peer         Group     Peer-AS  State        [Rx/Active/Tx]
+-----------  --------  -------  -----------  --------------
+10.255.0.21  hubs      65500    established  [25/14/15]
+10.255.0.22  hubs      65500    established  [25/0/29]
+10.255.1.21  hubs      65510    established  [25/11/18]
+10.255.1.22  hubs      65510    established  [25/0/29]
+
+mapping: one route-based tunnel (VTI) per WAN path; both VRFs ride over it as L3VNIs (corp 50001, guest 50002), VXLAN inside ESP

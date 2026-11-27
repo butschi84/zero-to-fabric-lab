@@ -1,0 +1,8 @@
+# P2-02 · leaf1 · 2026-11-26T16:07:12Z
+leaf1# show network-instance default protocols bgp neighbor   (compact)
+Peer        Group     Peer-AS  State        Uptime        AFI/SAFI      [Rx/Active/Tx]
+----------  --------  -------  -----------  ------------  ------------  --------------
+10.254.1.0  underlay  65000    established  0d:0h:0m:46s  ipv4-unicast  [3/3/2]
+10.254.2.0  underlay  65000    established  0d:0h:0m:44s  ipv4-unicast  [3/3/4]
+10.255.0.1  overlay   65500    established  0d:0h:0m:13s  evpn          [8/8/6]
+10.255.0.2  overlay   65500    established  0d:0h:0m:11s  evpn          [8/0/6]

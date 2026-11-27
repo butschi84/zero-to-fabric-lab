@@ -1,0 +1,13 @@
+# P0-04 · host · 2026-11-26T15:49:53Z
+host# docker info; cat /sys/fs/cgroup/memory.current per node
+Docker VM: 10 CPUs, 20965158912 bytes RAM, Docker Desktop, aarch64, kernel 7.0.14-linuxkit
+
+node                      mem_MiB    cpu_%
+client1                         8     0.00
+client2                         8     0.00
+leaf1                        1492     0.00
+leaf2                        1492     0.00
+spine1                       1480     0.00
+spine2                       1471     0.00
+
+method: memory.current of each container cgroup, after boot; cpu from docker stats

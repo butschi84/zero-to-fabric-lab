@@ -1,0 +1,22 @@
+# P4-03 · lb1 · 2026-11-27T09:18:44Z
+lb1# curl -s 'http://10.9.1.21:8404/stats;csv'   (HAProxy status page, selected columns)
+  pxname        svname        status        check_status  stot          lastchg     
+  servers       srv1          UP            L7OK          1             83          
+  servers       srv2          UP            L7OK          0             11          
+  servers       srv3          UP            L7OK          0             10          
+  servers       BACKEND       UP                          1             83          
+
+keepalived (VRRP VIP 10.9.1.100) - who holds the VIP:
+  lb1: 10.9.1.21/24 10.9.1.100/24 -> MASTER
+  lb2: 10.9.1.22/24 -> BACKUP
+
+lb2# tcpdump vrrp, 4 s on eth1   (adverts from lb1 on leaf2 reach lb2 on leaf3 through EVPN)
+  t=0.0s  10.9.1.21 -> 224.0.0.18  VRID 100  prio 150  VIP 10.9.1.100
+  t=1.0s  10.9.1.21 -> 224.0.0.18  VRID 100  prio 150  VIP 10.9.1.100
+  t=2.0s  10.9.1.21 -> 224.0.0.18  VRID 100  prio 150  VIP 10.9.1.100
+
+corp1# curl http://10.9.1.100/ x4   (HAProxy round robin)
+  srv2 02:00:00:09:01:12
+  srv3 02:00:00:09:01:13
+  srv1 02:00:00:09:01:11
+  srv2 02:00:00:09:01:12

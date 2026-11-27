@@ -1,0 +1,6 @@
+# P0-07 · leaf1 · 2026-11-26T15:50:15Z
+leaf1# show system lldp neighbor   (front ports)
+Name           Neighbor System Name  Neighbor Port
+-------------  --------------------  -------------
+ethernet-1/49  spine1                ethernet-1/1
+ethernet-1/50  spine2                ethernet-1/1

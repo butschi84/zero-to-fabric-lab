@@ -1,0 +1,7 @@
+# P1-02 · host · 2026-11-26T16:29:18Z
+host# tools: ASN and loopback per node, read from phases/p1-underlay/configs
+node     asn      loopback      role
+leaf1    65101    10.255.0.11/32 leaf
+leaf2    65102    10.255.0.12/32 leaf
+spine1   65000    10.255.0.1/32 spine
+spine2   65000    10.255.0.2/32 spine

@@ -1,0 +1,32 @@
+---
+title: ztf-p8
+---
+graph LR
+  gw-b---ipsec-b
+  leaf-a1---spine-a
+  gw-a---spine-a
+  gw-a---wan
+  gw-b2---wan
+  br1---ipsec-br
+  a-c1---leaf-a1
+  ipsec-a---wan1
+  ipsec-br---wan2
+  srv-a---leaf-a1
+  srv-b---leaf-b1
+  br-g1---br1
+  gw-a2---spine-a
+  leaf-b1---spine-b
+  gw-a2---wan
+  gw-a---ipsec-a
+  ipsec-br---wan1
+  a-c2---leaf-a1
+  a-g1---leaf-a1
+  b-c3---leaf-b1
+  gw-b---spine-b
+  gw-b2---spine-b
+  gw-b---wan
+  gw-b2---ipsec-b
+  ipsec-b---wan2
+  b-c1---leaf-b1
+  br-c1---br1
+  gw-a2---ipsec-a

@@ -1,0 +1,10 @@
+# P2-11 · leaf2 · 2026-11-26T16:07:36Z
+leaf2# show network-instance mac-vrf-101 bridge-table proxy-arp all   (IP/MAC pairs per origin)
+Neighbor   MAC Address        Type     State   Last Update
+---------  -----------------  -------  ------  ------------------------
+10.1.1.11  02:00:00:00:10:11  evpn     active  2026-11-26T16:07:09.196Z
+10.1.1.12  02:00:00:00:10:12  dynamic  active  2026-11-26T16:07:19.275Z
+10.1.1.13  02:00:00:00:10:13  evpn     active  2026-11-26T16:07:13.195Z
+10.1.1.14  02:00:00:00:10:14  evpn     active  2026-11-26T16:07:09.196Z
+
+dynamic = learned on a local port; evpn = learned from a remote leaf's Type-2 MAC/IP route

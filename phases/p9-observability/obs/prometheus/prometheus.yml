@@ -1,0 +1,10 @@
+# Prometheus for phase 9: receives OTLP from the two site collectors
+# (--web.enable-otlp-receiver); it scrapes nothing itself. The out-of-order
+# window lets a collector that was cut off deliver its buffered samples late.
+global:
+  scrape_interval: 15s
+otlp:
+  promote_resource_attributes: [service.name, host.name, site, source, collector.site]
+storage:
+  tsdb:
+    out_of_order_time_window: 2h

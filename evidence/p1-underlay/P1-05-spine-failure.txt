@@ -1,0 +1,16 @@
+# P1-05 · leaf1 · 2026-11-26T16:31:06Z
+method: ping -i 0.01 client1 -> client2; the spine carrying it fails 3 s in;
+        loss time = lost pings x 10 ms. BFD 3 x 1 s (minimum of virtual SR Linux).
+spine1-links-down: sent=1325 received=1324 lost=1 loss_time~10 ms (10 ms interval) largest_reply_gap=24 ms
+spine1-silent-drop: sent=1323 received=1105 lost=218 loss_time~2180 ms (10 ms interval) largest_reply_gap=2483 ms
+
+leaf1 route to 10.10.2.0/24 before:
+Prefix        Next-hop (Type)                 Next-hop Interface
+------------  ------------------------------  ------------------
+10.10.2.0/24  10.254.1.0/31 (indirect/local)  ethernet-1/49.0
+              10.254.2.0/31 (indirect/local)  ethernet-1/50.0
+
+leaf1 route during the hard failure:
+Prefix        Next-hop (Type)                 Next-hop Interface
+------------  ------------------------------  ------------------
+10.10.2.0/24  10.254.2.0/31 (indirect/local)  ethernet-1/50.0

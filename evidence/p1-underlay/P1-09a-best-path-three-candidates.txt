@@ -1,0 +1,18 @@
+# P1-09a · leaf1 · 2026-11-26T16:32:31Z
+leaf1# show network-instance default protocols bgp routes ipv4 prefix 203.0.113.0/24 detail   (filtered)
+A=ext1 LP 100 [1 AS], B=ext2 LP 200 [3 AS], C=ext3 LP 200 [2 AS] (LP set by leaf1 import policy)
+  Path 1: <Valid,>
+    Route source    : neighbor 10.253.1.1
+    LocalPref is 100
+    Path            :  i [64501]
+    Tie Break Reason: local-pref
+  Path 2: <Valid,>
+    Route source    : neighbor 10.253.2.1
+    LocalPref is 200
+    Path            :  i [64502, 64510, 64511]
+    Tie Break Reason: as-path-length
+  Path 3: <Best,Valid,Used,>
+    Route source    : neighbor 10.253.3.1
+    LocalPref is 200
+    Path            :  i [64503, 64512]
+    Tie Break Reason: none

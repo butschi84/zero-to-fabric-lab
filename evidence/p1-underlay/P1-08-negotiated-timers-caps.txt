@@ -1,0 +1,21 @@
+# P1-08 · leaf1 · 2026-11-26T16:32:24Z
+method: leaf1 default hold 90 s / keepalive 30 s; ext1 configured 'timers 60 180'
+node     configured hold/ka     negotiated hold/ka    
+leaf1    90 / 30                90 / 30               
+ext1     180 / 60               90 / 30               
+
+ext1# show bgp neighbors 10.253.1.0   (excerpt)
+  BGP state = Established, up for 00:16:52
+  Hold time is 90 seconds, keepalive interval is 30 seconds
+    4 Byte AS: advertised and received
+    Route refresh: advertised and received
+    Address Family IPv4 Unicast: advertised and received
+                         Sent       Rcvd
+    Opens:                  1          1
+    Notifications:          0          0
+    Updates:                2          1
+    Keepalives:            34         35
+
+leaf1 capabilities:
+Cap Sent:  ROUTE_REFRESH 4-OCTET_ASN MP_BGP GRACEFUL_RESTART
+Cap Recv:  ROUTE_REFRESH 4-OCTET_ASN MP_BGP GRACEFUL_RESTART ADD_PATH

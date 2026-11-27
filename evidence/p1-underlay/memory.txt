@@ -1,0 +1,10 @@
+node                      mem_MiB    cpu_%
+client1                         8     0.00
+client2                         8     0.00
+ext1                           28     0.02
+ext2                           30     0.02
+ext3                           30     0.00
+leaf1                        1533     0.00
+leaf2                        1528     0.00
+spine1                       1526     0.00
+spine2                       1518     0.00

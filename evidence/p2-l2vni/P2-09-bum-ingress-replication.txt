@@ -1,0 +1,8 @@
+# P2-09 · leaf1 · 2026-11-26T16:08:01Z
+method: client1 ping -b -c 1 10.1.1.255 (one broadcast frame); VXLAN packets
+        leaving leaf1 that carry it (inner dst ff:ff:ff:ff:ff:ff), per outer destination
+
+1 copy: 10.255.0.11 -> 10.255.0.12 (inner 10.1.1.11 -> 10.1.1.255) VNI 10101
+1 copy: 10.255.0.11 -> 10.255.0.13 (inner 10.1.1.11 -> 10.1.1.255) VNI 10101
+
+remote VTEPs in the flood list (Type-3 routes): 2

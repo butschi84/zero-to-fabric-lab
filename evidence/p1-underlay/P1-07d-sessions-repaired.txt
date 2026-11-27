@@ -1,0 +1,15 @@
+# P1-07d · leaf1 · 2026-11-26T16:32:24Z
+repair: iptables flushed on ext2, ext3 remote-as back to 65101
+Peer        Group      Peer-AS  State        Uptime         [Rx/Active/Tx]
+----------  ---------  -------  -----------  -------------  --------------
+10.253.1.1  testpeers  64501    established  0d:0h:16m:51s  [1/0/0]
+10.253.2.1  testpeers  64502    established  0d:0h:0m:31s   [1/0/0]
+10.253.3.1  testpeers  64503    established  0d:0h:0m:1s    [1/1/0]
+10.254.1.0  underlay   65000    established  0d:0h:1m:24s   [3/3/4]
+10.254.2.0  underlay   65000    established  0d:0h:2m:59s   [3/3/6]
+
+events (leaf1 log):
+2026-11-26T16:31:25Z  moved from higher state ACTIVE to lower state IDLE due to event TCP SOCKET ERROR
+2026-11-26T16:31:53Z  moved into the ESTABLISHED state
+2026-11-26T16:32:06Z  moved from higher state OPENCONFIRM to lower state IDLE due to event RECVNOTIFY
+2026-11-26T16:32:23Z  moved into the ESTABLISHED state

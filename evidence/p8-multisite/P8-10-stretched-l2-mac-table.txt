@@ -1,0 +1,12 @@
+# P8-10 · leaf-a1 · 2026-11-26T19:51:51Z
+a-c1 (10.1.1.11, site A) and b-c1 (10.1.1.21, site B): same subnet, VLAN 101, L2VNI 10101
+a-c1# ping -c 2 10.1.1.21 -> 2 packets transmitted, 2 received, 0% packet loss, time 300ms
+a-c1# ip neigh show 10.1.1.21 -> 10.1.1.21 dev eth1 lladdr 02:00:00:0b:01:21 DELAY 
+
+leaf-a1# show network-instance mac-vrf-101 bridge-table mac-table all
+Address            Destination                                            Type
+-----------------  -----------------------------------------------------  ---------------------
+02:00:00:0A:01:11  ethernet-1/1.0                                         learnt
+02:00:00:0B:01:21  vxlan-interface:vxlan1.101 vtep:10.255.1.11 vni:10101  evpn
+
+(destination vxlan ... vtep 10.255.1.11 = leaf-b1 in site B, reached directly, not via the gateway)

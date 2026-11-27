@@ -1,0 +1,6 @@
+# P8-12 · b-c1 · 2026-11-26T19:52:18Z
+method: ping -b -i 0.01 (100 broadcast packets/s, 6 s) in site A; rx packets/s on a client port in site B over 4 s
+
+case                           sent (pps)     received at site B (pps)
+stretched VNI (a-c1 -> b-c1)   100            101
+L3-separated (a-c2 -> b-c3)    100            0

@@ -1,0 +1,11 @@
+# P8-18 · br-c1 · 2026-11-26T19:57:20Z
+service: anycast VIP 10.9.100.10 (web), announced by srv-a (site A) and srv-b (site B, AS path prepended twice)
+client:  br-c1 in the branch, a new HTTP connection every 50 ms (timeout 0.5 s), site A fails at +3 s
+
+  requests=328 ok=320 failed=8 largest_gap_s=4.06 first_fail_s=0.01 last_fail_s=3.52
+  before event: srv-a=60
+  after event:  srv-b=260
+  last 3 s:     srv-b=60
+
+br1 VRF corp, route to 10.9.100.10/32: before next hop 10.255.0.11/32, after 10.255.1.11/32
+configured: BGP from each server to its leaf (VRF corp), Type-5 into EVPN; no DNS change, no health checker

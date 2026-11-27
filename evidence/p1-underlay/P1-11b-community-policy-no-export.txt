@@ -1,0 +1,21 @@
+# P1-11b · leaf2 · 2026-11-26T16:32:45Z
+rule on leaf2: import statement for 198.51.100.0/24 matches community 64500:100
+and sets LOCAL_PREF 150 (reverted afterwards)
+
+leaf2 before:
+  Path 1: <Best,Valid,Used,>
+    No LocalPref
+  Path 2: <Best,Valid,Used,>
+    No LocalPref
+
+leaf2 with the rule:
+  Path 1: <Best,Valid,Used,>
+    LocalPref is 150
+  Path 2: <Best,Valid,Used,>
+    LocalPref is 150
+
+NO_EXPORT variant: leaf1 adds no-export to the route
+spine1 (receives it, AS 65000):
+  Path 1: <Best,Valid,Used,>
+    Communities     : 64500:100, no-export, 64500:1:100
+leaf2 (behind spine1, other AS): 0 paths received -> spine1 did not pass it on

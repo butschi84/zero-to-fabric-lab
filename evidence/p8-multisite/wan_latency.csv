@@ -1,0 +1,4 @@
+phase,sent,received,loss,rtt_min_ms,rtt_avg_ms,rtt_max_ms
+before,50,50,0%,0.651,0.790,1.158
+impaired,50,50,0%,26.288,30.291,35.816
+after,50,50,0%,0.615,0.817,1.721

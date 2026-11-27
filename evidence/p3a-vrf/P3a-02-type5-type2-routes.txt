@@ -1,0 +1,22 @@
+# P3a-02 · leaf1 · 2026-11-26T17:08:30Z
+leaf1# show network-instance default protocols bgp routes evpn route-type 5 summary   (best paths, compact)
+Status  Route-distinguisher  IP-address      Next-Hop     Label
+------  -------------------  --------------  -----------  -----
+u*>     10.255.0.12:1        10.1.1.0/24     10.255.0.12  50001
+u*>     10.255.0.12:2        10.2.1.0/24     10.255.0.12  50002
+u*>     10.255.0.13:1        10.1.1.0/24     10.255.0.13  50001
+u*>     10.255.0.13:1        10.1.2.0/24     10.255.0.13  50001
+u*>     10.255.0.13:1        10.1.2.10/32    10.255.0.13  50001
+
+leaf1# show network-instance default protocols bgp routes evpn route-type 2 summary   (hosts with IP, best paths)
+Status  Route-distinguisher  MAC-address        IP-address  Next-Hop     Label
+------  -------------------  -----------------  ----------  -----------  -----
+u*>     10.255.0.12:101      02:00:00:01:01:12  10.1.1.12   10.255.0.12  10101
+u*>     10.255.0.12:201      02:00:00:02:01:12  10.2.1.12   10.255.0.12  10201
+
+leaf1# ... route-type 5 prefix 10.1.2.0/24 detail   (label = L3VNI, RT, router MAC)
+Route Distinguisher: 10.255.0.13:1
+ip-prefix          : 10.1.2.0/24
+    Label             : 50001
+    BGP next-hop      : 10.255.0.13
+    Communities       : [target:65000:50001, mac-nh:1a:34:09:ff:00:00, bgp-tunnel-encap:VXLAN]

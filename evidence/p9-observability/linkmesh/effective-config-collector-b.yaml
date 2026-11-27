@@ -1,0 +1,272 @@
+connectors:
+    forward/route_60181f11_in: {}
+    forward/route_60181f11_match_out: {}
+    forward/route_d47b40a4_in: {}
+    forward/route_d47b40a4_match_out: {}
+exporters:
+    otlphttp/output_dst_0bd104ff:
+        compression: gzip
+        endpoint: http://172.30.30.210:9090/api/v1/otlp
+        sending_queue:
+            block_on_overflow: false
+            enabled: true
+            storage: file_storage/output_dst_0bd104ff
+        timeout: 10s
+    otlphttp/output_dst_40f8059e:
+        compression: gzip
+        endpoint: http://172.30.30.212:3100/otlp
+        sending_queue:
+            block_on_overflow: false
+            enabled: true
+            storage: file_storage/output_dst_40f8059e
+        timeout: 10s
+    otlphttp/self:
+        endpoint: http://172.30.30.200:8080
+        headers:
+            Authorization: Bearer <redacted>
+        metrics_endpoint: http://172.30.30.200:8080/v1/metrics
+        timeout: 2s
+extensions:
+    file_storage/output_dst_0bd104ff:
+        create_directory: true
+        directory: /var/lib/otelcol-supervisor/sending-queue/output_dst_0bd104ff
+    file_storage/output_dst_40f8059e:
+        create_directory: true
+        directory: /var/lib/otelcol-supervisor/sending-queue/output_dst_40f8059e
+    opamp:
+        capabilities:
+            reports_available_components: false
+        instance_uid: 01a21c53-8429-74db-af90-f8f779d62622
+        ppid: 1
+        ppid_poll_interval: 5s
+        server:
+            ws:
+                endpoint: ws://127.0.0.1:39309/v1/opamp
+                tls:
+                    insecure: true
+processors:
+    filter/route_60181f11_match:
+        error_mode: ignore
+        metrics:
+            datapoint:
+                - not (true)
+            metric:
+                - not (true)
+    filter/route_d47b40a4_match:
+        error_mode: ignore
+        logs:
+            log_record:
+                - not (true)
+        metrics:
+            datapoint:
+                - not (true)
+            metric:
+                - not (true)
+    filter/route_d47b40a4_skip:
+        error_mode: ignore
+        metrics:
+            datapoint:
+                - "true"
+            metric:
+                - "true"
+    resource/self:
+        attributes:
+            - action: upsert
+              key: linkmesh.collector.id
+              value: 0688c80faa336db0acab38cb
+            - action: upsert
+              key: linkmesh.environment
+              value: production
+    resource/source_5d3be573_meta:
+        attributes:
+            - action: insert
+              key: linkmesh.source.id
+              value: 450ebc8e3dcd83955d3be573
+            - action: insert
+              key: linkmesh.source.name
+              value: SR Linux syslog (UDP 5514, RFC 5424)
+    resource/source_40fae12f_meta:
+        attributes:
+            - action: insert
+              key: linkmesh.source.id
+              value: 6033753e4f17c9b540fae12f
+            - action: insert
+              key: linkmesh.source.name
+              value: Probes and IPsec site B (Prometheus scrape)
+    resource/source_59d1d3d3_meta:
+        attributes:
+            - action: insert
+              key: linkmesh.source.id
+              value: 7755f786119c8fc159d1d3d3
+            - action: insert
+              key: linkmesh.source.name
+              value: OTLP Input
+receivers:
+    hostmetrics/self:
+        collection_interval: 30s
+        scrapers:
+            cpu:
+                metrics:
+                    system.cpu.time:
+                        enabled: false
+                    system.cpu.utilization:
+                        enabled: true
+            memory:
+                metrics:
+                    system.memory.usage:
+                        enabled: false
+                    system.memory.utilization:
+                        enabled: true
+            network:
+                metrics:
+                    system.network.connections:
+                        enabled: false
+                    system.network.dropped:
+                        enabled: false
+                    system.network.errors:
+                        enabled: false
+                    system.network.packets:
+                        enabled: false
+    otlp/input_src_59d1d3d3:
+        protocols:
+            grpc:
+                endpoint: 0.0.0.0:4317
+    prometheus/input_src_40fae12f:
+        config:
+            scrape_configs:
+                - job_name: input_src_40fae12f
+                  metrics_path: /metrics
+                  scheme: http
+                  scrape_interval: 10s
+                  static_configs:
+                    - targets:
+                        - 172.30.30.103:9374
+                        - 172.30.30.44:9101
+    syslog/input_src_5d3be573:
+        protocol: rfc5424
+        udp:
+            listen_address: 0.0.0.0:5514
+service:
+    extensions:
+        - opamp
+        - file_storage/output_dst_40f8059e
+        - file_storage/output_dst_0bd104ff
+    pipelines:
+        logs/route_d47b40a4_match:
+            exporters:
+                - forward/route_d47b40a4_match_out
+            processors:
+                - filter/route_d47b40a4_match
+            receivers:
+                - forward/route_d47b40a4_in
+        logs/route_d47b40a4_pipeline:
+            exporters:
+                - otlphttp/output_dst_40f8059e
+            processors: []
+            receivers:
+                - forward/route_d47b40a4_match_out
+        logs/source_5d3be573:
+            exporters:
+                - forward/route_d47b40a4_in
+            processors:
+                - resource/source_5d3be573_meta
+            receivers:
+                - syslog/input_src_5d3be573
+        logs/source_59d1d3d3:
+            exporters:
+                - forward/route_d47b40a4_in
+            processors:
+                - resource/source_59d1d3d3_meta
+            receivers:
+                - otlp/input_src_59d1d3d3
+        metrics/route_60181f11_match:
+            exporters:
+                - forward/route_60181f11_match_out
+            processors:
+                - filter/route_60181f11_match
+            receivers:
+                - forward/route_60181f11_in
+        metrics/route_60181f11_pipeline:
+            exporters:
+                - otlphttp/output_dst_0bd104ff
+            processors: []
+            receivers:
+                - forward/route_60181f11_match_out
+        metrics/route_d47b40a4_match:
+            exporters:
+                - forward/route_d47b40a4_match_out
+            processors:
+                - filter/route_d47b40a4_match
+            receivers:
+                - forward/route_d47b40a4_in
+        metrics/route_d47b40a4_pipeline:
+            exporters:
+                - otlphttp/output_dst_0bd104ff
+            processors: []
+            receivers:
+                - forward/route_d47b40a4_match_out
+        metrics/route_d47b40a4_skip:
+            exporters:
+                - forward/route_60181f11_in
+            processors:
+                - filter/route_d47b40a4_skip
+            receivers:
+                - forward/route_d47b40a4_in
+        metrics/self:
+            exporters:
+                - otlphttp/self
+            processors:
+                - resource/self
+            receivers:
+                - hostmetrics/self
+        metrics/source_40fae12f:
+            exporters:
+                - forward/route_d47b40a4_in
+            processors:
+                - resource/source_40fae12f_meta
+            receivers:
+                - prometheus/input_src_40fae12f
+        metrics/source_59d1d3d3:
+            exporters:
+                - forward/route_d47b40a4_in
+            processors:
+                - resource/source_59d1d3d3_meta
+            receivers:
+                - otlp/input_src_59d1d3d3
+    telemetry:
+        logs:
+            encoding: json
+            error_output_paths:
+                - stderr
+            output_paths:
+                - stdout
+        metrics:
+            level: normal
+            readers:
+                - periodic:
+                    exporter:
+                        otlp:
+                            endpoint: http://172.30.30.200:8080/v1/metrics
+                            headers:
+                                Authorization: Bearer <redacted>
+                            protocol: http/protobuf
+                    interval: 30000
+                    timeout: 2000
+        resource:
+            attributes:
+                - name: host.arch
+                  value: arm64
+                - name: host.name
+                  value: collector-b
+                - name: linkmesh.environment
+                  value: zero-to-fabric-lab
+                - name: os.description
+                  value: Debian 12.15
+                - name: os.type
+                  value: linux
+                - name: service.instance.id
+                  value: 01a21c53-8429-74db-af90-f8f779d62622
+                - name: service.name
+                  value: otelcol-contrib
+                - name: service.version
+                  value: 0.165.0

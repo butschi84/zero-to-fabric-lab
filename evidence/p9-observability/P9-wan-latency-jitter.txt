@@ -1,0 +1,8 @@
+method: containerlab tools netem on gw-b and gw-b2 e1-1 (site B's WAN ports): delay 30 ms, jitter 5 ms, 75 s;
+        ICMP probes every 1 s from a-c1 (site A) to b-c1 and b-c3 (site B), 1-minute windows from Prometheus
+
+metric (ms)                    before     during     after     
+RTT A -> B (avg)               1.1        31.7       1.4       
+jitter (p90 - p10 RTT)         1.1        20.5       2.2       
+
+the delay hits one direction of the path (site B's egress), so the RTT rises by ~30 ms

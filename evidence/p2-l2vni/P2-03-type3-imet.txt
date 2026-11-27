@@ -1,0 +1,8 @@
+# P2-03 · leaf1 · 2026-11-26T16:07:13Z
+leaf1# show network-instance default protocols bgp routes evpn route-type 3 summary   (compact)
+Status  Route-distinguisher  Originator-IP  neighbor    Next-Hop
+------  -------------------  -------------  ----------  -----------
+u*>     10.255.0.12:101      10.255.0.12    10.255.0.1  10.255.0.12
+*       10.255.0.12:101      10.255.0.12    10.255.0.2  10.255.0.12
+u*>     10.255.0.13:101      10.255.0.13    10.255.0.1  10.255.0.13
+*       10.255.0.13:101      10.255.0.13    10.255.0.2  10.255.0.13

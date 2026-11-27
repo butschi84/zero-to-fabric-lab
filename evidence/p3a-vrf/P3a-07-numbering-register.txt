@@ -1,0 +1,16 @@
+# P3a-07 · leaf1 · 2026-11-26T17:08:58Z
+leaf1# register from running state (info from state ... | as json), all leafs
+node    network-instance type        VNI  EVI  RD               export RT     import RT    
+leaf1   corp             ip-vrf    50001    1  10.255.0.11:1    65000:50001   65000:50001  
+leaf1   guest            ip-vrf    50002    2  10.255.0.11:2    65000:50002   65000:50002  
+leaf1   mac-vrf-101      mac-vrf   10101  101  10.255.0.11:101  65000:10101   65000:10101  
+leaf1   mac-vrf-201      mac-vrf   10201  201  10.255.0.11:201  65000:10201   65000:10201  
+leaf2   corp             ip-vrf    50001    1  10.255.0.12:1    65000:50001   65000:50001  
+leaf2   guest            ip-vrf    50002    2  10.255.0.12:2    65000:50002   65000:50002  
+leaf2   mgmt-net         ip-vrf    50003    3  10.255.0.12:3    65000:50003   65000:50003  
+leaf2   mac-vrf-101      mac-vrf   10101  101  10.255.0.12:101  65000:10101   65000:10101  
+leaf2   mac-vrf-201      mac-vrf   10201  201  10.255.0.12:201  65000:10201   65000:10201  
+leaf2   mac-vrf-301      mac-vrf   10301  301  10.255.0.12:301  65000:10301   65000:10301  
+leaf3   corp             ip-vrf    50001    1  10.255.0.13:1    65000:50001   65000:50001  
+leaf3   mac-vrf-101      mac-vrf   10101  101  10.255.0.13:101  65000:10101   65000:10101  
+leaf3   mac-vrf-102      mac-vrf   10102  102  10.255.0.13:102  65000:10102   65000:10102  

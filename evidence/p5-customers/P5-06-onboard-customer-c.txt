@@ -1,0 +1,22 @@
+# P5-06 · leaf1 · 2026-11-26T19:07:51Z
+leaf1# python3 tools/onboard.py cust-c leaf1 ethernet-1/5 10.0.0 | sr_cli (candidate, diff, commit)
+  generated: 43 CLI lines (tools/onboard.py, same plan as all startup configs)
+  commit took 0.5 s; c-vm1 pings its gateway 0.5 s after the start
+
+config diff (excerpt, first 14 of 108 added lines):
++                 vni 11301
++                 vni 50013
++     network-instance cust-c {
++                     evi 13
++                     route-target {
++                         export-rt target:65000:50013
++                         import-rt target:65000:50013
++     network-instance mac-vrf-1301 {
++         interface ethernet-1/5.0 {
++                     evi 1301
++                     route-target {
++                         export-rt target:65000:11301
++                         import-rt target:65000:11301
++     interface ethernet-1/5 {
+
+c-vm1 (10.0.0.10, cust-c)# ping 10.0.0.1 -> OK; curl 10.0.0.20 -> FAIL

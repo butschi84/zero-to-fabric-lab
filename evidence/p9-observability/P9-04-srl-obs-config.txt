@@ -1,0 +1,17 @@
+# P9-04 · leaf-a1 · 2026-11-27T10:38:24Z
+leaf-a1# info flat system logging remote-server * / system sflow / grpc-server mgmt
+set / system logging remote-server 172.30.30.201 transport udp
+set / system logging remote-server 172.30.30.201 remote-port 5514
+set / system logging remote-server 172.30.30.201 facility local6 priority match-above informational
+set / system sflow admin-state enable
+set / system sflow sample-rate 1000
+set / system sflow collector 1 collector-address 172.30.30.201
+set / system sflow collector 1 network-instance mgmt
+set / system sflow collector 1 source-address 172.30.30.21
+set / system sflow collector 1 port 6343
+set / system grpc-server mgmt admin-state enable
+set / system grpc-server mgmt rate-limit 65000
+set / system grpc-server mgmt tls-profile clab-profile
+set / system grpc-server mgmt network-instance mgmt
+set / system grpc-server mgmt trace-options [ request response common ]
+set / system grpc-server mgmt services [ gnmi gnoi gnsi gribi p4rt ]

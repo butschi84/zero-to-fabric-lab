@@ -1,0 +1,29 @@
+# P2-01 · leaf1 · 2026-11-26T16:07:12Z
+leaf1# show tunnel-interface vxlan1 vxlan-interface 101 detail
+Tunnel interface vxlan1
+  Vxlan interface vxlan1.101
+    Type         :  bridged
+    Ingress
+      vni        : 10101
+    Egress
+      source-ip  : 10.255.0.11/32
+      inner-ethernet-header:
+        source-mac : -
+      Number of ip-destinations         : 0
+    Bridge-table
+      Number of unicast-destinations    : 2
+      Number of es-destinations         : 0
+      Number of multicast-destinations  : 2
+      MAC-table statistics:
+        Active-entries                  : 4
+
+leaf1# info network-instance mac-vrf-101 protocols
+    network-instance mac-vrf-101 {
+        protocols {
+            bgp-evpn {
+                bgp-instance 1 {
+                    admin-state enable
+                    vxlan-interface vxlan1.101
+                    evi 101
+                }
+            }

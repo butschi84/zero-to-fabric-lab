@@ -1,0 +1,11 @@
+# P6-03 · cl3 · 2026-11-26T18:37:14Z
+method: cl3 (leaf3) ping -i 0.01 srv-mh (dual-homed leaf1+leaf2), event after 3 s, 15 s total;
+        loss_ms = lost x 10 ms. One run per row. Lab times (vSR Linux, BFD/LACP 1 s), not hardware.
+
+failure                              sent  lost  loss_ms  max_gap
+leaf1-access-link-admin-down         1328   479     4790     5453
+spine1-hangs-docker-pause            1324   261     2610     2997
+leaf1-hangs-docker-pause             1331   577     5770     6546
+leaf1-stopped-docker-stop            1329   276     2760     3133
+
+not measured here: border failure (see phase 3b, WAN/default withdrawal)

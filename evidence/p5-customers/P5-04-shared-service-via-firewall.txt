@@ -1,0 +1,20 @@
+# P5-04 · fw · 2026-11-26T19:07:44Z
+a-vm1 (10.0.0.10, cust-a)# dig @10.9.1.53 svc.lab.example -> 10.9.1.53
+b-vm1 (10.0.0.10, cust-b)# dig @10.9.1.53 svc.lab.example -> 10.9.1.53
+
+svc-dns# tcpdump udp 53   (what the service sees: two different sources)
+  100.64.11.10 -> 10.9.1.53  query
+  10.9.1.53 -> 100.64.11.10  response
+  100.64.12.10 -> 10.9.1.53  query
+  10.9.1.53 -> 100.64.12.10  response
+
+border1# cust-a/cust-b route to the service: static 10.9.1.53/32 via the firewall
+  cust-a: 10.9.1.53/32 static 10.250.1.22/31
+  cust-b: 10.9.1.53/32 static 10.250.1.24/31
+
+fw# iptables -v -n (counters since reset): FORWARD and nat POSTROUTING
+    2   176 ACCEPT     all  --  *      *       0.0.0.0/0            0.0.0.0/0            ctstate RELATED,ESTABLISHED
+    1    84 ACCEPT     all  --  eth1.11 eth1.9  0.0.0.0/0            10.9.1.53            /* cust-a to shared DNS */
+    1    84 ACCEPT     all  --  eth1.12 eth1.9  0.0.0.0/0            10.9.1.53            /* cust-b to shared DNS */
+    1    84 NETMAP     all  --  *      eth1.9  0.0.0.0/0            0.0.0.0/0            connmark match  0xb to:100.64
+    1    84 NETMAP     all  --  *      eth1.9  0.0.0.0/0            0.0.0.0/0            connmark match  0xc to:100.64

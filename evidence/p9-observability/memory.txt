@@ -1,0 +1,40 @@
+method: memory.current of each container cgroup; docker stats for the observability containers
+lab nodes (9 SR Linux + Linux/FRR/strongSwan): 12382 MiB
+  ztf-p9-probe-b         9.535MiB
+  ztf-p9-probe-a          9.77MiB
+  ztf-p9-gnmic-b         39.33MiB
+  ztf-p9-gnmic-a         41.87MiB
+  ztf-p9-collector-b     106.2MiB
+  ztf-p9-collector-a       103MiB
+  ztf-p9-grafana         140.4MiB
+  ztf-p9-loki            165.4MiB
+  ztf-p9-prometheus       66.6MiB
+  ztf-p9-linkmesh           79MiB
+observability stack: 761 MiB
+              total        used        free      shared  buff/cache   available
+Mem:          19994       16490         179         870        3325        2351
+node                      mem_MiB    cpu_%
+a-c1                            6     0.44
+a-c2                            7     2.15
+a-g1                            5     0.06
+b-c1                            6     0.14
+b-c3                            6     1.76
+br-c1                           5     0.57
+br-g1                           5     0.08
+br1                          1337     0.00
+gw-a                         1486     0.00
+gw-a2                        1296     0.00
+gw-b                         1172     0.00
+gw-b2                        1368     0.00
+ipsec-a                        91     0.20
+ipsec-b                        81     0.16
+ipsec-br                       78     0.19
+leaf-a1                      1401     0.00
+leaf-b1                      1351     0.00
+spine-a                      1269     0.00
+spine-b                      1233     0.00
+srv-a                          64     0.01
+srv-b                          68     0.02
+wan                             5     0.00
+wan1                            5     0.00
+wan2                            5     0.00

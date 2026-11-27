@@ -1,0 +1,15 @@
+# P9-01 · host · 2026-11-27T10:38:21Z
+container      address         role
+linkmesh       172.30.30.200   LinkMesh server (collector fleet, config over OpAMP)
+collector-a    172.30.30.201   collector site A (+ branch)
+collector-b    172.30.30.202   collector site B
+gnmic-a        172.30.30.203   gNMI subscriber site A -> OTLP -> collector-a
+gnmic-b        172.30.30.204   gNMI subscriber site B -> OTLP -> collector-b
+prometheus     172.30.30.210   metrics (OTLP receiver)
+grafana        172.30.30.211   dashboards
+loki           172.30.30.212   syslog (OTLP)
+
+SR Linux --gNMI (TLS 57400)--> gnmic --OTLP/gRPC--> site collector --OTLP/HTTP, durable queue--> Prometheus
+SR Linux --syslog UDP 5514 (RFC 5424)--> site collector --OTLP/HTTP, durable queue--> Loki
+probes (smokeping, in a-c1 / b-c1) + IPsec exporters <--scrape-- site collector
+all of it on the out-of-band management network 172.30.30.0/24 (SR Linux network-instance mgmt)

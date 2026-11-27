@@ -1,0 +1,24 @@
+# P4-01 · leaf1 · 2026-11-27T09:18:36Z
+leaf1# show network-instance corp route-table ipv4-unicast prefix 10.9.100.10/32   (VIP via two service leafs)
+Prefix          Route Type  Route Owner   Next-hop (Type)
+--------------  ----------  ------------  -------------------------------
+10.9.100.10/32  bgp-evpn    bgp_evpn_mgr  10.255.0.12/32 (indirect/vxlan)
+                                          10.255.0.13/32 (indirect/vxlan)
+
+leaf3# show network-instance shared route-table ipv4-unicast prefix 10.9.100.10/32   (two local servers)
+Prefix          Route Type  Route Owner   Next-hop (Type)
+--------------  ----------  ------------  -------------------------------
+10.9.100.10/32  bgp         bgp_mgr       10.9.1.0/24 (indirect/local)
+                                          10.9.1.0/24 (indirect/local)
+10.9.100.10/32  bgp-evpn    bgp_evpn_mgr  10.255.0.12/32 (indirect/vxlan)
+
+leaf3# show network-instance shared protocols bgp neighbor   (servers, eBGP)
+Peer       Peer-AS  State        Uptime        [Rx/Active/Tx]
+---------  -------  -----------  ------------  --------------
+10.9.1.12  65412    established  0d:0h:1m:16s  [1/1/0]
+10.9.1.13  65413    established  0d:0h:1m:16s  [1/1/0]
+
+srv2# vtysh -c 'show bgp ipv4 unicast 10.9.100.10/32'   (what a server announces)
+  Advertised to peers:
+  Local
+      Origin IGP, metric 0, weight 32768, valid, sourced, local, bestpath-from-AS Local, best (First path received)

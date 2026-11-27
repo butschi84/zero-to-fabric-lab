@@ -1,0 +1,20 @@
+# P8-07 · a-c2 · 2026-11-26T19:51:32Z
+method: a-c2 -> b-c3 ping -M do (DF) -s <payload>, 2 pings each; host MTU 1500; VXLAN adds 50 bytes
+        WAN = ip-mtu of the four gateways' WAN sub-interfaces (the bridge itself carries 9500)
+
+WAN ip-mtu   ICMP payload  IP packet   result
+1500         1300          1328        OK
+1500         1400          1428        OK
+1500         1422          1450        OK
+1500         1423          1451        FAIL
+1500         1450          1478        FAIL
+1500         1472          1500        FAIL
+9000         1300          1328        OK
+9000         1400          1428        OK
+9000         1422          1450        OK
+9000         1423          1451        OK
+9000         1450          1478        OK
+9000         1472          1500        OK
+
+ICMP 'destination unreachable' packets reaching a-c2 during the 1500 sweep: 0
+(the oversized VXLAN packet is dropped in the fabric; the host is not told)

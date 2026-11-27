@@ -1,0 +1,6 @@
+# containerlab working directories (generated per deploy)
+clab-*/
+.clab-*
+*.bak
+__pycache__/
+.DS_Store

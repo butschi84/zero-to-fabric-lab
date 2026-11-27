@@ -1,0 +1,17 @@
+# P4-05 · lb1 · 2026-11-27T09:21:21Z
+method: corp1 -> http://10.9.1.100/ (VRRP VIP) every 50 ms, timeout 0.5 s; event at t=3 s. VRRP advert 1 s, priority 150/100
+
+docker pause lb1 (master hangs), 15 s:
+  requests=192 ok=180 failed=12 largest_gap_s=6.07 first_fail_s=0.01 last_fail_s=5.53
+  before event: srv1=20 srv2=20 srv3=20
+  after event:  srv1=40 srv2=40 srv3=40
+  last 3 s:     srv1=20 srv2=20 srv3=20
+  afterwards: lb2 holds 10.9.1.100
+  leaf2 ARP entry for the VIP (MAC moved to lb2 02:00:00:09:01:22, learned via EVPN):
+    Neighbor    Link layer address  Origin
+    10.9.1.100  02:00:00:09:01:22   evpn
+  all 3 runs (pause): gap 6.07 s (VIP on lb2 after 2.9 s);gap 7.06 s (VIP on lb2 after 3.6 s);gap 9.07 s (VIP on lb2 after 3.6 s)
+
+docker unpause lb1 (preempts the VIP back), 12 s:
+  requests=240 ok=240 failed=0 largest_gap_s=0.05 first_fail_s=0.00 last_fail_s=0.00
+  before event: srv1=20 srv2=20 srv3=20

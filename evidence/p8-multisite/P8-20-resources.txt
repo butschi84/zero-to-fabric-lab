@@ -1,0 +1,17 @@
+# P8-20 · gw-a · 2026-11-26T19:54:59Z
+docker stats --no-stream (SR Linux shows 0 here, see memory.txt) + cgroup memory
+node                      mem_MiB    cpu_%
+br1                          1414     0.00
+gw-a                         1491     0.00
+gw-a2                        1449     0.00
+gw-b                         1599     0.00
+gw-b2                        1468     0.00
+ipsec-b                        31     0.11
+ipsec-br                       46     0.13
+leaf-a1                      1487     0.00
+leaf-b1                      1284     0.00
+spine-a                      1462     0.00
+spine-b                      1418     0.00
+srv-a                          32     0.02
+12 Linux nodes                112        -
+total                       13284

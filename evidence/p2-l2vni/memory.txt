@@ -1,0 +1,10 @@
+node                      mem_MiB    cpu_%
+client1                         4     0.00
+client2                         4     0.00
+client3                         4     0.00
+leaf1                        1539     0.00
+leaf2                        1558     0.00
+leaf3                        1549     0.00
+mobile                          4     0.00
+spine1                       1513     0.00
+spine2                       1500     0.00

@@ -1,0 +1,11 @@
+method: collector-b (site B) cut off from the NOC for 121 s (iptables in its namespace);
+        gnmic-b, syslog and the SR Linux nodes of site B keep running
+
+site B's newest sample in Prometheus older than 15 s after 11 s; fresh again (< 10 s) 1 s after the repair
+collector-b durable queue on disk: 908K shortly after the cut, 5.8M at the end of the cut
+samples in Prometheus for leaf-b1 e1-49 oper-state INSIDE the cut window, counted after the repair:
+  23 of ~22 expected (5 s sampling) -> the collector buffered and delivered them late
+
+LinkMesh view of the collectors during the cut:
+collector-a  status=healthy version=0.165.0 lastSeen=2026-11-27T08:53:09.425525342Z
+collector-b  status=offline version=0.165.0 lastSeen=2026-11-27T08:51:10.77396526Z
